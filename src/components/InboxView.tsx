@@ -73,101 +73,65 @@ const InboxView = ({ onReadBriefing }: InboxViewProps) => {
         transition={{ delay: 0.6 }}
         className="mt-8"
       >
-        <AnimatePresence mode="wait">
-          {!showNewBrief ? (
-            <motion.button
-              key="trigger"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setShowNewBrief(true)}
-              className="w-full border border-dashed border-border p-6 flex items-center justify-center gap-3 hover:border-foreground/30 hover:bg-muted/30 transition-colors group"
-            >
-              <Plus className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" strokeWidth={1.5} />
-              <span className="text-xs tracking-[0.1em] uppercase text-muted-foreground group-hover:text-foreground transition-colors">
-                New briefing
-              </span>
-            </motion.button>
-          ) : (
-            <motion.div
-              key="form"
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.3 }}
-              className="border border-border p-6 space-y-4"
-            >
-              <div className="flex items-center justify-between">
-                <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">New Briefing</span>
-                <button
-                  onClick={() => { setShowNewBrief(false); setBriefText(""); setFileName(null); }}
-                  className="p-1 hover:bg-muted rounded-sm transition-colors"
-                >
-                  <X className="w-3.5 h-3.5 text-muted-foreground" strokeWidth={1.5} />
-                </button>
-              </div>
+        <div className="border border-border p-6 space-y-4">
+          <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">New Briefing</span>
 
-              <textarea
-                value={briefText}
-                onChange={(e) => setBriefText(e.target.value)}
-                placeholder="Describe the initiative, project scope, or problem you need a team for…"
-                rows={4}
-                className="w-full text-sm bg-transparent border border-border px-4 py-3 outline-none resize-none placeholder:text-muted-foreground/50 focus:border-foreground/30 transition-colors leading-relaxed"
+          <textarea
+            value={briefText}
+            onChange={(e) => setBriefText(e.target.value)}
+            placeholder="Describe the initiative, project scope, or problem you need a team for…"
+            rows={4}
+            className="w-full text-sm bg-transparent border border-border px-4 py-3 outline-none resize-none placeholder:text-muted-foreground/50 focus:border-foreground/30 transition-colors leading-relaxed"
+          />
+
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => fileRef.current?.click()}
+                className="flex items-center gap-2 text-xs text-muted-foreground border border-border px-3 py-2 hover:border-foreground/30 hover:text-foreground transition-colors"
+              >
+                <Upload className="w-3.5 h-3.5" strokeWidth={1.5} />
+                Upload document
+              </button>
+              <input
+                ref={fileRef}
+                type="file"
+                accept=".pdf,.docx,.doc,.txt,.md"
+                onChange={handleFileSelect}
+                className="hidden"
               />
 
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  {/* Upload button */}
-                  <button
-                    onClick={() => fileRef.current?.click()}
-                    className="flex items-center gap-2 text-xs text-muted-foreground border border-border px-3 py-2 hover:border-foreground/30 hover:text-foreground transition-colors"
-                  >
-                    <Upload className="w-3.5 h-3.5" strokeWidth={1.5} />
-                    Upload document
-                  </button>
-                  <input
-                    ref={fileRef}
-                    type="file"
-                    accept=".pdf,.docx,.doc,.txt,.md"
-                    onChange={handleFileSelect}
-                    className="hidden"
-                  />
-
-                  {/* File chip */}
-                  {fileName && (
-                    <motion.span
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      className="flex items-center gap-1.5 text-xs text-foreground bg-muted px-3 py-1.5 border border-border"
-                    >
-                      <FileText className="w-3 h-3 text-muted-foreground" strokeWidth={1.5} />
-                      {fileName}
-                      <button onClick={() => setFileName(null)} className="ml-1 hover:text-foreground/60">
-                        <X className="w-3 h-3" strokeWidth={1.5} />
-                      </button>
-                    </motion.span>
-                  )}
-                </div>
-
-                {/* Submit */}
-                <button
-                  onClick={handleSubmit}
-                  disabled={(!briefText.trim() && !fileName) || submitting}
-                  className="flex items-center gap-2 text-xs tracking-[0.1em] uppercase border border-foreground px-5 py-2.5 text-foreground hover:bg-foreground hover:text-primary-foreground disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-foreground transition-colors"
+              {fileName && (
+                <motion.span
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="flex items-center gap-1.5 text-xs text-foreground bg-muted px-3 py-1.5 border border-border"
                 >
-                  {submitting ? (
-                    <span>Running swarm…</span>
-                  ) : (
-                    <>
-                      <Send className="w-3.5 h-3.5" strokeWidth={1.5} />
-                      Run swarm
-                    </>
-                  )}
-                </button>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+                  <FileText className="w-3 h-3 text-muted-foreground" strokeWidth={1.5} />
+                  {fileName}
+                  <button onClick={() => setFileName(null)} className="ml-1 hover:text-foreground/60">
+                    <X className="w-3 h-3" strokeWidth={1.5} />
+                  </button>
+                </motion.span>
+              )}
+            </div>
+
+            <button
+              onClick={handleSubmit}
+              disabled={(!briefText.trim() && !fileName) || submitting}
+              className="flex items-center gap-2 text-xs tracking-[0.1em] uppercase border border-foreground px-5 py-2.5 text-foreground hover:bg-foreground hover:text-primary-foreground disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-foreground transition-colors"
+            >
+              {submitting ? (
+                <span>Running swarm…</span>
+              ) : (
+                <>
+                  <Send className="w-3.5 h-3.5" strokeWidth={1.5} />
+                  Run swarm
+                </>
+              )}
+            </button>
+          </div>
+        </div>
       </motion.div>
 
       {/* Footer */}
