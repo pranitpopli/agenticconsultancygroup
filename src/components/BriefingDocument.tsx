@@ -6,6 +6,7 @@ import ConversationLayer from "./ConversationLayer";
 import ExportBanner from "./ExportBanner";
 import FixedInputBar from "./FixedInputBar";
 import InlineOQR from "./InlineOQR";
+import BriefingIndex from "./BriefingIndex";
 
 interface BriefingDocumentProps {
   doc: BriefingDocType;
@@ -238,14 +239,14 @@ const BriefingDocumentView = ({ doc, onBack, oqrOpen, onOQRToggle }: BriefingDoc
 };
 
 function Section({ number, title, delay, children
-
 }: {number: string;title: string;delay: number;children: React.ReactNode;}) {
   return (
     <motion.section
+      id={`section-${number}`}
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay }}
-      className="mb-14">
+      className="mb-14 scroll-mt-28">
       
       <div className="flex items-baseline gap-3 mb-5">
         <span className="text-muted-foreground tracking-[0.1em] font-sans text-base">{number}</span>
@@ -253,6 +254,7 @@ function Section({ number, title, delay, children
       </div>
       {children}
     </motion.section>);
+}
 
 }
 
