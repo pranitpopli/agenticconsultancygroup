@@ -294,20 +294,6 @@ const OQRPanel = ({ isOpen, onToggle }: OQRPanelProps) => {
             )}
           </AnimatePresence>
 
-          {/* Export buttons */}
-          <div className="border-t border-border pt-4 mt-2 space-y-2">
-            <button className="w-full flex items-center justify-center gap-2 text-[10px] uppercase tracking-[0.15em] text-muted-foreground border border-border px-4 py-2.5 hover:border-foreground/20 hover:text-foreground transition-colors">
-              <FileDown className="w-3.5 h-3.5" strokeWidth={1.5} />
-              Export PDF Summary
-            </button>
-            <button
-              onClick={() => setShowBoardExport(true)}
-              className="w-full flex items-center justify-center gap-2 text-[10px] uppercase tracking-[0.15em] text-foreground border border-foreground/30 px-4 py-2.5 hover:bg-foreground hover:text-primary-foreground transition-colors"
-            >
-              <Presentation className="w-3.5 h-3.5" strokeWidth={1.5} />
-              Export Board Deck ↗
-            </button>
-          </div>
         </div>
       </motion.div>
 
