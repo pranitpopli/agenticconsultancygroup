@@ -253,8 +253,6 @@ function Section({ number, title, delay, children
         <h2 className="font-serif text-2xl text-foreground">{title}</h2>
       </div>
       {children}
-    </motion.section>);
-
-
+}
 
 export default BriefingDocumentView;
