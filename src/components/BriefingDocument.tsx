@@ -233,7 +233,7 @@ const BriefingDocumentView = ({ doc, onBack, oqrOpen, onOQRToggle }: BriefingDoc
         onExportPDF={() => setShowExport(true)}
         onExportPPT={() => setShowExport(true)}
         onExportDocx={() => setShowExport(true)}
-        oqrOpen={oqrOpen} />
+        oqrOpen={false} />
     </div>);
 };
 
