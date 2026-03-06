@@ -66,7 +66,6 @@ const BriefingDocumentView = ({ doc, onBack, oqrOpen, onOQRToggle }: BriefingDoc
           animate={{ opacity: 1 }}
           onClick={onBack}
           className="flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground transition-colors mb-10">
-          
           <ArrowLeft className="w-3.5 h-3.5" strokeWidth={1.5} />
           <span className="tracking-[0.1em] uppercase">Back to briefings</span>
         </motion.button>
@@ -77,7 +76,6 @@ const BriefingDocumentView = ({ doc, onBack, oqrOpen, onOQRToggle }: BriefingDoc
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           className="mb-14">
-          
           <h1 className="font-serif text-4xl text-foreground leading-tight mb-3">
             {currentDoc.title}
           </h1>
@@ -93,62 +91,8 @@ const BriefingDocumentView = ({ doc, onBack, oqrOpen, onOQRToggle }: BriefingDoc
           )}
         </Section>
 
-        {/* Section 02 — Feasibility */}
-        <Section number="02" title="Feasibility Assessment" delay={0.2}>
-          <div className="space-y-0">
-            {currentDoc.feasibility.map((row, i) =>
-            <div
-              key={i}
-              className={`flex items-baseline justify-between py-3.5 border-l-2 pl-4 ${
-              i > 0 ? "border-t border-border" : ""} ${
-
-              row.indicator === "green" ? "indicator-green" :
-              row.indicator === "amber" ? "indicator-amber" : "indicator-red"}`
-              }>
-              
-                <div className="flex items-baseline gap-3">
-                  <span className="text-sm text-foreground font-medium">{row.label}</span>
-                  <span className="text-xs text-muted-foreground">·</span>
-                  <span className="text-sm text-foreground">{row.value}</span>
-                </div>
-                <span className="text-xs text-muted-foreground">{row.detail}</span>
-              </div>
-            )}
-          </div>
-        </Section>
-
-        {/* Section 03 — Proposed Team */}
-        <Section number="03" title="Proposed Team" delay={0.3}>
-          <button
-            onClick={() => setExpandedTeam(!expandedTeam)}
-            className="flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground mb-4 transition-colors">
-            
-            {expandedTeam ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
-            <span>{currentDoc.team.length} members recommended</span>
-          </button>
-          <AnimatePresence>
-            {expandedTeam &&
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              className="overflow-hidden">
-              
-                <div className="grid grid-cols-1 gap-3 mb-4">
-                  {currentDoc.team.map((member, i) =>
-                <TeamCard key={member.employee.id} member={member} index={i} />
-                )}
-                </div>
-              </motion.div>
-            }
-          </AnimatePresence>
-          <p className="text-xs text-muted-foreground font-serif italic">
-            {currentDoc.teamContext}
-          </p>
-        </Section>
-
-        {/* Section 04 — Cost & Business Value */}
-        <Section number="04" title="Cost & Business Value" delay={0.4}>
+        {/* Section 02 — Cost & Business Value */}
+        <Section number="02" title="Cost & Business Value" delay={0.2}>
           <div className="grid grid-cols-3 gap-8 mb-6">
             <div>
               <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground mb-1">Internal cost</p>
@@ -185,6 +129,56 @@ const BriefingDocumentView = ({ doc, onBack, oqrOpen, onOQRToggle }: BriefingDoc
           </div>
         </Section>
 
+        {/* Section 03 — Feasibility */}
+        <Section number="03" title="Feasibility Assessment" delay={0.3}>
+          <div className="space-y-0">
+            {currentDoc.feasibility.map((row, i) =>
+            <div
+              key={i}
+              className={`flex items-baseline justify-between py-3.5 border-l-2 pl-4 ${
+              i > 0 ? "border-t border-border" : ""} ${
+              row.indicator === "green" ? "indicator-green" :
+              row.indicator === "amber" ? "indicator-amber" : "indicator-red"}`
+              }>
+                <div className="flex items-baseline gap-3">
+                  <span className="text-sm text-foreground font-medium">{row.label}</span>
+                  <span className="text-xs text-muted-foreground">·</span>
+                  <span className="text-sm text-foreground">{row.value}</span>
+                </div>
+                <span className="text-xs text-muted-foreground">{row.detail}</span>
+              </div>
+            )}
+          </div>
+        </Section>
+
+        {/* Section 04 — Proposed Team */}
+        <Section number="04" title="Proposed Team" delay={0.4}>
+          <button
+            onClick={() => setExpandedTeam(!expandedTeam)}
+            className="flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground mb-4 transition-colors">
+            {expandedTeam ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+            <span>{currentDoc.team.length} members recommended</span>
+          </button>
+          <AnimatePresence>
+            {expandedTeam &&
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              className="overflow-hidden">
+                <div className="grid grid-cols-1 gap-3 mb-4">
+                  {currentDoc.team.map((member, i) =>
+                <TeamCard key={member.employee.id} member={member} index={i} />
+                )}
+                </div>
+              </motion.div>
+            }
+          </AnimatePresence>
+          <p className="text-xs text-muted-foreground font-serif italic">
+            {currentDoc.teamContext}
+          </p>
+        </Section>
+
         {/* Section 05 — Recommended Approach */}
         <Section number="05" title="Recommended Approach" delay={0.5}>
           <div className="space-y-6">
@@ -206,7 +200,6 @@ const BriefingDocumentView = ({ doc, onBack, oqrOpen, onOQRToggle }: BriefingDoc
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8 }}
           className="my-16">
-          
           <div className="w-full h-px bg-border" />
         </motion.div>
 
@@ -219,7 +212,6 @@ const BriefingDocumentView = ({ doc, onBack, oqrOpen, onOQRToggle }: BriefingDoc
           onActivate={() => setConversationActive(true)}
           externalInput={pendingInput}
           onExternalInputHandled={() => setPendingInput(null)} />
-        
 
         {/* Export Banner */}
         <AnimatePresence>
@@ -236,9 +228,7 @@ const BriefingDocumentView = ({ doc, onBack, oqrOpen, onOQRToggle }: BriefingDoc
         onExportPPT={() => setShowExport(true)}
         onExportDocx={() => setShowExport(true)}
         oqrOpen={oqrOpen} />
-      
     </div>);
-
 };
 
 function Section({ number, title, delay, children
