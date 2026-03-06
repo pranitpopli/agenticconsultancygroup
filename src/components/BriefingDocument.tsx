@@ -60,8 +60,20 @@ const BriefingDocumentView = ({ doc, onBack, oqrOpen, onOQRToggle }: BriefingDoc
   };
 
   return (
-    <div className="transition-all duration-300">
+    <div className="transition-all duration-300 relative">
       <BriefingIndex />
+
+      {/* View Original Document button */}
+      <motion.button
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.4 }}
+        className="fixed top-6 right-8 z-40 flex items-center gap-2 text-[10px] uppercase tracking-[0.15em] text-muted-foreground border border-border px-4 py-2.5 hover:border-foreground/30 hover:text-foreground transition-colors bg-background/80 backdrop-blur-sm"
+      >
+        <FileText className="w-3.5 h-3.5" strokeWidth={1.5} />
+        View original
+      </motion.button>
+
       <div className="max-w-[780px] mx-auto px-8 pt-28 pb-28">
         {/* Back */}
         <motion.button
