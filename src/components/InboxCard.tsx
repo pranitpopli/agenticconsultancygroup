@@ -35,7 +35,7 @@ const InboxCard = ({ brief, index, onRead }: InboxCardProps) => {
                   >
                     <Zap className="w-3 h-3" strokeWidth={2} />
                   </motion.span>
-                  Swarm searching
+                  Finding your team
                 </motion.span>
               )}
            </div>

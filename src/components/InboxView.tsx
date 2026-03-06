@@ -48,7 +48,7 @@ const InboxView = ({ onReadBriefing }: InboxViewProps) => {
           Good morning, James.
         </h1>
         <p className="text-sm text-foreground/60">
-          You have {BRIEFING_SUMMARIES.length} briefs awaiting review.
+          {BRIEFING_SUMMARIES.length} briefs ready for your review.
         </p>
       </motion.div>
 
@@ -120,11 +120,11 @@ const InboxView = ({ onReadBriefing }: InboxViewProps) => {
               className="flex items-center gap-2 text-xs tracking-[0.1em] uppercase bg-foreground text-primary-foreground px-5 py-2.5 hover:bg-foreground/90 disabled:opacity-30 transition-colors"
             >
               {submitting ? (
-                <span>Running swarm…</span>
+                <span>Analysing…</span>
               ) : (
                 <>
                   <Send className="w-3.5 h-3.5" strokeWidth={1.5} />
-                  Run swarm
+                  Find my team
                 </>
               )}
             </button>
@@ -139,7 +139,7 @@ const InboxView = ({ onReadBriefing }: InboxViewProps) => {
         transition={{ delay: 0.8 }}
         className="text-xs text-foreground/40 italic mt-16 text-center"
       >
-        Swarm last ran 4 minutes ago across 847 nodes.
+        Last updated 4 minutes ago · 847 employees analysed across the organisation.
       </motion.p>
     </motion.div>
   );
