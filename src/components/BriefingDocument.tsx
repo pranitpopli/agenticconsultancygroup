@@ -152,15 +152,15 @@ const BriefingDocumentView = ({ doc, onBack, oqrOpen, onOQRToggle }: BriefingDoc
           <div className="grid grid-cols-3 gap-8 mb-6">
             <div>
               <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground mb-1">Internal cost</p>
-              <p className="font-serif text-2xl text-foreground">£{currentDoc.internalCost.toLocaleString()}</p>
+              <p className="text-2xl text-foreground font-sans">£{currentDoc.internalCost.toLocaleString()}</p>
             </div>
             <div>
               <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground mb-1">External equivalent</p>
-              <p className="font-serif text-2xl text-muted-foreground">£{currentDoc.externalCost.toLocaleString()}</p>
+              <p className="text-2xl text-muted-foreground font-sans">£{currentDoc.externalCost.toLocaleString()}</p>
             </div>
             <div>
               <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground mb-1">Projected saving</p>
-              <p className="font-serif text-2xl text-foreground">£{currentDoc.saving.toLocaleString()}</p>
+              <p className="text-2xl text-foreground font-sans">£{currentDoc.saving.toLocaleString()}</p>
             </div>
           </div>
 
