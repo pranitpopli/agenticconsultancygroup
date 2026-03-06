@@ -254,8 +254,7 @@ function Section({ number, title, delay, children
       </div>
       {children}
     </motion.section>);
-}
 
-}
+
 
 export default BriefingDocumentView;
