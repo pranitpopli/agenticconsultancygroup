@@ -217,6 +217,8 @@ const BriefingDocumentView = ({ doc, onBack, oqrOpen, onOQRToggle }: BriefingDoc
           onFinalize={handleFinalize}
           active={conversationActive}
           onActivate={() => setConversationActive(true)}
+          externalInput={pendingInput}
+          onExternalInputHandled={() => setPendingInput(null)}
         />
 
         {/* Export Banner */}
@@ -226,6 +228,15 @@ const BriefingDocumentView = ({ doc, onBack, oqrOpen, onOQRToggle }: BriefingDoc
           )}
         </AnimatePresence>
       </div>
+
+      {/* Fixed bottom input bar */}
+      <FixedInputBar
+        onSend={(text) => setPendingInput(text)}
+        onExportPDF={() => setShowExport(true)}
+        onExportPPT={() => setShowExport(true)}
+        onExportDocx={() => setShowExport(true)}
+        oqrOpen={oqrOpen}
+      />
     </div>
   );
 };
