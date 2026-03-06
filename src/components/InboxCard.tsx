@@ -19,27 +19,25 @@ const InboxCard = ({ brief, index, onRead }: InboxCardProps) => {
       <div className="flex items-start justify-between gap-6">
         <div className="flex-1 space-y-3">
            <div className="flex items-center gap-3">
-             <h3 className="font-serif text-xl text-foreground">{brief.title}</h3>
-             {brief.status === "swarm-searching" ? (
-               <motion.span
-                 animate={{ rotate: 360 }}
-                 transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                 className="text-[10px] uppercase tracking-[0.12em] px-2.5 py-1 border border-muted text-muted-foreground flex items-center gap-1.5"
-               >
-                 <Zap className="w-3 h-3" strokeWidth={2} />
-                 Searching swarm
-               </motion.span>
-             ) : (
-               <span
-                 className={`text-[10px] uppercase tracking-[0.12em] px-2.5 py-1 border ${
-                   brief.status === "analysis-complete"
-                     ? "status-green"
-                     : "status-amber"
-                 }`}
-               >
-                 {brief.status === "analysis-complete" ? "Analysis complete" : "Swarm ready"}
-               </span>
-             )}
+              <h3 className="font-serif text-xl text-foreground">{brief.title}</h3>
+              {brief.status === "analysis-complete" ? (
+                <span className="text-[10px] uppercase tracking-[0.12em] px-2.5 py-1 border status-green">
+                  Analysis complete
+                </span>
+              ) : (
+                <motion.span
+                  className="text-[10px] uppercase tracking-[0.12em] px-2.5 py-1 border border-muted text-muted-foreground flex items-center gap-1.5"
+                >
+                  <motion.span
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                    className="inline-flex"
+                  >
+                    <Zap className="w-3 h-3" strokeWidth={2} />
+                  </motion.span>
+                  Swarm searching
+                </motion.span>
+              )}
            </div>
 
           <div className="flex items-center gap-2 text-xs text-foreground/60">
