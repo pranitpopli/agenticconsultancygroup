@@ -42,7 +42,7 @@ const OQRPanel = ({ isOpen, onToggle }: OQRPanelProps) => {
           className="text-[9px] uppercase tracking-[0.2em] text-muted-foreground font-serif"
           style={{ writingMode: "vertical-rl", textOrientation: "mixed" }}
         >
-          Org Quarterly Review
+          Org Key Results
         </span>
       </button>
     );
@@ -62,7 +62,7 @@ const OQRPanel = ({ isOpen, onToggle }: OQRPanelProps) => {
         <div className="sticky top-0 z-10 border-b border-border px-5 py-4" style={{ backgroundColor: "#FAF8F4" }}>
           <div className="flex items-center justify-between">
             <span className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground font-serif">
-              Org Quarterly Review
+              Org Key Results
             </span>
             <button onClick={onToggle} className="p-1 hover:bg-muted rounded-sm transition-colors">
               <X className="w-3.5 h-3.5 text-muted-foreground" strokeWidth={1.5} />
