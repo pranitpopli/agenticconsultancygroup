@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Zap } from "lucide-react";
 import type { BriefingSummary } from "@/lib/briefingData";
 
 interface InboxCardProps {
