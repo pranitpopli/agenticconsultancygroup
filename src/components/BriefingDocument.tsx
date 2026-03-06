@@ -5,6 +5,7 @@ import type { BriefingDocument as BriefingDocType, TeamMember } from "@/lib/brie
 import ConversationLayer from "./ConversationLayer";
 import ExportBanner from "./ExportBanner";
 import FixedInputBar from "./FixedInputBar";
+import InlineOQR from "./InlineOQR";
 
 interface BriefingDocumentProps {
   doc: BriefingDocType;
@@ -58,7 +59,7 @@ const BriefingDocumentView = ({ doc, onBack, oqrOpen, onOQRToggle }: BriefingDoc
   };
 
   return (
-    <div className={`transition-all duration-300 ${oqrOpen ? "mr-[360px]" : ""}`}>
+    <div className="transition-all duration-300">
       <div className="max-w-[780px] mx-auto px-8 pt-28 pb-28">
         {/* Back */}
         <motion.button
@@ -194,6 +195,11 @@ const BriefingDocumentView = ({ doc, onBack, oqrOpen, onOQRToggle }: BriefingDoc
           </div>
         </Section>
 
+        {/* Section 06 — Org Key Results */}
+        <Section number="06" title="Org Key Results" delay={0.6}>
+          <InlineOQR doc={currentDoc} />
+        </Section>
+
         {/* Divider into conversation */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -227,7 +233,7 @@ const BriefingDocumentView = ({ doc, onBack, oqrOpen, onOQRToggle }: BriefingDoc
         onExportPDF={() => setShowExport(true)}
         onExportPPT={() => setShowExport(true)}
         onExportDocx={() => setShowExport(true)}
-        oqrOpen={oqrOpen} />
+        oqrOpen={false} />
     </div>);
 };
 
