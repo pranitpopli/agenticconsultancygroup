@@ -16,7 +16,7 @@ const SwarmLeadNav = ({ onOQRToggle }: SwarmLeadNavProps) => {
       <div className="max-w-5xl mx-auto flex items-center justify-between px-6 py-5">
         <div className="flex items-center gap-2">
           <span className="font-serif text-xl tracking-wide text-foreground">
-            SwarmLead
+            ACG
           </span>
           <span className="text-[9px] uppercase tracking-[0.25em] text-warm-accent border border-warm-accent/30 px-1.5 py-0.5 rounded-sm">
             Beta
