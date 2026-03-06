@@ -32,7 +32,7 @@ export interface BriefingSummary {
   submittedBy: { name: string; role: string };
   dateReceived: string;
   aiSummary: string;
-  status: "swarm-ready" | "analysis-complete";
+  status: "swarm-ready" | "analysis-complete" | "swarm-searching";
 }
 
 export interface BriefingDocument {
