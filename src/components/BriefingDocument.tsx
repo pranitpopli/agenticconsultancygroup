@@ -25,9 +25,9 @@ const TeamCard = ({ member, index }: { member: TeamMember; index: number }) => {
       <div className="flex items-start justify-between">
         <div>
           <p className="text-sm font-medium text-foreground">{e.name}</p>
-          <p className="text-xs text-muted-foreground">{e.role} · {e.department}</p>
+          <p className="text-xs text-foreground/60">{e.role} · {e.department}</p>
         </div>
-        <span className={`text-[9px] uppercase tracking-[0.12em] px-2 py-0.5 border ${
+        <span className={`text-[10px] uppercase tracking-[0.12em] px-2 py-0.5 border ${
           e.availability === "available" ? "status-green" :
           e.availability === "partial" ? "status-amber" :
           "text-muted-foreground bg-muted border-border"
@@ -35,7 +35,7 @@ const TeamCard = ({ member, index }: { member: TeamMember; index: number }) => {
           {e.availability}
         </span>
       </div>
-      <p className="text-xs text-muted-foreground leading-relaxed font-serif italic">
+      <p className="text-xs text-foreground/60 leading-relaxed italic">
         Relevant: {member.justification}
       </p>
     </motion.div>
@@ -121,7 +121,7 @@ const BriefingDocumentView = ({ doc, onBack, oqrOpen, onOQRToggle }: BriefingDoc
         <Section number="03" title="Proposed Team" delay={0.3}>
           <button
             onClick={() => setExpandedTeam(!expandedTeam)}
-            className="flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground mb-4 transition-colors"
+            className="flex items-center gap-2 text-xs text-foreground/60 hover:text-foreground mb-4 transition-colors"
           >
             {expandedTeam ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
             <span>{currentDoc.team.length} members recommended</span>
