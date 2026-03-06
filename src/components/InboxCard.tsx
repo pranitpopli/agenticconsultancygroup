@@ -24,7 +24,7 @@ const InboxCard = ({ brief, index, onRead }: InboxCardProps) => {
                <motion.span
                  animate={{ rotate: 360 }}
                  transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                 className="text-[10px] uppercase tracking-[0.12em] px-2.5 py-1 border border-amber-500 text-amber-600 flex items-center gap-1.5"
+                 className="text-[10px] uppercase tracking-[0.12em] px-2.5 py-1 border border-muted text-muted-foreground flex items-center gap-1.5"
                >
                  <Zap className="w-3 h-3" strokeWidth={2} />
                  Searching swarm
