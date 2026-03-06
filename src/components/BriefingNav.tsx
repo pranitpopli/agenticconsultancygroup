@@ -18,7 +18,7 @@ const BriefingNav = ({ activeTab, onTabChange }: BriefingNavProps) => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.6 }}
       className="fixed top-0 left-0 right-0 z-50 border-b border-border"
-      style={{ backgroundColor: "#000000" }}
+      style={{ backgroundColor: "#FAF8F4" }}
     >
       <div className="max-w-[1200px] mx-auto flex items-center justify-between px-8 py-5">
         <span className="font-serif text-xl tracking-wide text-foreground">
