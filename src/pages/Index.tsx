@@ -27,7 +27,7 @@ const Index = () => {
   const handleTabChange = (tab: "briefings" | "oqr" | "archive") => {
     setActiveTab(tab);
     if (tab === "oqr") {
-      setOqrOpen(true);
+      setOqrOpen(prev => !prev);
     } else if (tab === "briefings") {
       if (view === "briefing") return;
       setView("inbox");
