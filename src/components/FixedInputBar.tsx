@@ -35,7 +35,7 @@ const FixedInputBar = ({ onSend, onExportPDF, onExportPPT, onExportDocx, oqrOpen
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Adjust the briefing…"
-            className="flex-1 text-sm bg-transparent px-4 py-2.5 outline-none placeholder:text-muted-foreground/50"
+            className="flex-1 text-sm bg-transparent px-4 py-2.5 outline-none placeholder:text-foreground/40"
           />
           <button
             type="submit"
@@ -50,7 +50,7 @@ const FixedInputBar = ({ onSend, onExportPDF, onExportPPT, onExportDocx, oqrOpen
         <div className="relative">
           <button
             onClick={() => setExportOpen(prev => !prev)}
-            className="flex items-center gap-2 text-xs tracking-[0.1em] uppercase border border-foreground px-4 py-2.5 text-foreground hover:bg-foreground hover:text-primary-foreground transition-colors"
+            className="flex items-center gap-2 text-xs tracking-[0.1em] uppercase bg-foreground text-primary-foreground px-4 py-2.5 hover:bg-foreground/90 transition-colors"
           >
             <FileDown className="w-3.5 h-3.5" strokeWidth={1.5} />
             Export

@@ -31,7 +31,7 @@ const InboxCard = ({ brief, index, onRead }: InboxCardProps) => {
             </span>
           </div>
 
-          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+          <div className="flex items-center gap-2 text-xs text-foreground/60">
             <span>{brief.submittedBy.name}</span>
             <span>·</span>
             <span>{brief.submittedBy.role}</span>
@@ -39,7 +39,7 @@ const InboxCard = ({ brief, index, onRead }: InboxCardProps) => {
             <span>{brief.dateReceived}</span>
           </div>
 
-          <p className="text-sm text-muted-foreground leading-relaxed max-w-2xl">
+          <p className="text-sm text-foreground/70 leading-relaxed max-w-2xl">
             {brief.aiSummary}
           </p>
         </div>
