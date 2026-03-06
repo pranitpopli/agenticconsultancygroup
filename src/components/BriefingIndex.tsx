@@ -54,7 +54,7 @@ const BriefingIndex = () => {
       initial={{ opacity: 0, x: -12 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.5, delay: 0.3 }}
-      className="fixed left-6 top-1/2 -translate-y-1/2 z-30 hidden xl:flex flex-col gap-1"
+      className="fixed left-6 top-28 z-30 hidden xl:flex flex-col gap-1"
     >
       {SECTIONS.map((section) => {
         const isActive = activeSection === section.id;
