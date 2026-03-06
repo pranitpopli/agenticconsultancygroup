@@ -4,6 +4,7 @@ import { ArrowLeft, ChevronDown, ChevronUp } from "lucide-react";
 import type { BriefingDocument as BriefingDocType, TeamMember } from "@/lib/briefingData";
 import ConversationLayer from "./ConversationLayer";
 import ExportBanner from "./ExportBanner";
+import FixedInputBar from "./FixedInputBar";
 
 interface BriefingDocumentProps {
   doc: BriefingDocType;
@@ -46,6 +47,7 @@ const BriefingDocumentView = ({ doc, onBack, oqrOpen, onOQRToggle }: BriefingDoc
   const [conversationActive, setConversationActive] = useState(false);
   const [currentDoc, setCurrentDoc] = useState(doc);
   const [showExport, setShowExport] = useState(false);
+  const [pendingInput, setPendingInput] = useState<string | null>(null);
 
   const handleConversationUpdate = (updates: Partial<BriefingDocType>) => {
     setCurrentDoc(prev => ({ ...prev, ...updates }));
@@ -57,7 +59,7 @@ const BriefingDocumentView = ({ doc, onBack, oqrOpen, onOQRToggle }: BriefingDoc
 
   return (
     <div className={`transition-all duration-300 ${oqrOpen ? "mr-[360px]" : ""}`}>
-      <div className="max-w-[780px] mx-auto px-8 pt-28 pb-16">
+      <div className="max-w-[780px] mx-auto px-8 pt-28 pb-28">
         {/* Back */}
         <motion.button
           initial={{ opacity: 0 }}
@@ -215,6 +217,8 @@ const BriefingDocumentView = ({ doc, onBack, oqrOpen, onOQRToggle }: BriefingDoc
           onFinalize={handleFinalize}
           active={conversationActive}
           onActivate={() => setConversationActive(true)}
+          externalInput={pendingInput}
+          onExternalInputHandled={() => setPendingInput(null)}
         />
 
         {/* Export Banner */}
@@ -224,6 +228,15 @@ const BriefingDocumentView = ({ doc, onBack, oqrOpen, onOQRToggle }: BriefingDoc
           )}
         </AnimatePresence>
       </div>
+
+      {/* Fixed bottom input bar */}
+      <FixedInputBar
+        onSend={(text) => setPendingInput(text)}
+        onExportPDF={() => setShowExport(true)}
+        onExportPPT={() => setShowExport(true)}
+        onExportDocx={() => setShowExport(true)}
+        oqrOpen={oqrOpen}
+      />
     </div>
   );
 };
