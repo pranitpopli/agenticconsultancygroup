@@ -61,6 +61,7 @@ const BriefingDocumentView = ({ doc, onBack, oqrOpen, onOQRToggle }: BriefingDoc
 
   return (
     <div className="transition-all duration-300">
+      <BriefingIndex />
       <div className="max-w-[780px] mx-auto px-8 pt-28 pb-28">
         {/* Back */}
         <motion.button
