@@ -6,6 +6,7 @@ import SwarmThinking from "@/components/SwarmThinking";
 import SiloCheck from "@/components/SiloCheck";
 import OverlapDrawer from "@/components/OverlapDrawer";
 import TeamAssembly from "@/components/TeamAssembly";
+import OQRPanel from "@/components/OQRPanel";
 import { createSession } from "@/lib/talentSwarm";
 import type { AppStage, SwarmSession, TalentMatch } from "@/lib/types";
 
@@ -14,6 +15,9 @@ const Index = () => {
   const [session, setSession] = useState<SwarmSession | null>(null);
   const [showOverlapDrawer, setShowOverlapDrawer] = useState(false);
   const [preSelectedPeople, setPreSelectedPeople] = useState<Set<string>>(new Set());
+  const [oqrOpen, setOqrOpen] = useState(false);
+  const [swarmCompleted, setSwarmCompleted] = useState(false);
+  const [newSavings, setNewSavings] = useState(0);
 
   const handleBriefSubmit = useCallback((text: string) => {
     const newSession = createSession(text);
@@ -45,6 +49,10 @@ const Index = () => {
     }
     setShowOverlapDrawer(false);
     setStage("team-assembly");
+    // Trigger OQR update
+    setSwarmCompleted(true);
+    const savings = session.teamSummary.savingsAmount.replace(/[^0-9]/g, "");
+    setNewSavings(parseInt(savings) || 12400);
   }, [session, preSelectedPeople]);
 
   const handleToggleShortlist = useCallback((match: TalentMatch) => {
@@ -97,39 +105,51 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <SwarmLeadNav />
+      <SwarmLeadNav onOQRToggle={() => setOqrOpen(prev => !prev)} />
 
-      <AnimatePresence mode="wait">
-        {stage === "brief" && (
-          <BriefInput key="brief" onSubmit={handleBriefSubmit} />
-        )}
+      <div className={`transition-all duration-300 ${oqrOpen ? "mr-[380px]" : ""}`}>
+        <AnimatePresence mode="wait">
+          {stage === "brief" && (
+            <BriefInput key="brief" onSubmit={handleBriefSubmit} />
+          )}
 
-        {stage === "thinking" && session && (
-          <SwarmThinking
-            key="thinking"
-            lines={session.thinkingLines}
-            onComplete={handleThinkingComplete}
-          />
-        )}
+          {stage === "thinking" && session && (
+            <SwarmThinking
+              key="thinking"
+              lines={session.thinkingLines}
+              onComplete={handleThinkingComplete}
+            />
+          )}
 
-        {stage === "silo-check" && session && (
-          <SiloCheck
-            key="silo"
-            overlaps={session.overlaps}
-            onReviewOverlaps={() => setShowOverlapDrawer(true)}
-            onSkipToTeam={handleSkipToTeam}
-          />
-        )}
+          {stage === "silo-check" && session && (
+            <SiloCheck
+              key="silo"
+              overlaps={session.overlaps}
+              onReviewOverlaps={() => setShowOverlapDrawer(true)}
+              onSkipToTeam={handleSkipToTeam}
+            />
+          )}
 
-        {stage === "team-assembly" && session && (
-          <TeamAssembly
-            key="assembly"
-            discoveries={session.discoveries}
-            summary={session.teamSummary}
-            onToggleShortlist={handleToggleShortlist}
-            onRemoveFromTeam={handleRemoveFromTeam}
-          />
-        )}
+          {stage === "team-assembly" && session && (
+            <TeamAssembly
+              key="assembly"
+              discoveries={session.discoveries}
+              summary={session.teamSummary}
+              onToggleShortlist={handleToggleShortlist}
+              onRemoveFromTeam={handleRemoveFromTeam}
+            />
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* OQR Panel */}
+      <AnimatePresence>
+        <OQRPanel
+          isOpen={oqrOpen}
+          onToggle={() => setOqrOpen(prev => !prev)}
+          swarmCompleted={swarmCompleted}
+          newSavings={newSavings}
+        />
       </AnimatePresence>
 
       {/* Overlap drawer */}
