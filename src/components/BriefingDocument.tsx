@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, ChevronDown, ChevronUp } from "lucide-react";
+import { ArrowLeft, ChevronDown, ChevronUp, FileText } from "lucide-react";
 import type { BriefingDocument as BriefingDocType, TeamMember } from "@/lib/briefingData";
 import ConversationLayer from "./ConversationLayer";
 import ExportBanner from "./ExportBanner";
