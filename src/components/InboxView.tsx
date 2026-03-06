@@ -10,7 +10,6 @@ interface InboxViewProps {
 
 const InboxView = ({ onReadBriefing }: InboxViewProps) => {
   const [briefText, setBriefText] = useState("");
-  const [briefText, setBriefText] = useState("");
   const [fileName, setFileName] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -25,7 +24,6 @@ const InboxView = ({ onReadBriefing }: InboxViewProps) => {
     setSubmitting(true);
     setTimeout(() => {
       setSubmitting(false);
-      setShowNewBrief(false);
       setBriefText("");
       setFileName(null);
     }, 1500);
