@@ -1,8 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Send } from "lucide-react";
 import type { BriefingDocument } from "@/lib/briefingData";
-import { EMPLOYEES } from "@/lib/simulatedData";
 
 interface Message {
   id: string;
@@ -16,6 +14,8 @@ interface ConversationLayerProps {
   onFinalize: () => void;
   active: boolean;
   onActivate: () => void;
+  externalInput?: string | null;
+  onExternalInputHandled?: () => void;
 }
 
 const SUGGESTIONS = [
@@ -43,7 +43,7 @@ const AI_RESPONSES: Record<string, { content: string; update?: Partial<BriefingD
   },
 };
 
-const ConversationLayer = ({ doc, onUpdate, onFinalize, active, onActivate }: ConversationLayerProps) => {
+const ConversationLayer = ({ doc, onUpdate, onFinalize, active, onActivate, externalInput, onExternalInputHandled }: ConversationLayerProps) => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "ai-intro",
@@ -51,19 +51,24 @@ const ConversationLayer = ({ doc, onUpdate, onFinalize, active, onActivate }: Co
       content: "This is my recommended team and approach. Would you like to adjust anything — swap a team member, revisit the timeline, or explore a different delivery model?",
     },
   ]);
-  const [input, setInput] = useState("");
   const [typing, setTyping] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  // Handle external input from the fixed bottom bar
+  useEffect(() => {
+    if (externalInput && !typing) {
+      processMessage(externalInput);
+      onExternalInputHandled?.();
+    }
+  }, [externalInput]);
+
   const processMessage = (text: string) => {
     const userMsg: Message = { id: `user-${Date.now()}`, role: "user", content: text };
     setMessages(prev => [...prev, userMsg]);
-    setInput("");
     setTyping(true);
     onActivate();
 
@@ -88,12 +93,6 @@ const ConversationLayer = ({ doc, onUpdate, onFinalize, active, onActivate }: Co
         onUpdate(response.update);
       }
     }, 1500);
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!input.trim()) return;
-    processMessage(input.trim());
   };
 
   return (
@@ -165,24 +164,6 @@ const ConversationLayer = ({ doc, onUpdate, onFinalize, active, onActivate }: Co
           ))}
         </motion.div>
       )}
-
-      {/* Input */}
-      <form onSubmit={handleSubmit} className="sticky bottom-0 flex items-center gap-3 border border-border p-1 bg-background z-10">
-        <input
-          ref={inputRef}
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Adjust the briefing…"
-          className="flex-1 text-sm bg-transparent px-3 py-2.5 outline-none placeholder:text-muted-foreground/50"
-        />
-        <button
-          type="submit"
-          disabled={!input.trim() || typing}
-          className="p-2.5 text-muted-foreground hover:text-foreground disabled:opacity-30 transition-colors"
-        >
-          <Send className="w-4 h-4" strokeWidth={1.5} />
-        </button>
-      </form>
 
       {/* Finalize button — appears after conversation */}
       {messages.length > 2 && !typing && (
