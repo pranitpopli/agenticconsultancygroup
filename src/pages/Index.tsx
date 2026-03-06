@@ -1,205 +1,71 @@
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
-import SwarmLeadNav from "@/components/SwarmLeadNav";
-import BriefInput from "@/components/BriefInput";
-import SwarmThinking from "@/components/SwarmThinking";
-import SiloCheck from "@/components/SiloCheck";
-import OverlapDrawer from "@/components/OverlapDrawer";
-import TeamAssembly from "@/components/TeamAssembly";
+import BriefingNav from "@/components/BriefingNav";
+import InboxView from "@/components/InboxView";
+import BriefingDocumentView from "@/components/BriefingDocument";
 import OQRPanel from "@/components/OQRPanel";
-import { createSession } from "@/lib/talentSwarm";
-import type { AppStage, SwarmSession, TalentMatch } from "@/lib/types";
+import { BRIEFING_DOCUMENTS } from "@/lib/briefingData";
+
+type View = "inbox" | "briefing";
 
 const Index = () => {
-  const [stage, setStage] = useState<AppStage>("brief");
-  const [session, setSession] = useState<SwarmSession | null>(null);
-  const [showOverlapDrawer, setShowOverlapDrawer] = useState(false);
-  const [preSelectedPeople, setPreSelectedPeople] = useState<Set<string>>(new Set());
+  const [view, setView] = useState<View>("inbox");
+  const [activeBriefId, setActiveBriefId] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<"briefings" | "oqr" | "archive">("briefings");
   const [oqrOpen, setOqrOpen] = useState(false);
-  const [swarmCompleted, setSwarmCompleted] = useState(false);
-  const [newSavings, setNewSavings] = useState(0);
 
-  const handleBriefSubmit = useCallback((text: string) => {
-    const newSession = createSession(text);
-    setSession(newSession);
-    setStage("thinking");
-  }, []);
+  const handleReadBriefing = (id: string) => {
+    setActiveBriefId(id);
+    setView("briefing");
+  };
 
-  const handleThinkingComplete = useCallback(() => {
-    setStage("silo-check");
-  }, []);
+  const handleBack = () => {
+    setView("inbox");
+    setActiveBriefId(null);
+  };
 
-  const handleSkipToTeam = useCallback(() => {
-    if (!session) return;
-    // Pre-select people from overlapping projects if any were selected
-    if (preSelectedPeople.size > 0) {
-      const preSelected = session.discoveries.filter(d => preSelectedPeople.has(d.employee.id));
-      setSession(prev => {
-        if (!prev) return prev;
-        const updatedReqs = updateCoverage(prev.teamSummary.requirements, preSelected);
-        return {
-          ...prev,
-          teamSummary: {
-            ...prev.teamSummary,
-            shortlisted: preSelected,
-            requirements: updatedReqs,
-          },
-        };
-      });
+  const handleTabChange = (tab: "briefings" | "oqr" | "archive") => {
+    setActiveTab(tab);
+    if (tab === "oqr") {
+      setOqrOpen(true);
+    } else if (tab === "briefings") {
+      if (view === "briefing") return;
+      setView("inbox");
     }
-    setShowOverlapDrawer(false);
-    setStage("team-assembly");
-    // Trigger OQR update
-    setSwarmCompleted(true);
-    const savings = session.teamSummary.savingsAmount.replace(/[^0-9]/g, "");
-    setNewSavings(parseInt(savings) || 12400);
-  }, [session, preSelectedPeople]);
+  };
 
-  const handleToggleShortlist = useCallback((match: TalentMatch) => {
-    setSession(prev => {
-      if (!prev) return prev;
-      const existing = prev.teamSummary.shortlisted;
-      const isAlreadyAdded = existing.some(m => m.employee.id === match.employee.id);
-
-      const newShortlisted = isAlreadyAdded
-        ? existing.filter(m => m.employee.id !== match.employee.id)
-        : [...existing, match];
-
-      const updatedReqs = updateCoverage(prev.teamSummary.requirements, newShortlisted);
-
-      return {
-        ...prev,
-        teamSummary: {
-          ...prev.teamSummary,
-          shortlisted: newShortlisted,
-          requirements: updatedReqs,
-        },
-      };
-    });
-  }, []);
-
-  const handleRemoveFromTeam = useCallback((id: string) => {
-    setSession(prev => {
-      if (!prev) return prev;
-      const newShortlisted = prev.teamSummary.shortlisted.filter(m => m.employee.id !== id);
-      const updatedReqs = updateCoverage(prev.teamSummary.requirements, newShortlisted);
-      return {
-        ...prev,
-        teamSummary: {
-          ...prev.teamSummary,
-          shortlisted: newShortlisted,
-          requirements: updatedReqs,
-        },
-      };
-    });
-  }, []);
-
-  const handleTogglePreSelect = useCallback((id: string) => {
-    setPreSelectedPeople(prev => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  }, []);
+  const activeDoc = activeBriefId ? BRIEFING_DOCUMENTS[activeBriefId] : null;
 
   return (
-    <div className="min-h-screen bg-background">
-      <SwarmLeadNav onOQRToggle={() => setOqrOpen(prev => !prev)} />
+    <div className="min-h-screen" style={{ backgroundColor: "#FAF8F4" }}>
+      <BriefingNav
+        activeTab={activeTab}
+        onTabChange={handleTabChange}
+        onOQRToggle={() => setOqrOpen(prev => !prev)}
+      />
 
-      <div className={`transition-all duration-300 ${oqrOpen ? "mr-[380px]" : ""}`}>
-        <AnimatePresence mode="wait">
-          {stage === "brief" && (
-            <BriefInput key="brief" onSubmit={handleBriefSubmit} />
-          )}
+      <AnimatePresence mode="wait">
+        {view === "inbox" && (
+          <InboxView key="inbox" onReadBriefing={handleReadBriefing} />
+        )}
 
-          {stage === "thinking" && session && (
-            <SwarmThinking
-              key="thinking"
-              lines={session.thinkingLines}
-              onComplete={handleThinkingComplete}
-            />
-          )}
-
-          {stage === "silo-check" && session && (
-            <SiloCheck
-              key="silo"
-              overlaps={session.overlaps}
-              onReviewOverlaps={() => setShowOverlapDrawer(true)}
-              onSkipToTeam={handleSkipToTeam}
-            />
-          )}
-
-          {stage === "team-assembly" && session && (
-            <TeamAssembly
-              key="assembly"
-              discoveries={session.discoveries}
-              summary={session.teamSummary}
-              onToggleShortlist={handleToggleShortlist}
-              onRemoveFromTeam={handleRemoveFromTeam}
-            />
-          )}
-        </AnimatePresence>
-      </div>
-
-      {/* OQR Panel */}
-      <AnimatePresence>
-        <OQRPanel
-          isOpen={oqrOpen}
-          onToggle={() => setOqrOpen(prev => !prev)}
-          swarmCompleted={swarmCompleted}
-          newSavings={newSavings}
-        />
+        {view === "briefing" && activeDoc && (
+          <BriefingDocumentView
+            key={activeBriefId}
+            doc={activeDoc}
+            onBack={handleBack}
+            oqrOpen={oqrOpen}
+            onOQRToggle={() => setOqrOpen(prev => !prev)}
+          />
+        )}
       </AnimatePresence>
 
-      {/* Overlap drawer */}
-      {showOverlapDrawer && session && (
-        <OverlapDrawer
-          overlaps={session.overlaps}
-          onClose={() => setShowOverlapDrawer(false)}
-          onProceed={handleSkipToTeam}
-          preSelectedPeople={preSelectedPeople}
-          onTogglePerson={handleTogglePreSelect}
-        />
-      )}
+      <OQRPanel
+        isOpen={oqrOpen}
+        onToggle={() => setOqrOpen(prev => !prev)}
+      />
     </div>
   );
 };
-
-function updateCoverage(
-  requirements: { label: string; covered: boolean }[],
-  shortlisted: TalentMatch[]
-): { label: string; covered: boolean }[] {
-  const allSkills = shortlisted.flatMap(m => [
-    ...m.employee.skills,
-    ...m.employee.domainExpertise,
-    m.employee.department,
-  ]).map(s => s.toLowerCase());
-
-  return requirements.map(req => {
-    const label = req.label.toLowerCase();
-    const covered = allSkills.some(s =>
-      s.includes(label.split(" ")[0].replace("&", "")) ||
-      label.includes(s.split(" ")[0])
-    ) || (
-      label.includes("frontend") && allSkills.some(s => ["react", "typescript", "css", "frontend"].some(k => s.includes(k)))
-    ) || (
-      label.includes("backend") && allSkills.some(s => ["node.js", "go", "postgresql", "microservices", "backend", "api"].some(k => s.includes(k)))
-    ) || (
-      label.includes("data") && allSkills.some(s => ["python", "machine learning", "data", "analytics"].some(k => s.includes(k)))
-    ) || (
-      label.includes("infrastructure") && allSkills.some(s => ["aws", "docker", "kubernetes", "infrastructure", "cloud"].some(k => s.includes(k)))
-    ) || (
-      label.includes("design") && allSkills.some(s => ["figma", "design", "user research", "ux"].some(k => s.includes(k)))
-    ) || (
-      label.includes("security") && allSkills.some(s => ["security", "testing", "qa", "quality"].some(k => s.includes(k)))
-    ) || (
-      label.includes("cross-functional") && shortlisted.length >= 2 &&
-      new Set(shortlisted.map(m => m.employee.department)).size >= 2
-    );
-
-    return { ...req, covered };
-  });
-}
 
 export default Index;

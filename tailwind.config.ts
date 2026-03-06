@@ -15,7 +15,7 @@ export default {
     extend: {
       fontFamily: {
         serif: ['Cormorant Garamond', 'Georgia', 'serif'],
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        sans: ['DM Sans', 'system-ui', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -51,13 +51,9 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        warm: {
-          accent: "hsl(var(--warm-accent))",
-          subtle: "hsl(var(--warm-subtle))",
-        },
-        surface: {
-          elevated: "hsl(var(--surface-elevated))",
-          glass: "hsl(var(--surface-glass))",
+        amber: {
+          DEFAULT: "hsl(var(--amber))",
+          light: "hsl(var(--amber-light))",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
