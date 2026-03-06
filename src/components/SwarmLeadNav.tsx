@@ -1,6 +1,11 @@
 import { motion } from "framer-motion";
+import { BarChart3 } from "lucide-react";
 
-const SwarmLeadNav = () => {
+interface SwarmLeadNavProps {
+  onOQRToggle?: () => void;
+}
+
+const SwarmLeadNav = ({ onOQRToggle }: SwarmLeadNavProps) => {
   return (
     <motion.nav
       initial={{ opacity: 0 }}
@@ -24,6 +29,15 @@ const SwarmLeadNav = () => {
           <span className="text-xs tracking-widest uppercase text-muted-foreground hover:text-foreground transition-colors cursor-pointer">
             Docs
           </span>
+          {onOQRToggle && (
+            <button
+              onClick={onOQRToggle}
+              className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.15em] text-muted-foreground hover:text-foreground border border-border px-3 py-1.5 rounded-sm transition-colors"
+            >
+              <BarChart3 className="w-3.5 h-3.5" strokeWidth={1.5} />
+              OQR
+            </button>
+          )}
         </div>
       </div>
     </motion.nav>
