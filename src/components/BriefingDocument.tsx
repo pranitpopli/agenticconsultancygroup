@@ -59,7 +59,7 @@ const BriefingDocumentView = ({ doc, onBack, oqrOpen, onOQRToggle }: BriefingDoc
   };
 
   return (
-    <div className={`transition-all duration-300 ${oqrOpen ? "mr-[360px]" : ""}`}>
+    <div className="transition-all duration-300">
       <div className="max-w-[780px] mx-auto px-8 pt-28 pb-28">
         {/* Back */}
         <motion.button
@@ -193,6 +193,11 @@ const BriefingDocumentView = ({ doc, onBack, oqrOpen, onOQRToggle }: BriefingDoc
               </div>
             )}
           </div>
+        </Section>
+
+        {/* Section 06 — Org Key Results */}
+        <Section number="06" title="Org Key Results" delay={0.6}>
+          <InlineOQR doc={currentDoc} />
         </Section>
 
         {/* Divider into conversation */}
