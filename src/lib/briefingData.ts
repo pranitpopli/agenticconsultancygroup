@@ -13,6 +13,28 @@ export interface TeamMember {
   justification: string;
 }
 
+export interface SystemMember {
+  employee: Employee;
+  responsibility: string;
+}
+
+export interface ProjectTeam {
+  name: string;
+  focus: string;
+  members: SystemMember[];
+}
+
+export interface ProjectDepartment {
+  name: string;
+  role: string;
+  teams: ProjectTeam[];
+}
+
+export interface ProposedSystem {
+  narrative: string;
+  departments: ProjectDepartment[];
+}
+
 export interface ComparisonRow {
   dimension: string;
   internal: string;
