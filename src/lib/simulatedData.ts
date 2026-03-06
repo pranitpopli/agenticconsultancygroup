@@ -1,0 +1,102 @@
+import type { Employee } from "./types";
+
+export const EMPLOYEES: Employee[] = [
+  {
+    id: "emp-001", name: "Sarah Chen", role: "Senior Full-Stack Engineer",
+    department: "Engineering", skills: ["React", "TypeScript", "Node.js", "PostgreSQL", "AWS", "GraphQL"],
+    availability: 80, hourlyRate: 145, location: "London",
+    pastProjects: ["Platform Migration v3", "Customer Portal Rebuild", "API Gateway"],
+    seniorityLevel: "senior", yearsExperience: 8,
+  },
+  {
+    id: "emp-002", name: "Marcus Rivera", role: "Product Designer",
+    department: "Design", skills: ["Figma", "User Research", "Design Systems", "Prototyping", "Accessibility"],
+    availability: 60, hourlyRate: 130, location: "Berlin",
+    pastProjects: ["Design System 2.0", "Mobile App Redesign", "Onboarding Flow"],
+    seniorityLevel: "senior", yearsExperience: 7,
+  },
+  {
+    id: "emp-003", name: "Priya Patel", role: "Data Scientist",
+    department: "Data", skills: ["Python", "Machine Learning", "SQL", "TensorFlow", "Data Visualization", "Statistics"],
+    availability: 90, hourlyRate: 155, location: "Mumbai",
+    pastProjects: ["Recommendation Engine", "Churn Prediction Model", "Analytics Dashboard"],
+    seniorityLevel: "lead", yearsExperience: 10,
+  },
+  {
+    id: "emp-004", name: "James O'Brien", role: "DevOps Engineer",
+    department: "Infrastructure", skills: ["Kubernetes", "Docker", "Terraform", "AWS", "CI/CD", "Monitoring"],
+    availability: 70, hourlyRate: 140, location: "Dublin",
+    pastProjects: ["Cloud Migration", "Zero-Downtime Deploy Pipeline", "Observability Stack"],
+    seniorityLevel: "senior", yearsExperience: 6,
+  },
+  {
+    id: "emp-005", name: "Yuki Tanaka", role: "Frontend Engineer",
+    department: "Engineering", skills: ["React", "TypeScript", "CSS", "Animation", "Performance", "Testing"],
+    availability: 100, hourlyRate: 120, location: "Tokyo",
+    pastProjects: ["Component Library", "Performance Optimization Sprint", "Dashboard v2"],
+    seniorityLevel: "mid", yearsExperience: 4,
+  },
+  {
+    id: "emp-006", name: "Amara Osei", role: "Engineering Manager",
+    department: "Engineering", skills: ["Project Management", "Agile", "Technical Architecture", "Stakeholder Management", "Mentoring"],
+    availability: 40, hourlyRate: 170, location: "Accra",
+    pastProjects: ["Platform Migration v3", "Team Scaling Initiative", "Process Overhaul"],
+    seniorityLevel: "lead", yearsExperience: 12,
+  },
+  {
+    id: "emp-007", name: "Leo Martinelli", role: "Backend Engineer",
+    department: "Engineering", skills: ["Go", "Microservices", "PostgreSQL", "Redis", "gRPC", "Event-Driven Architecture"],
+    availability: 85, hourlyRate: 135, location: "Milan",
+    pastProjects: ["Payment Service Rewrite", "Event Bus Implementation", "API Gateway"],
+    seniorityLevel: "senior", yearsExperience: 7,
+  },
+  {
+    id: "emp-008", name: "Nina Volkov", role: "QA Lead",
+    department: "Quality", skills: ["Test Automation", "Cypress", "Performance Testing", "Security Testing", "CI/CD"],
+    availability: 75, hourlyRate: 115, location: "Prague",
+    pastProjects: ["E2E Test Framework", "Load Testing Suite", "Security Audit Q4"],
+    seniorityLevel: "lead", yearsExperience: 9,
+  },
+  {
+    id: "emp-009", name: "David Kim", role: "ML Engineer",
+    department: "Data", skills: ["Python", "PyTorch", "MLOps", "NLP", "Computer Vision", "AWS SageMaker"],
+    availability: 95, hourlyRate: 160, location: "Seoul",
+    pastProjects: ["NLP Pipeline", "Image Classification Service", "Model Serving Infrastructure"],
+    seniorityLevel: "senior", yearsExperience: 6,
+  },
+  {
+    id: "emp-010", name: "Elena Rodriguez", role: "UX Researcher",
+    department: "Design", skills: ["User Research", "Usability Testing", "Survey Design", "Data Analysis", "Workshop Facilitation"],
+    availability: 65, hourlyRate: 125, location: "Barcelona",
+    pastProjects: ["Voice of Customer Program", "Onboarding Flow", "Accessibility Audit"],
+    seniorityLevel: "mid", yearsExperience: 5,
+  },
+  {
+    id: "emp-011", name: "Omar Hassan", role: "Security Engineer",
+    department: "Infrastructure", skills: ["Security Architecture", "Penetration Testing", "OWASP", "IAM", "Compliance", "Encryption"],
+    availability: 50, hourlyRate: 165, location: "Cairo",
+    pastProjects: ["SOC2 Compliance", "Security Audit Q4", "Zero Trust Implementation"],
+    seniorityLevel: "senior", yearsExperience: 8,
+  },
+  {
+    id: "emp-012", name: "Freya Andersen", role: "Technical Writer",
+    department: "Product", skills: ["Technical Writing", "API Documentation", "Developer Experience", "Content Strategy"],
+    availability: 100, hourlyRate: 95, location: "Copenhagen",
+    pastProjects: ["API Docs Overhaul", "Developer Portal", "Internal Wiki Migration"],
+    seniorityLevel: "mid", yearsExperience: 4,
+  },
+];
+
+export const PAST_PROJECTS_DB = [
+  "Platform Migration v3", "Customer Portal Rebuild", "API Gateway",
+  "Design System 2.0", "Mobile App Redesign", "Onboarding Flow",
+  "Recommendation Engine", "Churn Prediction Model", "Analytics Dashboard",
+  "Cloud Migration", "Zero-Downtime Deploy Pipeline", "Observability Stack",
+  "Component Library", "Performance Optimization Sprint", "Dashboard v2",
+  "Team Scaling Initiative", "Process Overhaul", "Payment Service Rewrite",
+  "Event Bus Implementation", "E2E Test Framework", "Load Testing Suite",
+  "Security Audit Q4", "NLP Pipeline", "Image Classification Service",
+  "Model Serving Infrastructure", "Voice of Customer Program", "Accessibility Audit",
+  "SOC2 Compliance", "Zero Trust Implementation", "API Docs Overhaul",
+  "Developer Portal", "Internal Wiki Migration",
+];
