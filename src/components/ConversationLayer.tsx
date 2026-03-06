@@ -167,7 +167,7 @@ const ConversationLayer = ({ doc, onUpdate, onFinalize, active, onActivate }: Co
       )}
 
       {/* Input */}
-      <form onSubmit={handleSubmit} className="flex items-center gap-3 border border-border p-1">
+      <form onSubmit={handleSubmit} className="sticky bottom-0 flex items-center gap-3 border border-border p-1 bg-background z-10">
         <input
           ref={inputRef}
           value={input}
