@@ -59,7 +59,7 @@ const BriefingDocumentView = ({ doc, onBack, oqrOpen, onOQRToggle }: BriefingDoc
 
   return (
     <div className={`transition-all duration-300 ${oqrOpen ? "mr-[360px]" : ""}`}>
-      <div className="max-w-[780px] mx-auto px-8 pt-28 pb-16">
+      <div className="max-w-[780px] mx-auto px-8 pt-28 pb-28">
         {/* Back */}
         <motion.button
           initial={{ opacity: 0 }}
