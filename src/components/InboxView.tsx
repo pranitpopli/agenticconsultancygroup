@@ -47,7 +47,7 @@ const InboxView = ({ onReadBriefing }: InboxViewProps) => {
         <h1 className="font-serif text-3xl text-foreground mb-2">
           Good morning, James.
         </h1>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-foreground/60">
           You have {BRIEFING_SUMMARIES.length} briefs awaiting review.
         </p>
       </motion.div>
@@ -72,21 +72,21 @@ const InboxView = ({ onReadBriefing }: InboxViewProps) => {
         className="mt-8"
       >
         <div className="border border-border p-6 space-y-4">
-          <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">New Briefing</span>
+          <span className="text-[11px] uppercase tracking-[0.2em] text-foreground/50">New Briefing</span>
 
           <textarea
             value={briefText}
             onChange={(e) => setBriefText(e.target.value)}
             placeholder="Describe the initiative, project scope, or problem you need a team for…"
             rows={4}
-            className="w-full text-sm bg-transparent border border-border px-4 py-3 outline-none resize-none placeholder:text-muted-foreground/50 focus:border-foreground/30 transition-colors leading-relaxed"
+            className="w-full text-sm bg-transparent border border-border px-4 py-3 outline-none resize-none placeholder:text-foreground/40 focus:border-foreground/30 transition-colors leading-relaxed"
           />
 
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <button
                 onClick={() => fileRef.current?.click()}
-                className="flex items-center gap-2 text-xs text-muted-foreground border border-border px-3 py-2 hover:border-foreground/30 hover:text-foreground transition-colors"
+                className="flex items-center gap-2 text-xs text-foreground/60 border border-border px-3 py-2 hover:border-foreground/30 hover:text-foreground transition-colors"
               >
                 <Upload className="w-3.5 h-3.5" strokeWidth={1.5} />
                 Upload document
@@ -117,7 +117,7 @@ const InboxView = ({ onReadBriefing }: InboxViewProps) => {
             <button
               onClick={handleSubmit}
               disabled={(!briefText.trim() && !fileName) || submitting}
-              className="flex items-center gap-2 text-xs tracking-[0.1em] uppercase border border-foreground px-5 py-2.5 text-foreground hover:bg-foreground hover:text-primary-foreground disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-foreground transition-colors"
+              className="flex items-center gap-2 text-xs tracking-[0.1em] uppercase bg-foreground text-primary-foreground px-5 py-2.5 hover:bg-foreground/90 disabled:opacity-30 transition-colors"
             >
               {submitting ? (
                 <span>Running swarm…</span>
@@ -137,7 +137,7 @@ const InboxView = ({ onReadBriefing }: InboxViewProps) => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.8 }}
-        className="text-xs text-muted-foreground font-serif italic mt-16 text-center"
+        className="text-xs text-foreground/40 italic mt-16 text-center"
       >
         Swarm last ran 4 minutes ago across 847 nodes.
       </motion.p>

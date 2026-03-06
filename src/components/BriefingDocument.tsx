@@ -25,9 +25,9 @@ const TeamCard = ({ member, index }: { member: TeamMember; index: number }) => {
       <div className="flex items-start justify-between">
         <div>
           <p className="text-sm font-medium text-foreground">{e.name}</p>
-          <p className="text-xs text-muted-foreground">{e.role} · {e.department}</p>
+          <p className="text-xs text-foreground/60">{e.role} · {e.department}</p>
         </div>
-        <span className={`text-[9px] uppercase tracking-[0.12em] px-2 py-0.5 border ${
+        <span className={`text-[10px] uppercase tracking-[0.12em] px-2 py-0.5 border ${
           e.availability === "available" ? "status-green" :
           e.availability === "partial" ? "status-amber" :
           "text-muted-foreground bg-muted border-border"
@@ -35,7 +35,7 @@ const TeamCard = ({ member, index }: { member: TeamMember; index: number }) => {
           {e.availability}
         </span>
       </div>
-      <p className="text-xs text-muted-foreground leading-relaxed font-serif italic">
+      <p className="text-xs text-foreground/60 leading-relaxed italic">
         Relevant: {member.justification}
       </p>
     </motion.div>
@@ -87,7 +87,7 @@ const BriefingDocumentView = ({ doc, onBack, oqrOpen, onOQRToggle }: BriefingDoc
         {/* Section 01 — Initiative */}
         <Section number="01" title="The Initiative" delay={0.1}>
           {currentDoc.initiative.map((para, i) => (
-            <p key={i} className="text-sm text-foreground/80 leading-[1.8] mb-4 last:mb-0">
+            <p key={i} className="text-sm text-foreground leading-[1.8] mb-4 last:mb-0">
               {para}
             </p>
           ))}
@@ -108,10 +108,10 @@ const BriefingDocumentView = ({ doc, onBack, oqrOpen, onOQRToggle }: BriefingDoc
               >
                 <div className="flex items-baseline gap-3">
                   <span className="text-sm text-foreground font-medium">{row.label}</span>
-                  <span className="text-xs text-muted-foreground">·</span>
+                  <span className="text-xs text-foreground/60">·</span>
                   <span className="text-sm text-foreground">{row.value}</span>
                 </div>
-                <span className="text-xs text-muted-foreground">{row.detail}</span>
+                <span className="text-xs text-foreground/60">{row.detail}</span>
               </div>
             ))}
           </div>
@@ -121,7 +121,7 @@ const BriefingDocumentView = ({ doc, onBack, oqrOpen, onOQRToggle }: BriefingDoc
         <Section number="03" title="Proposed Team" delay={0.3}>
           <button
             onClick={() => setExpandedTeam(!expandedTeam)}
-            className="flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground mb-4 transition-colors"
+            className="flex items-center gap-2 text-xs text-foreground/60 hover:text-foreground mb-4 transition-colors"
           >
             {expandedTeam ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
             <span>{currentDoc.team.length} members recommended</span>
@@ -142,7 +142,7 @@ const BriefingDocumentView = ({ doc, onBack, oqrOpen, onOQRToggle }: BriefingDoc
               </motion.div>
             )}
           </AnimatePresence>
-          <p className="text-xs text-muted-foreground font-serif italic">
+          <p className="text-xs text-foreground/60 italic">
             {currentDoc.teamContext}
           </p>
         </Section>
@@ -151,35 +151,35 @@ const BriefingDocumentView = ({ doc, onBack, oqrOpen, onOQRToggle }: BriefingDoc
         <Section number="04" title="Cost & Business Value" delay={0.4}>
           <div className="grid grid-cols-3 gap-8 mb-6">
             <div>
-              <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground mb-1">Internal cost</p>
-              <p className="font-serif text-2xl text-foreground">£{currentDoc.internalCost.toLocaleString()}</p>
+              <p className="text-[11px] uppercase tracking-[0.15em] text-foreground/50 mb-1">Internal cost</p>
+              <p className="text-2xl font-medium text-foreground">£{currentDoc.internalCost.toLocaleString()}</p>
             </div>
             <div>
-              <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground mb-1">External equivalent</p>
-              <p className="font-serif text-2xl text-muted-foreground">£{currentDoc.externalCost.toLocaleString()}</p>
+              <p className="text-[11px] uppercase tracking-[0.15em] text-foreground/50 mb-1">External equivalent</p>
+              <p className="text-2xl font-medium text-foreground/50">£{currentDoc.externalCost.toLocaleString()}</p>
             </div>
             <div>
-              <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground mb-1">Projected saving</p>
-              <p className="font-serif text-2xl text-foreground">£{currentDoc.saving.toLocaleString()}</p>
+              <p className="text-[11px] uppercase tracking-[0.15em] text-foreground/50 mb-1">Projected saving</p>
+              <p className="text-2xl font-medium text-foreground">£{currentDoc.saving.toLocaleString()}</p>
             </div>
           </div>
 
-          <p className="text-sm text-foreground/80 leading-[1.8] mb-6 font-serif italic">
+          <p className="text-sm text-foreground/70 leading-[1.8] mb-6 italic">
             {currentDoc.costNarrative}
           </p>
 
           {/* Comparison table */}
           <div className="border border-border overflow-hidden">
             <div className="grid grid-cols-3 border-b border-border">
-              <div className="p-3 text-[10px] uppercase tracking-[0.12em] text-muted-foreground" />
-              <div className="p-3 text-[10px] uppercase tracking-[0.12em] text-foreground border-l border-border">Internal approach</div>
-              <div className="p-3 text-[10px] uppercase tracking-[0.12em] text-muted-foreground border-l border-border">External approach</div>
+              <div className="p-3 text-[11px] uppercase tracking-[0.12em] text-foreground/50" />
+              <div className="p-3 text-[11px] uppercase tracking-[0.12em] text-foreground border-l border-border">Internal approach</div>
+              <div className="p-3 text-[11px] uppercase tracking-[0.12em] text-foreground/50 border-l border-border">External approach</div>
             </div>
             {currentDoc.comparison.map((row, i) => (
               <div key={i} className={`grid grid-cols-3 ${i > 0 ? "border-t border-border" : ""}`}>
-                <div className="p-3 text-xs text-muted-foreground">{row.dimension}</div>
+                <div className="p-3 text-xs text-foreground/60">{row.dimension}</div>
                 <div className="p-3 text-xs text-foreground border-l border-border">{row.internal}</div>
-                <div className="p-3 text-xs text-muted-foreground border-l border-border">{row.external}</div>
+                <div className="p-3 text-xs text-foreground/50 border-l border-border">{row.external}</div>
               </div>
             ))}
           </div>
@@ -192,9 +192,9 @@ const BriefingDocumentView = ({ doc, onBack, oqrOpen, onOQRToggle }: BriefingDoc
               <div key={phase.number} className="border-l border-border pl-5">
                 <div className="flex items-baseline gap-3 mb-1.5">
                   <span className="font-serif text-lg text-foreground">Phase {phase.number}: {phase.title}</span>
-                  <span className="text-xs text-muted-foreground">{phase.weeks}</span>
+                  <span className="text-xs text-foreground/50">{phase.weeks}</span>
                 </div>
-                <p className="text-sm text-foreground/80 leading-[1.8]">{phase.description}</p>
+                <p className="text-sm text-foreground leading-[1.8]">{phase.description}</p>
               </div>
             ))}
           </div>
@@ -252,7 +252,7 @@ function Section({ number, title, delay, children }: {
       className="mb-14"
     >
       <div className="flex items-baseline gap-3 mb-5">
-        <span className="text-xs text-muted-foreground tracking-[0.1em]">{number}</span>
+        <span className="text-xs text-foreground/40 tracking-[0.1em]">{number}</span>
         <h2 className="font-serif text-2xl text-foreground">{title}</h2>
       </div>
       {children}

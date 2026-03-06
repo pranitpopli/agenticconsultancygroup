@@ -114,12 +114,12 @@ const ConversationLayer = ({ doc, onUpdate, onFinalize, active, onActivate, exte
           >
             {msg.role === "ai" ? (
               <div className="space-y-1">
-                <span className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground">ACG</span>
-                <p className="text-sm text-foreground/80 leading-[1.8] font-serif italic">{msg.content}</p>
+                <span className="text-[11px] uppercase tracking-[0.15em] text-foreground/50">ACG</span>
+                <p className="text-sm text-foreground leading-[1.8] font-serif italic">{msg.content}</p>
               </div>
             ) : (
               <div className="space-y-1">
-                <span className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground">You</span>
+                <span className="text-[11px] uppercase tracking-[0.15em] text-foreground/50">You</span>
                 <p className="text-sm text-foreground leading-[1.7]">{msg.content}</p>
               </div>
             )}
@@ -128,7 +128,7 @@ const ConversationLayer = ({ doc, onUpdate, onFinalize, active, onActivate, exte
 
         {typing && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-1">
-            <span className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground">ACG</span>
+            <span className="text-[11px] uppercase tracking-[0.15em] text-foreground/50">ACG</span>
             <div className="flex gap-1.5 py-2">
               {[0, 1, 2].map(i => (
                 <motion.div
