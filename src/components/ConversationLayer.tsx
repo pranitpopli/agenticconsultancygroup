@@ -74,7 +74,7 @@ const ConversationLayer = ({ doc, onUpdate, onFinalize, active, onActivate, exte
 
     const textLower = text.toLowerCase();
     let response: { content: string; update?: Partial<BriefingDocument> } = {
-      content: "I've noted your feedback. Let me adjust the briefing accordingly. The document above has been updated to reflect this change.",
+      content: "Noted. I've updated the briefing to reflect your feedback — you can see the changes in the document above.",
       update: undefined as Partial<BriefingDocument> | undefined,
     };
 

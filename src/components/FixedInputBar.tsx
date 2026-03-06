@@ -34,7 +34,7 @@ const FixedInputBar = ({ onSend, onExportPDF, onExportPPT, onExportDocx, oqrOpen
             ref={inputRef}
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Adjust the briefing…"
+            placeholder="Ask a question or request a change…"
             className="flex-1 text-sm bg-transparent px-4 py-2.5 outline-none placeholder:text-foreground/40"
           />
           <button
