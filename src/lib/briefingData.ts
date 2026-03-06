@@ -64,6 +64,7 @@ export interface BriefingDocument {
   feasibility: FeasibilityRow[];
   team: TeamMember[];
   teamContext: string;
+  system: ProposedSystem;
   internalCost: number;
   externalCost: number;
   saving: number;
@@ -112,6 +113,59 @@ export const BRIEFING_DOCUMENTS: Record<string, BriefingDocument> = {
       { employee: EMPLOYEES[7], justification: "QA framework architect, load testing specialist. Will ensure quality gates throughout migration." },
     ],
     teamContext: "This team was assembled based on 4 matching prior projects and 3 existing collaboration relationships.",
+    system: {
+      narrative: "This initiative spans three departments and five teams. The org structure below represents the cross-functional system assembled to deliver this project, showing how each business unit contributes specialised capability to the overall programme.",
+      departments: [
+        {
+          name: "Engineering",
+          role: "Core platform development and frontend migration",
+          teams: [
+            {
+              name: "Platform Team",
+              focus: "API gateway consolidation & backend services",
+              members: [
+                { employee: EMPLOYEES[0], responsibility: "Technical lead — owns API gateway architecture and migration sequencing" },
+                { employee: EMPLOYEES[6], responsibility: "Backend services — event pipeline refactoring and microservice decomposition" },
+              ],
+            },
+            {
+              name: "Frontend Team",
+              focus: "Component architecture migration & rendering pipeline",
+              members: [
+                { employee: EMPLOYEES[4], responsibility: "Frontend migration lead — component library modernisation and performance" },
+              ],
+            },
+          ],
+        },
+        {
+          name: "Infrastructure",
+          role: "Deployment toolchain and observability",
+          teams: [
+            {
+              name: "DevOps & Cloud",
+              focus: "CI/CD pipeline, zero-downtime deployments, observability stack",
+              members: [
+                { employee: EMPLOYEES[3], responsibility: "Infrastructure lead — deployment pipeline and observability baseline" },
+                { employee: EMPLOYEES[10], responsibility: "Security review — authentication service hardening and zero-trust compliance" },
+              ],
+            },
+          ],
+        },
+        {
+          name: "Quality",
+          role: "Test strategy and performance validation",
+          teams: [
+            {
+              name: "QA & Performance",
+              focus: "End-to-end test framework, load testing, quality gates",
+              members: [
+                { employee: EMPLOYEES[7], responsibility: "QA lead — test automation framework and performance benchmarking" },
+              ],
+            },
+          ],
+        },
+      ],
+    },
     internalCost: 186000,
     externalCost: 470000,
     saving: 284000,
@@ -148,6 +202,70 @@ export const BRIEFING_DOCUMENTS: Record<string, BriefingDocument> = {
       { employee: EMPLOYEES[9], justification: "UX researcher for dashboard design, ensuring data visualisations serve decision-makers." },
     ],
     teamContext: "This team was assembled based on 3 matching data projects and 2 existing collaboration relationships.",
+    system: {
+      narrative: "This initiative requires coordination across four departments. The system below maps how data, engineering, design, and product capabilities converge to deliver the unified intelligence layer.",
+      departments: [
+        {
+          name: "Data & Analytics",
+          role: "Core data pipeline and ML model development",
+          teams: [
+            {
+              name: "Data Science",
+              focus: "Churn prediction, revenue forecasting, model validation",
+              members: [
+                { employee: EMPLOYEES[2], responsibility: "Technical lead — unified analytics architecture and ML model ownership" },
+              ],
+            },
+            {
+              name: "ML Engineering",
+              focus: "Model training infrastructure, MLOps, deployment pipeline",
+              members: [
+                { employee: EMPLOYEES[8], responsibility: "ML infrastructure — model serving, training pipelines, and A/B test framework" },
+              ],
+            },
+          ],
+        },
+        {
+          name: "Engineering",
+          role: "Data ingestion layer and service integrations",
+          teams: [
+            {
+              name: "Integration Team",
+              focus: "API layer connecting product, finance, and CRM systems",
+              members: [
+                { employee: EMPLOYEES[0], responsibility: "API design and data ingestion — service contracts and event streaming" },
+              ],
+            },
+          ],
+        },
+        {
+          name: "Design",
+          role: "Executive dashboard and data visualisation",
+          teams: [
+            {
+              name: "UX Research",
+              focus: "Dashboard usability, stakeholder interviews, visualisation validation",
+              members: [
+                { employee: EMPLOYEES[9], responsibility: "User research lead — ensuring dashboards serve executive decision-making" },
+              ],
+            },
+          ],
+        },
+        {
+          name: "Product",
+          role: "Documentation and developer experience",
+          teams: [
+            {
+              name: "Technical Writing",
+              focus: "Data dictionary, API documentation, onboarding guides",
+              members: [
+                { employee: EMPLOYEES[11], responsibility: "Documentation lead — data contracts, API specs, and knowledge base" },
+              ],
+            },
+          ],
+        },
+      ],
+    },
     internalCost: 210000,
     externalCost: 580000,
     saving: 370000,
