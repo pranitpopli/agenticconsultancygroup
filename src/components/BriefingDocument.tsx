@@ -18,7 +18,7 @@ interface BriefingDocumentProps {
 
 
 const BriefingDocumentView = ({ doc, onBack, oqrOpen, onOQRToggle }: BriefingDocumentProps) => {
-  const [expandedTeam, setExpandedTeam] = useState(true);
+  
   const [conversationActive, setConversationActive] = useState(false);
   const [currentDoc, setCurrentDoc] = useState(doc);
   const [showExport, setShowExport] = useState(false);
