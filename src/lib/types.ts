@@ -4,57 +4,56 @@ export interface Employee {
   role: string;
   department: string;
   skills: string[];
-  availability: number; // 0-100 percentage
+  availability: "available" | "partial" | "committed";
   hourlyRate: number;
   location: string;
-  pastProjects: string[];
+  pastProjects: ProjectReference[];
   seniorityLevel: "junior" | "mid" | "senior" | "lead" | "principal";
   yearsExperience: number;
+  avatarInitials: string;
+  collaborators: string[]; // employee IDs
+  technologies: string[];
+  domainExpertise: string[];
 }
 
-export interface SkillMatch {
-  skill: string;
-  required: boolean;
-  matchStrength: number; // 0-1
+export interface ProjectReference {
+  name: string;
+  year: number;
+  role: string;
+}
+
+export interface OverlappingProject {
+  id: string;
+  name: string;
+  year: number;
+  department: string;
+  outcome: "completed" | "stalled" | "cancelled";
+  learnings: string[];
+  peopleInvolved: string[]; // employee IDs
+  estimatedTimeSaved: string;
 }
 
 export interface TalentMatch {
   employee: Employee;
-  matchScore: number; // 0-100
-  skillMatches: SkillMatch[];
-  reasoning: string;
-  discoveredBy: string; // agent name
+  whyMatch: string; // plain language one-liner
+  domainRelevance: { label: string; strength: number }; // 0-1
+  reasoning: string; // one sentence trust signal
+  relevantProjects: ProjectReference[];
+  collaborationContext: string | null; // e.g. "Worked with 3 others on your shortlist"
+  discoveredBy: string;
 }
 
-export interface SwarmAgent {
-  id: string;
-  name: string;
-  focus: string; // e.g. "Skills Analyst", "Availability Scout"
-  status: "scanning" | "analyzing" | "reporting" | "idle" | "complete";
-  monologue: string;
-  reputation: number;
-  discoveryCount: number;
-  currentAction: string;
+export interface BriefRequirement {
+  label: string;
+  covered: boolean;
 }
 
-export interface FinancialModel {
-  traditionalCost: number;
-  swarmCost: number;
-  savingsPercent: number;
-  timeToAssembleTraditional: number; // days
-  timeToAssembleSwarm: number; // days
-  utilisationImprovement: number; // percentage
-  breakdown: {
-    label: string;
-    traditional: number;
-    swarm: number;
-  }[];
-}
-
-export interface OrgNarrative {
-  title: string;
-  body: string;
-  keyInsights: string[];
+export interface TeamSummary {
+  shortlisted: TalentMatch[];
+  requirements: BriefRequirement[];
+  savingsAmount: string;
+  savingsCurrency: string;
+  assemblyTime: string;
 }
 
 export interface ProjectBrief {
@@ -63,27 +62,16 @@ export interface ProjectBrief {
   description: string;
   requiredSkills: string[];
   teamSize: number;
-  timeline: string;
-  priority: "low" | "medium" | "high" | "critical";
+  domain: string;
 }
+
+export type AppStage = "brief" | "thinking" | "silo-check" | "overlap-detail" | "team-assembly";
 
 export interface SwarmSession {
   id: string;
   brief: ProjectBrief;
-  agents: SwarmAgent[];
+  overlaps: OverlappingProject[];
   discoveries: TalentMatch[];
-  financialModel: FinancialModel | null;
-  narrative: OrgNarrative | null;
-  status: "idle" | "discovering" | "analyzing" | "complete";
-  currentPhase: string;
-  progress: number; // 0-100
-  logs: SwarmLog[];
-}
-
-export interface SwarmLog {
-  id: string;
-  timestamp: number;
-  agentName: string;
-  message: string;
-  type: "discovery" | "analysis" | "insight" | "consensus";
+  teamSummary: TeamSummary;
+  thinkingLines: string[];
 }
