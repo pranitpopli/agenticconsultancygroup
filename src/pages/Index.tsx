@@ -1,115 +1,185 @@
-import { useState, useCallback, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useCallback } from "react";
+import { AnimatePresence } from "framer-motion";
 import SwarmLeadNav from "@/components/SwarmLeadNav";
 import BriefInput from "@/components/BriefInput";
-import DiscoveryFeed from "@/components/DiscoveryFeed";
-import { createSession, simulateStep } from "@/lib/talentSwarm";
-import type { SwarmSession } from "@/lib/types";
+import SwarmThinking from "@/components/SwarmThinking";
+import SiloCheck from "@/components/SiloCheck";
+import OverlapDrawer from "@/components/OverlapDrawer";
+import TeamAssembly from "@/components/TeamAssembly";
+import { createSession } from "@/lib/talentSwarm";
+import type { AppStage, SwarmSession, TalentMatch } from "@/lib/types";
 
 const Index = () => {
+  const [stage, setStage] = useState<AppStage>("brief");
   const [session, setSession] = useState<SwarmSession | null>(null);
-  const [isRunning, setIsRunning] = useState(false);
-  const intervalRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [showOverlapDrawer, setShowOverlapDrawer] = useState(false);
+  const [preSelectedPeople, setPreSelectedPeople] = useState<Set<string>>(new Set());
 
-  const runSwarm = useCallback((text: string) => {
+  const handleBriefSubmit = useCallback((text: string) => {
     const newSession = createSession(text);
-    newSession.status = "discovering";
-    setSession({ ...newSession });
-    setIsRunning(true);
-
-    let current = newSession;
-
-    const tick = () => {
-      current = simulateStep(current);
-      setSession({ ...current });
-
-      if (current.status === "complete") {
-        setIsRunning(false);
-        return;
-      }
-
-      intervalRef.current = setTimeout(tick, 900 + Math.random() * 500);
-    };
-
-    intervalRef.current = setTimeout(tick, 600);
+    setSession(newSession);
+    setStage("thinking");
   }, []);
 
-  const showHero = !session;
+  const handleThinkingComplete = useCallback(() => {
+    setStage("silo-check");
+  }, []);
+
+  const handleSkipToTeam = useCallback(() => {
+    if (!session) return;
+    // Pre-select people from overlapping projects if any were selected
+    if (preSelectedPeople.size > 0) {
+      const preSelected = session.discoveries.filter(d => preSelectedPeople.has(d.employee.id));
+      setSession(prev => {
+        if (!prev) return prev;
+        const updatedReqs = updateCoverage(prev.teamSummary.requirements, preSelected);
+        return {
+          ...prev,
+          teamSummary: {
+            ...prev.teamSummary,
+            shortlisted: preSelected,
+            requirements: updatedReqs,
+          },
+        };
+      });
+    }
+    setShowOverlapDrawer(false);
+    setStage("team-assembly");
+  }, [session, preSelectedPeople]);
+
+  const handleToggleShortlist = useCallback((match: TalentMatch) => {
+    setSession(prev => {
+      if (!prev) return prev;
+      const existing = prev.teamSummary.shortlisted;
+      const isAlreadyAdded = existing.some(m => m.employee.id === match.employee.id);
+
+      const newShortlisted = isAlreadyAdded
+        ? existing.filter(m => m.employee.id !== match.employee.id)
+        : [...existing, match];
+
+      const updatedReqs = updateCoverage(prev.teamSummary.requirements, newShortlisted);
+
+      return {
+        ...prev,
+        teamSummary: {
+          ...prev.teamSummary,
+          shortlisted: newShortlisted,
+          requirements: updatedReqs,
+        },
+      };
+    });
+  }, []);
+
+  const handleRemoveFromTeam = useCallback((id: string) => {
+    setSession(prev => {
+      if (!prev) return prev;
+      const newShortlisted = prev.teamSummary.shortlisted.filter(m => m.employee.id !== id);
+      const updatedReqs = updateCoverage(prev.teamSummary.requirements, newShortlisted);
+      return {
+        ...prev,
+        teamSummary: {
+          ...prev.teamSummary,
+          shortlisted: newShortlisted,
+          requirements: updatedReqs,
+        },
+      };
+    });
+  }, []);
+
+  const handleTogglePreSelect = useCallback((id: string) => {
+    setPreSelectedPeople(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }, []);
 
   return (
     <div className="min-h-screen bg-background">
       <SwarmLeadNav />
 
-      <main className="relative px-6 pt-28 pb-20">
-        <AnimatePresence mode="wait">
-          {showHero ? (
-            <motion.div
-              key="hero"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.5 }}
-              className="flex flex-col items-center justify-center min-h-[70vh] gap-10"
-            >
-              <div className="text-center space-y-5 max-w-lg">
-                <motion.h1
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.1 }}
-                  className="text-4xl md:text-5xl font-serif tracking-tight text-foreground leading-[1.1]"
-                >
-                  Assemble the right team
-                  <br />
-                  <span className="italic">before the brief gets cold.</span>
-                </motion.h1>
-                <motion.p
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.3 }}
-                  className="text-sm text-muted-foreground leading-relaxed font-light max-w-md mx-auto"
-                >
-                  AI agents traverse your organisation's talent graph in parallel —
-                  surfacing people, quantifying value, and explaining the shift.
-                  No hierarchy. No bottlenecks.
-                </motion.p>
-              </div>
+      <AnimatePresence mode="wait">
+        {stage === "brief" && (
+          <BriefInput key="brief" onSubmit={handleBriefSubmit} />
+        )}
 
-              <BriefInput onSubmit={runSwarm} isRunning={isRunning} />
+        {stage === "thinking" && session && (
+          <SwarmThinking
+            key="thinking"
+            lines={session.thinkingLines}
+            onComplete={handleThinkingComplete}
+          />
+        )}
 
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1.2, duration: 0.6 }}
-                className="text-center space-y-2"
-              >
-                <p className="text-[11px] text-muted-foreground/50 font-light">
-                  Try: "We need a cross-functional team for a customer-facing analytics platform"
-                </p>
-                <div className="flex items-center justify-center gap-6 pt-2">
-                  <span className="text-[10px] text-muted-foreground/30 uppercase tracking-[0.15em]">Talent Discovery</span>
-                  <span className="text-[10px] text-muted-foreground/30">·</span>
-                  <span className="text-[10px] text-muted-foreground/30 uppercase tracking-[0.15em]">Business Value</span>
-                  <span className="text-[10px] text-muted-foreground/30">·</span>
-                  <span className="text-[10px] text-muted-foreground/30 uppercase tracking-[0.15em]">Org Narrative</span>
-                </div>
-              </motion.div>
-            </motion.div>
-          ) : (
-            <motion.div
-              key="feed"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="space-y-10 pt-4"
-            >
-              <BriefInput onSubmit={runSwarm} isRunning={isRunning} />
-              <DiscoveryFeed session={session} />
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </main>
+        {stage === "silo-check" && session && (
+          <SiloCheck
+            key="silo"
+            overlaps={session.overlaps}
+            onReviewOverlaps={() => setShowOverlapDrawer(true)}
+            onSkipToTeam={handleSkipToTeam}
+          />
+        )}
+
+        {stage === "team-assembly" && session && (
+          <TeamAssembly
+            key="assembly"
+            discoveries={session.discoveries}
+            summary={session.teamSummary}
+            onToggleShortlist={handleToggleShortlist}
+            onRemoveFromTeam={handleRemoveFromTeam}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Overlap drawer */}
+      {showOverlapDrawer && session && (
+        <OverlapDrawer
+          overlaps={session.overlaps}
+          onClose={() => setShowOverlapDrawer(false)}
+          onProceed={handleSkipToTeam}
+          preSelectedPeople={preSelectedPeople}
+          onTogglePerson={handleTogglePreSelect}
+        />
+      )}
     </div>
   );
 };
+
+function updateCoverage(
+  requirements: { label: string; covered: boolean }[],
+  shortlisted: TalentMatch[]
+): { label: string; covered: boolean }[] {
+  const allSkills = shortlisted.flatMap(m => [
+    ...m.employee.skills,
+    ...m.employee.domainExpertise,
+    m.employee.department,
+  ]).map(s => s.toLowerCase());
+
+  return requirements.map(req => {
+    const label = req.label.toLowerCase();
+    const covered = allSkills.some(s =>
+      s.includes(label.split(" ")[0].replace("&", "")) ||
+      label.includes(s.split(" ")[0])
+    ) || (
+      label.includes("frontend") && allSkills.some(s => ["react", "typescript", "css", "frontend"].some(k => s.includes(k)))
+    ) || (
+      label.includes("backend") && allSkills.some(s => ["node.js", "go", "postgresql", "microservices", "backend", "api"].some(k => s.includes(k)))
+    ) || (
+      label.includes("data") && allSkills.some(s => ["python", "machine learning", "data", "analytics"].some(k => s.includes(k)))
+    ) || (
+      label.includes("infrastructure") && allSkills.some(s => ["aws", "docker", "kubernetes", "infrastructure", "cloud"].some(k => s.includes(k)))
+    ) || (
+      label.includes("design") && allSkills.some(s => ["figma", "design", "user research", "ux"].some(k => s.includes(k)))
+    ) || (
+      label.includes("security") && allSkills.some(s => ["security", "testing", "qa", "quality"].some(k => s.includes(k)))
+    ) || (
+      label.includes("cross-functional") && shortlisted.length >= 2 &&
+      new Set(shortlisted.map(m => m.employee.department)).size >= 2
+    );
+
+    return { ...req, covered };
+  });
+}
 
 export default Index;
