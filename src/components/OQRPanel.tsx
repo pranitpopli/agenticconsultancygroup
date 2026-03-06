@@ -35,11 +35,10 @@ const OQRPanel = ({ isOpen, onToggle }: OQRPanelProps) => {
     return (
       <button
         onClick={onToggle}
-        className="fixed right-0 top-1/2 -translate-y-1/2 z-40 border border-r-0 border-border px-2 py-6 rounded-l-sm hover:bg-muted transition-colors"
-        style={{ backgroundColor: "#FAF8F4" }}
+        className="fixed right-0 top-1/2 -translate-y-1/2 z-40 border border-r-0 border-foreground/20 px-3 py-8 rounded-l-sm bg-foreground text-primary-foreground hover:bg-foreground/90 transition-colors shadow-md"
       >
         <span
-          className="text-[9px] uppercase tracking-[0.2em] text-muted-foreground font-serif"
+          className="text-[10px] uppercase tracking-[0.2em] font-medium"
           style={{ writingMode: "vertical-rl", textOrientation: "mixed" }}
         >
           Org Key Results
