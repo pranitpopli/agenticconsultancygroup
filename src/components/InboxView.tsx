@@ -137,7 +137,7 @@ const InboxView = ({ onReadBriefing }: InboxViewProps) => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.8 }}
-        className="text-xs text-muted-foreground font-serif italic mt-16 text-center"
+        className="text-xs text-foreground/40 italic mt-16 text-center"
       >
         Swarm last ran 4 minutes ago across 847 nodes.
       </motion.p>
