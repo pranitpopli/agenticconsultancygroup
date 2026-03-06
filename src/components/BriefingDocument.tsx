@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, ChevronDown, ChevronUp, FileText } from "lucide-react";
-import type { BriefingDocument as BriefingDocType, TeamMember } from "@/lib/briefingData";
+import { ArrowLeft, FileText } from "lucide-react";
+import type { BriefingDocument as BriefingDocType } from "@/lib/briefingData";
 import ConversationLayer from "./ConversationLayer";
 import ExportBanner from "./ExportBanner";
 import FixedInputBar from "./FixedInputBar";
 import InlineOQR from "./InlineOQR";
 import BriefingIndex from "./BriefingIndex";
+import ProposedSystemView from "./ProposedSystem";
 
 interface BriefingDocumentProps {
   doc: BriefingDocType;
@@ -15,37 +16,9 @@ interface BriefingDocumentProps {
   onOQRToggle: () => void;
 }
 
-const TeamCard = ({ member, index }: {member: TeamMember;index: number;}) => {
-  const e = member.employee;
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay: index * 0.08 }}
-      className="border border-border p-5 space-y-2">
-      
-      <div className="flex items-start justify-between">
-        <div>
-          <p className="text-sm font-medium text-foreground">{e.name}</p>
-          <p className="text-xs text-muted-foreground">{e.role} · {e.department}</p>
-        </div>
-        <span className={`text-[9px] uppercase tracking-[0.12em] px-2 py-0.5 border ${
-        e.availability === "available" ? "status-green" :
-        e.availability === "partial" ? "status-amber" :
-        "text-muted-foreground bg-muted border-border"}`
-        }>
-          {e.availability}
-        </span>
-      </div>
-      <p className="text-xs text-muted-foreground leading-relaxed font-serif italic">
-        Relevant: {member.justification}
-      </p>
-    </motion.div>);
-
-};
 
 const BriefingDocumentView = ({ doc, onBack, oqrOpen, onOQRToggle }: BriefingDocumentProps) => {
-  const [expandedTeam, setExpandedTeam] = useState(true);
+  
   const [conversationActive, setConversationActive] = useState(false);
   const [currentDoc, setCurrentDoc] = useState(doc);
   const [showExport, setShowExport] = useState(false);
@@ -166,32 +139,9 @@ const BriefingDocumentView = ({ doc, onBack, oqrOpen, onOQRToggle }: BriefingDoc
           </div>
         </Section>
 
-        {/* Section 04 — Proposed Team */}
-        <Section number="04" title="Proposed Team" delay={0.4}>
-          <button
-            onClick={() => setExpandedTeam(!expandedTeam)}
-            className="flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground mb-4 transition-colors">
-            {expandedTeam ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
-            <span>{currentDoc.team.length} members recommended</span>
-          </button>
-          <AnimatePresence>
-            {expandedTeam &&
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              className="overflow-hidden">
-                <div className="grid grid-cols-1 gap-3 mb-4">
-                  {currentDoc.team.map((member, i) =>
-                <TeamCard key={member.employee.id} member={member} index={i} />
-                )}
-                </div>
-              </motion.div>
-            }
-          </AnimatePresence>
-          <p className="text-xs text-muted-foreground font-serif italic">
-            {currentDoc.teamContext}
-          </p>
+        {/* Section 04 — Proposed System */}
+        <Section number="04" title="Proposed System" delay={0.4}>
+          <ProposedSystemView system={currentDoc.system} />
         </Section>
 
         {/* Section 05 — Recommended Approach */}
