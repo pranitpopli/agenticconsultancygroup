@@ -11,7 +11,7 @@ const SECTIONS: Section[] = [
   { id: "section-01", number: "01", title: "The Initiative" },
   { id: "section-02", number: "02", title: "Cost & Business Value" },
   { id: "section-03", number: "03", title: "Feasibility Assessment" },
-  { id: "section-04", number: "04", title: "Proposed Team" },
+  { id: "section-04", number: "04", title: "Proposed System" },
   { id: "section-05", number: "05", title: "Recommended Approach" },
   { id: "section-06", number: "06", title: "Org Key Results" },
 ];
