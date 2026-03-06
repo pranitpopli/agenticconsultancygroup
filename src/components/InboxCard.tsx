@@ -1,0 +1,59 @@
+import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
+import type { BriefingSummary } from "@/lib/briefingData";
+
+interface InboxCardProps {
+  brief: BriefingSummary;
+  index: number;
+  onRead: (id: string) => void;
+}
+
+const InboxCard = ({ brief, index, onRead }: InboxCardProps) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.3 + index * 0.15 }}
+      className="border border-border p-8 hover:border-foreground/20 transition-colors group"
+    >
+      <div className="flex items-start justify-between gap-6">
+        <div className="flex-1 space-y-3">
+          <div className="flex items-center gap-3">
+            <h3 className="font-serif text-xl text-foreground">{brief.title}</h3>
+            <span
+              className={`text-[10px] uppercase tracking-[0.12em] px-2.5 py-1 border ${
+                brief.status === "analysis-complete"
+                  ? "status-green"
+                  : "status-amber"
+              }`}
+            >
+              {brief.status === "analysis-complete" ? "Analysis complete" : "Swarm ready"}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+            <span>{brief.submittedBy.name}</span>
+            <span>·</span>
+            <span>{brief.submittedBy.role}</span>
+            <span>·</span>
+            <span>{brief.dateReceived}</span>
+          </div>
+
+          <p className="text-sm text-muted-foreground leading-relaxed max-w-2xl">
+            {brief.aiSummary}
+          </p>
+        </div>
+
+        <button
+          onClick={() => onRead(brief.id)}
+          className="flex items-center gap-2 text-xs tracking-[0.1em] uppercase text-foreground border border-foreground px-5 py-2.5 hover:bg-foreground hover:text-primary-foreground transition-colors mt-1 whitespace-nowrap"
+        >
+          Read briefing
+          <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.5} />
+        </button>
+      </div>
+    </motion.div>
+  );
+};
+
+export default InboxCard;
