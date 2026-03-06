@@ -5,6 +5,7 @@ import type { BriefingDocument as BriefingDocType, TeamMember } from "@/lib/brie
 import ConversationLayer from "./ConversationLayer";
 import ExportBanner from "./ExportBanner";
 import FixedInputBar from "./FixedInputBar";
+import InlineOQR from "./InlineOQR";
 
 interface BriefingDocumentProps {
   doc: BriefingDocType;
