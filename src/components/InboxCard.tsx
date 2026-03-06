@@ -30,15 +30,24 @@ const InboxCard = ({ brief, index, onRead }: InboxCardProps) => {
                  Searching swarm
                </motion.span>
              ) : (
-               <span
-                 className={`text-[10px] uppercase tracking-[0.12em] px-2.5 py-1 border ${
-                   brief.status === "analysis-complete"
-                     ? "status-green"
-                     : "status-amber"
-                 }`}
-               >
-                 {brief.status === "analysis-complete" ? "Analysis complete" : "Swarm ready"}
-               </span>
+              {brief.status === "analysis-complete" ? (
+                <span className="text-[10px] uppercase tracking-[0.12em] px-2.5 py-1 border status-green">
+                  Analysis complete
+                </span>
+              ) : (
+                <motion.span
+                  className="text-[10px] uppercase tracking-[0.12em] px-2.5 py-1 border border-muted text-muted-foreground flex items-center gap-1.5"
+                >
+                  <motion.span
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                    className="inline-flex"
+                  >
+                    <Zap className="w-3 h-3" strokeWidth={2} />
+                  </motion.span>
+                  Swarm searching
+                </motion.span>
+              )}
              )}
            </div>
 
