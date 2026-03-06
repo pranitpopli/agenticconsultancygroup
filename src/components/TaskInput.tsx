@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 interface TaskInputProps {
   onSubmit: (task: string) => void;
@@ -22,30 +22,26 @@ const TaskInput = ({ onSubmit, isRunning }: TaskInputProps) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-      className="w-full max-w-2xl mx-auto"
+      className="w-full max-w-xl mx-auto"
     >
-      <div className="relative">
-        <div className="absolute -inset-0.5 rounded-2xl bg-gradient-to-r from-glow-primary/20 via-transparent to-glow-secondary/20 blur-sm" />
-        <div className="relative surface-glass rounded-2xl p-1.5">
-          <div className="flex items-center gap-3">
-            <Sparkles className="w-4 h-4 text-glow-primary ml-4 flex-shrink-0 animate-pulse-glow" strokeWidth={1.5} />
-            <input
-              type="text"
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
-              placeholder="Describe a task for the swarm…"
-              disabled={isRunning}
-              className="flex-1 bg-transparent text-foreground placeholder:text-muted-foreground text-sm py-3 outline-none disabled:opacity-50"
-            />
-            <button
-              onClick={handleSubmit}
-              disabled={!value.trim() || isRunning}
-              className="flex items-center justify-center w-10 h-10 rounded-xl bg-primary/10 hover:bg-primary/20 text-primary transition-all duration-200 disabled:opacity-30 disabled:cursor-not-allowed"
-            >
-              <ArrowRight className="w-4 h-4" strokeWidth={1.5} />
-            </button>
-          </div>
+      <div className="relative border-b border-foreground/20 focus-within:border-foreground/40 transition-colors duration-300">
+        <div className="flex items-center gap-3">
+          <input
+            type="text"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+            placeholder="Describe a task for the swarm…"
+            disabled={isRunning}
+            className="flex-1 bg-transparent text-foreground placeholder:text-muted-foreground text-sm py-4 outline-none disabled:opacity-50 font-light"
+          />
+          <button
+            onClick={handleSubmit}
+            disabled={!value.trim() || isRunning}
+            className="flex items-center justify-center w-8 h-8 text-foreground/60 hover:text-foreground transition-colors duration-200 disabled:opacity-20 disabled:cursor-not-allowed"
+          >
+            <ArrowRight className="w-4 h-4" strokeWidth={1} />
+          </button>
         </div>
       </div>
     </motion.div>
