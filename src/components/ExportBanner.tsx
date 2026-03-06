@@ -127,7 +127,7 @@ function SlideContent({ slide, doc }: { slide: typeof SLIDES[0]; doc: BriefingDo
           </div>
           {[
             { label: "Team assembly time", without: "4–6 weeks", withAI: "38 seconds" },
-            { label: "Org coverage", without: "Single department", withAI: "Cross-functional, 847 nodes" },
+            { label: "Org coverage", without: "Single department", withAI: "Cross-functional, 847 employees" },
             { label: "Cost", without: `£${doc.externalCost.toLocaleString()}`, withAI: `£${doc.internalCost.toLocaleString()}` },
             { label: "Bias", without: "Manager's network only", withAI: "Skill-matched, org-wide" },
             { label: "Knowledge retained", without: "Walks out the door", withAI: "Stays in the organisation" },
@@ -158,7 +158,7 @@ function SlideContent({ slide, doc }: { slide: typeof SLIDES[0]; doc: BriefingDo
           — a team assembled in 38 seconds that would have taken 4–6 weeks through traditional channels.
         </p>
         <div className="space-y-2 mt-4">
-          <p className="text-xs text-muted-foreground">• {doc.team.length}-person cross-functional team identified from 847 employees</p>
+          <p className="text-xs text-muted-foreground">• {doc.team.length}-person cross-functional team identified across the organisation</p>
           <p className="text-xs text-muted-foreground">• {doc.phases.length} delivery phases spanning {doc.phases[doc.phases.length - 1].weeks.split("–")[1]}</p>
           <p className="text-xs text-muted-foreground">• Internal cost £{doc.internalCost.toLocaleString()} vs external £{doc.externalCost.toLocaleString()}</p>
         </div>
@@ -193,7 +193,7 @@ function SlideContent({ slide, doc }: { slide: typeof SLIDES[0]; doc: BriefingDo
   return (
     <div className="flex-1 flex flex-col justify-center">
       <h3 className="font-serif text-2xl text-foreground mb-4">{slide.title}</h3>
-      <p className="text-xs text-muted-foreground">Data populated from live ACG analysis</p>
+      <p className="text-xs text-muted-foreground">Content generated from your briefing analysis</p>
     </div>
   );
 }

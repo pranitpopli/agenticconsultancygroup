@@ -72,12 +72,12 @@ const InboxView = ({ onReadBriefing }: InboxViewProps) => {
         className="mt-8"
       >
         <div className="border border-border p-6 space-y-4">
-          <span className="text-[11px] uppercase tracking-[0.2em] text-foreground/50">New Briefing</span>
+          <span className="text-[11px] uppercase tracking-[0.2em] text-foreground/50">Submit a new brief</span>
 
           <textarea
             value={briefText}
             onChange={(e) => setBriefText(e.target.value)}
-            placeholder="Describe the initiative, project scope, or problem you need a team for…"
+            placeholder="What do you need a team for? Describe the initiative, scope, or challenge…"
             rows={4}
             className="w-full text-sm bg-transparent border border-border px-4 py-3 outline-none resize-none placeholder:text-foreground/40 focus:border-foreground/30 transition-colors leading-relaxed"
           />
