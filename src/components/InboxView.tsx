@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Upload, Plus, Send, X, FileText } from "lucide-react";
+import { motion } from "framer-motion";
+import { Upload, Send, X, FileText } from "lucide-react";
 import InboxCard from "./InboxCard";
 import { BRIEFING_SUMMARIES } from "@/lib/briefingData";
 
@@ -9,7 +9,7 @@ interface InboxViewProps {
 }
 
 const InboxView = ({ onReadBriefing }: InboxViewProps) => {
-  const [showNewBrief, setShowNewBrief] = useState(false);
+  const [briefText, setBriefText] = useState("");
   const [briefText, setBriefText] = useState("");
   const [fileName, setFileName] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
