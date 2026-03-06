@@ -4,6 +4,7 @@ import { ArrowLeft, ChevronDown, ChevronUp } from "lucide-react";
 import type { BriefingDocument as BriefingDocType, TeamMember } from "@/lib/briefingData";
 import ConversationLayer from "./ConversationLayer";
 import ExportBanner from "./ExportBanner";
+import FixedInputBar from "./FixedInputBar";
 
 interface BriefingDocumentProps {
   doc: BriefingDocType;
@@ -46,6 +47,7 @@ const BriefingDocumentView = ({ doc, onBack, oqrOpen, onOQRToggle }: BriefingDoc
   const [conversationActive, setConversationActive] = useState(false);
   const [currentDoc, setCurrentDoc] = useState(doc);
   const [showExport, setShowExport] = useState(false);
+  const [pendingInput, setPendingInput] = useState<string | null>(null);
 
   const handleConversationUpdate = (updates: Partial<BriefingDocType>) => {
     setCurrentDoc(prev => ({ ...prev, ...updates }));
