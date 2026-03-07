@@ -196,7 +196,11 @@ const BriefingDocumentView = ({ doc, onBack, oqrOpen, onOQRToggle }: BriefingDoc
         onExportPDF={() => setShowExport(true)}
         onExportPPT={() => setShowExport(true)}
         onExportDocx={() => setShowExport(true)}
-        oqrOpen={false} />
+        oqrOpen={false}
+        suggestions={!conversationActive ? [
+          "Can we replace Sarah Chen? She's on another project.",
+          "What if we run this in 10 weeks instead of 14?",
+        ] : undefined} />
     </div>);
 };
 
