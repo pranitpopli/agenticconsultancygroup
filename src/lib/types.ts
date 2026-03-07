@@ -20,6 +20,8 @@ export interface ProjectReference {
   name: string;
   year: number;
   role: string;
+  status?: "active" | "completed";
+  priority?: "critical" | "high" | "medium" | "low";
 }
 
 export interface OverlappingProject {
