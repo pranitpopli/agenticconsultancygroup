@@ -124,7 +124,7 @@ const InboxView = ({ onReadBriefing }: InboxViewProps) => {
               ) : (
                 <>
                   <Send className="w-3.5 h-3.5" strokeWidth={1.5} />
-                  Find my team
+                  RUN AGENTS
                 </>
               )}
             </button>
