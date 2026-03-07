@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, ChevronRight, Users, Building2, Briefcase, Circle, History } from "lucide-react";
+import { ChevronDown, ChevronRight, Users, Building2, Briefcase, Circle } from "lucide-react";
 import type { ProposedSystem as ProposedSystemType } from "@/lib/briefingData";
 import type { ProjectReference } from "@/lib/types";
 
@@ -154,9 +154,6 @@ const ProposedSystemView = ({ system }: Props) => {
                                       const currentProjects = m.employee.pastProjects.filter(
                                         (p) => p.status === "active"
                                       );
-                                      const pastProjects = m.employee.pastProjects.filter(
-                                        (p) => p.status !== "active"
-                                      );
 
                                       return (
                                         <div
@@ -206,22 +203,6 @@ const ProposedSystemView = ({ system }: Props) => {
                                             </div>
                                           )}
 
-                                          {/* Past projects — completed work */}
-                                          {pastProjects.length > 0 && (
-                                            <div className="mt-3 pt-2 border-t border-border/20">
-                                              <div className="flex items-center gap-1.5 mb-2">
-                                                <History className="w-3 h-3 text-muted-foreground/40" strokeWidth={1.5} />
-                                                <span className="text-[10px] uppercase tracking-[0.12em] text-muted-foreground/40">
-                                                  Completed projects
-                                                </span>
-                                              </div>
-                                              <div className="space-y-0.5">
-                                                {pastProjects.map((p) => (
-                                                  <ProjectRow key={p.name} project={p} />
-                                                ))}
-                                              </div>
-                                            </div>
-                                          )}
                                         </div>
                                       );
                                     })}
