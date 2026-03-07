@@ -37,7 +37,7 @@ const ProposedSystemView = ({ system }: Props) => {
 
   return (
     <div className="space-y-6">
-      <p className="text-sm text-foreground/80 leading-[1.8] font-serif italic mb-6">
+      <p className="text-sm text-foreground/80 leading-[1.8] mb-6">
         {system.narrative}
       </p>
 
@@ -136,7 +136,7 @@ const ProposedSystemView = ({ system }: Props) => {
                                           </p>
                                         </div>
                                         <div className="text-right max-w-[280px]">
-                                          <p className="text-[11px] text-muted-foreground italic leading-relaxed">
+                                          <p className="text-[11px] text-muted-foreground leading-relaxed">
                                             {m.responsibility}
                                           </p>
                                           <span

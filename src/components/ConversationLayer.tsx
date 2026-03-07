@@ -109,7 +109,7 @@ const ConversationLayer = ({ doc, onUpdate, onFinalize, active, onActivate, exte
             {msg.role === "ai" ? (
               <div className="space-y-1">
                 <span className="text-[11px] uppercase tracking-[0.15em] text-foreground/50">ACG</span>
-                <p className="text-sm text-foreground leading-[1.8] font-serif italic">{msg.content}</p>
+                <p className="text-sm text-foreground leading-[1.8]">{msg.content}</p>
               </div>
             ) : (
               <div className="space-y-1">
