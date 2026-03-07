@@ -62,7 +62,7 @@ const BriefingDocumentView = ({ doc, onBack, oqrOpen, onOQRToggle }: BriefingDoc
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           className="mb-14">
-          <p className="text-xs text-muted-foreground tracking-[0.1em] uppercase mb-2">✓ Swarm analysis complete · No duplicate or similar projects detected</p>
+          <p className="text-xs text-muted-foreground tracking-[0.05em] mb-3 flex items-center gap-1.5"><span className="text-green-600">✓</span> 847 projects scanned — no similar or discarded initiatives found</p>
           <h1 className="font-serif text-4xl text-foreground leading-tight mb-3">
             {currentDoc.title}
           </h1>
