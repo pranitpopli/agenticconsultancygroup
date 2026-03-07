@@ -8,9 +8,10 @@ interface FixedInputBarProps {
   onExportPPT: () => void;
   onExportDocx?: () => void;
   oqrOpen?: boolean;
+  suggestions?: string[];
 }
 
-const FixedInputBar = ({ onSend, onExportPDF, onExportPPT, onExportDocx, oqrOpen }: FixedInputBarProps) => {
+const FixedInputBar = ({ onSend, onExportPDF, onExportPPT, onExportDocx, oqrOpen, suggestions }: FixedInputBarProps) => {
   const [input, setInput] = useState("");
   const [exportOpen, setExportOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -27,6 +28,20 @@ const FixedInputBar = ({ onSend, onExportPDF, onExportPPT, onExportDocx, oqrOpen
       className={`fixed bottom-0 left-0 z-30 border-t border-border transition-all duration-300 ${oqrOpen ? "right-[360px]" : "right-0"}`}
       style={{ backgroundColor: "#FAF8F4" }}
     >
+      {/* Suggestion chips */}
+      {suggestions && suggestions.length > 0 && (
+        <div className="max-w-[780px] mx-auto px-8 pt-3 pb-1 flex flex-wrap gap-2">
+          {suggestions.map((s) => (
+            <button
+              key={s}
+              onClick={() => onSend(s)}
+              className="text-xs text-muted-foreground border border-border px-3 py-1.5 hover:border-foreground/30 hover:text-foreground transition-colors"
+            >
+              {s}
+            </button>
+          ))}
+        </div>
+      )}
       <div className="max-w-[780px] mx-auto px-8 py-3 flex items-center gap-3">
         {/* Input */}
         <form onSubmit={handleSubmit} className="flex-1 flex items-center gap-2 border border-border bg-background">

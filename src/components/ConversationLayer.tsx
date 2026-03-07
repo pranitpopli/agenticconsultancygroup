@@ -44,13 +44,7 @@ const AI_RESPONSES: Record<string, { content: string; update?: Partial<BriefingD
 };
 
 const ConversationLayer = ({ doc, onUpdate, onFinalize, active, onActivate, externalInput, onExternalInputHandled }: ConversationLayerProps) => {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: "ai-intro",
-      role: "ai",
-      content: "This is my recommended team and approach. Would you like to adjust anything — swap a team member, revisit the timeline, or explore a different delivery model?",
-    },
-  ]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [typing, setTyping] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -145,25 +139,6 @@ const ConversationLayer = ({ doc, onUpdate, onFinalize, active, onActivate, exte
         <div ref={bottomRef} />
       </div>
 
-      {/* Suggestion chips — only show initially */}
-      {messages.length === 1 && !active && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8 }}
-          className="flex flex-wrap gap-2"
-        >
-          {SUGGESTIONS.map((suggestion) => (
-            <button
-              key={suggestion}
-              onClick={() => processMessage(suggestion)}
-              className="text-xs text-muted-foreground border border-border px-4 py-2 hover:border-foreground/30 hover:text-foreground transition-colors"
-            >
-              {suggestion}
-            </button>
-          ))}
-        </motion.div>
-      )}
 
       {/* Finalize button — appears after conversation */}
       {messages.length > 2 && !typing && (
