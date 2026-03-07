@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, ChevronRight, Users, Building2 } from "lucide-react";
+import { ChevronDown, ChevronRight, Users, Building2, Briefcase } from "lucide-react";
 import type { ProposedSystem as ProposedSystemType } from "@/lib/briefingData";
 
 interface Props {
@@ -121,26 +121,23 @@ const ProposedSystemView = ({ system }: Props) => {
                                   exit={{ height: 0, opacity: 0 }}
                                   className="overflow-hidden"
                                 >
-                                  <div className="space-y-2 py-2">
+                                  <div className="space-y-3 py-2">
                                     {team.members.map((m) => (
                                       <div
                                         key={m.employee.id}
-                                        className="flex items-start justify-between py-2 pl-5 border-l border-border/50"
+                                        className="py-2.5 pl-5 border-l border-border/50"
                                       >
-                                        <div>
-                                          <p className="text-xs font-medium text-foreground">
-                                            {m.employee.name}
-                                          </p>
-                                          <p className="text-[11px] text-muted-foreground">
-                                            {m.employee.role}
-                                          </p>
-                                        </div>
-                                        <div className="text-right max-w-[280px]">
-                                          <p className="text-[11px] text-muted-foreground leading-relaxed">
-                                            {m.responsibility}
-                                          </p>
+                                        <div className="flex items-start justify-between mb-1.5">
+                                          <div>
+                                            <p className="text-xs font-medium text-foreground">
+                                              {m.employee.name}
+                                            </p>
+                                            <p className="text-[11px] text-muted-foreground">
+                                              {m.employee.role} · {m.employee.location}
+                                            </p>
+                                          </div>
                                           <span
-                                            className={`text-[9px] uppercase tracking-[0.12em] px-2 py-0.5 border mt-1 inline-block ${
+                                            className={`text-[9px] uppercase tracking-[0.12em] px-2 py-0.5 border inline-block ${
                                               m.employee.availability === "available"
                                                 ? "status-green"
                                                 : m.employee.availability === "partial"
@@ -151,6 +148,32 @@ const ProposedSystemView = ({ system }: Props) => {
                                             {m.employee.availability}
                                           </span>
                                         </div>
+
+                                        {/* Responsibility */}
+                                        <p className="text-[11px] text-muted-foreground leading-relaxed mb-2">
+                                          {m.responsibility}
+                                        </p>
+
+                                        {/* Current/recent projects */}
+                                        {m.employee.pastProjects.length > 0 && (
+                                          <div className="mt-2 pt-2 border-t border-border/30">
+                                            <div className="flex items-center gap-1.5 mb-1.5">
+                                              <Briefcase className="w-3 h-3 text-muted-foreground/60" strokeWidth={1.5} />
+                                              <span className="text-[10px] uppercase tracking-[0.12em] text-muted-foreground/60">Current & recent projects</span>
+                                            </div>
+                                            <div className="space-y-1">
+                                              {m.employee.pastProjects.slice(0, 3).map((p) => (
+                                                <div key={p.name} className="flex items-center gap-2 text-[11px]">
+                                                  <span className="text-foreground/70">{p.name}</span>
+                                                  <span className="text-muted-foreground/40">·</span>
+                                                  <span className="text-muted-foreground">{p.year}</span>
+                                                  <span className="text-muted-foreground/40">·</span>
+                                                  <span className="text-muted-foreground">{p.role}</span>
+                                                </div>
+                                              ))}
+                                            </div>
+                                          </div>
+                                        )}
                                       </div>
                                     ))}
                                   </div>
