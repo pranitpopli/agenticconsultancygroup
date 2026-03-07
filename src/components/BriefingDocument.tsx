@@ -50,7 +50,7 @@ const BriefingDocumentView = ({ doc, onBack, oqrOpen, onOQRToggle }: BriefingDoc
             <span className="tracking-[0.1em] uppercase">Back to briefings</span>
           </motion.button>
           <motion.button
-            className="gap-2 text-[10px] uppercase tracking-[0.15em] text-muted-foreground border border-border px-4 py-2.5 hover:border-foreground/30 hover:text-foreground transition-colors flex items-center justify-end">
+            className="ml-auto gap-2 text-[10px] uppercase tracking-[0.15em] text-muted-foreground border border-border px-4 py-2.5 hover:border-foreground/30 hover:text-foreground transition-colors flex items-center">
             <FileText className="w-3.5 h-3.5" strokeWidth={1.5} />
             View original
           </motion.button>
