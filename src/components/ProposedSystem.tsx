@@ -1,11 +1,39 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, ChevronRight, Users, Building2, Briefcase } from "lucide-react";
+import { ChevronDown, ChevronRight, Users, Building2, Briefcase, Circle, History } from "lucide-react";
 import type { ProposedSystem as ProposedSystemType } from "@/lib/briefingData";
+import type { ProjectReference } from "@/lib/types";
 
 interface Props {
   system: ProposedSystemType;
 }
+
+const priorityConfig: Record<string, { label: string; className: string }> = {
+  critical: { label: "Critical", className: "bg-destructive/10 text-destructive border-destructive/20" },
+  high: { label: "High", className: "status-amber" },
+  medium: { label: "Medium", className: "bg-muted text-muted-foreground border-border" },
+  low: { label: "Low", className: "bg-muted/50 text-muted-foreground/60 border-border/50" },
+};
+
+const ProjectRow = ({ project }: { project: ProjectReference }) => {
+  const priority = project.priority || "medium";
+  const config = priorityConfig[priority];
+  return (
+    <div className="flex items-center justify-between py-1.5">
+      <div className="flex items-center gap-2 text-[11px]">
+        {project.status === "active" && (
+          <Circle className="w-2 h-2 fill-green-500 text-green-500 shrink-0" />
+        )}
+        <span className="text-foreground/80">{project.name}</span>
+        <span className="text-muted-foreground/40">·</span>
+        <span className="text-muted-foreground">{project.role}</span>
+      </div>
+      <span className={`text-[9px] uppercase tracking-[0.1em] px-1.5 py-0.5 border ${config.className}`}>
+        {config.label}
+      </span>
+    </div>
+  );
+};
 
 const ProposedSystemView = ({ system }: Props) => {
   const [expandedDepts, setExpandedDepts] = useState<Set<string>>(
@@ -122,60 +150,81 @@ const ProposedSystemView = ({ system }: Props) => {
                                   className="overflow-hidden"
                                 >
                                   <div className="space-y-3 py-2">
-                                    {team.members.map((m) => (
-                                      <div
-                                        key={m.employee.id}
-                                        className="py-2.5 pl-5 border-l border-border/50"
-                                      >
-                                        <div className="flex items-start justify-between mb-1.5">
-                                          <div>
-                                            <p className="text-xs font-medium text-foreground">
-                                              {m.employee.name}
-                                            </p>
-                                            <p className="text-[11px] text-muted-foreground">
-                                              {m.employee.role} · {m.employee.location}
-                                            </p>
+                                    {team.members.map((m) => {
+                                      const currentProjects = m.employee.pastProjects.filter(
+                                        (p) => p.status === "active"
+                                      );
+                                      const pastProjects = m.employee.pastProjects.filter(
+                                        (p) => p.status !== "active"
+                                      );
+
+                                      return (
+                                        <div
+                                          key={m.employee.id}
+                                          className="py-2.5 pl-5 border-l border-border/50"
+                                        >
+                                          <div className="flex items-start justify-between mb-1.5">
+                                            <div>
+                                              <p className="text-xs font-medium text-foreground">
+                                                {m.employee.name}
+                                              </p>
+                                              <p className="text-[11px] text-muted-foreground">
+                                                {m.employee.role} · {m.employee.location}
+                                              </p>
+                                            </div>
+                                            <span
+                                              className={`text-[9px] uppercase tracking-[0.12em] px-2 py-0.5 border inline-block ${
+                                                m.employee.availability === "available"
+                                                  ? "status-green"
+                                                  : m.employee.availability === "partial"
+                                                  ? "status-amber"
+                                                  : "text-muted-foreground bg-muted border-border"
+                                              }`}
+                                            >
+                                              {m.employee.availability}
+                                            </span>
                                           </div>
-                                          <span
-                                            className={`text-[9px] uppercase tracking-[0.12em] px-2 py-0.5 border inline-block ${
-                                              m.employee.availability === "available"
-                                                ? "status-green"
-                                                : m.employee.availability === "partial"
-                                                ? "status-amber"
-                                                : "text-muted-foreground bg-muted border-border"
-                                            }`}
-                                          >
-                                            {m.employee.availability}
-                                          </span>
+
+                                          <p className="text-[11px] text-muted-foreground leading-relaxed mb-3">
+                                            {m.responsibility}
+                                          </p>
+
+                                          {/* Current projects — what they're actively working on */}
+                                          {currentProjects.length > 0 && (
+                                            <div className="mt-2 pt-2 border-t border-border/30">
+                                              <div className="flex items-center gap-1.5 mb-2">
+                                                <Briefcase className="w-3 h-3 text-foreground/50" strokeWidth={1.5} />
+                                                <span className="text-[10px] uppercase tracking-[0.12em] text-foreground/50 font-medium">
+                                                  Currently working on
+                                                </span>
+                                              </div>
+                                              <div className="space-y-0.5">
+                                                {currentProjects.map((p) => (
+                                                  <ProjectRow key={p.name} project={p} />
+                                                ))}
+                                              </div>
+                                            </div>
+                                          )}
+
+                                          {/* Past projects — completed work */}
+                                          {pastProjects.length > 0 && (
+                                            <div className="mt-3 pt-2 border-t border-border/20">
+                                              <div className="flex items-center gap-1.5 mb-2">
+                                                <History className="w-3 h-3 text-muted-foreground/40" strokeWidth={1.5} />
+                                                <span className="text-[10px] uppercase tracking-[0.12em] text-muted-foreground/40">
+                                                  Completed projects
+                                                </span>
+                                              </div>
+                                              <div className="space-y-0.5">
+                                                {pastProjects.map((p) => (
+                                                  <ProjectRow key={p.name} project={p} />
+                                                ))}
+                                              </div>
+                                            </div>
+                                          )}
                                         </div>
-
-                                        {/* Responsibility */}
-                                        <p className="text-[11px] text-muted-foreground leading-relaxed mb-2">
-                                          {m.responsibility}
-                                        </p>
-
-                                        {/* Current/recent projects */}
-                                        {m.employee.pastProjects.length > 0 && (
-                                          <div className="mt-2 pt-2 border-t border-border/30">
-                                            <div className="flex items-center gap-1.5 mb-1.5">
-                                              <Briefcase className="w-3 h-3 text-muted-foreground/60" strokeWidth={1.5} />
-                                              <span className="text-[10px] uppercase tracking-[0.12em] text-muted-foreground/60">Current & recent projects</span>
-                                            </div>
-                                            <div className="space-y-1">
-                                              {m.employee.pastProjects.slice(0, 3).map((p) => (
-                                                <div key={p.name} className="flex items-center gap-2 text-[11px]">
-                                                  <span className="text-foreground/70">{p.name}</span>
-                                                  <span className="text-muted-foreground/40">·</span>
-                                                  <span className="text-muted-foreground">{p.year}</span>
-                                                  <span className="text-muted-foreground/40">·</span>
-                                                  <span className="text-muted-foreground">{p.role}</span>
-                                                </div>
-                                              ))}
-                                            </div>
-                                          </div>
-                                        )}
-                                      </div>
-                                    ))}
+                                      );
+                                    })}
                                   </div>
                                 </motion.div>
                               )}
