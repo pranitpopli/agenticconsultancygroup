@@ -128,7 +128,7 @@ const TalentCard = ({ match, rank, isShortlisted, onToggleShortlist, delay = 0 }
                       <span className="text-muted-foreground/50">·</span>
                       <span className="text-muted-foreground">{p.year}</span>
                       <span className="text-muted-foreground/50">·</span>
-                      <span className="text-muted-foreground italic font-serif">{p.role}</span>
+                      <span className="text-muted-foreground">{p.role}</span>
                     </div>
                   ))}
                 </div>
@@ -150,7 +150,7 @@ const TalentCard = ({ match, rank, isShortlisted, onToggleShortlist, delay = 0 }
 
               {/* Collaboration context */}
               {match.collaborationContext && (
-                <p className="text-xs text-muted-foreground/70 font-light italic font-serif">
+                <p className="text-xs text-muted-foreground/70 font-light">
                   {match.collaborationContext}
                 </p>
               )}

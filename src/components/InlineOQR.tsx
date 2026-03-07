@@ -82,7 +82,7 @@ const InlineOQR = ({ doc }: InlineOQRProps) => {
           })}
         </div>
 
-        <p className="text-xs text-foreground/60 leading-relaxed border-l-2 border-foreground/10 pl-4 mt-6 italic">
+        <p className="text-xs text-foreground/60 leading-relaxed border-l-2 border-foreground/10 pl-4 mt-6">
           {data.cfoSummary}
         </p>
       </div>

@@ -95,7 +95,7 @@ const BriefingDocumentView = ({ doc, onBack, oqrOpen, onOQRToggle }: BriefingDoc
             </div>
           </div>
 
-          <p className="text-sm text-foreground/80 leading-[1.8] mb-6 font-serif italic">
+          <p className="text-sm text-foreground/80 leading-[1.8] mb-6">
             {currentDoc.costNarrative}
           </p>
 
@@ -145,16 +145,56 @@ const BriefingDocumentView = ({ doc, onBack, oqrOpen, onOQRToggle }: BriefingDoc
 
         {/* Section 05 — Recommended Approach */}
         <Section number="05" title="Recommended Approach" delay={0.5}>
-          <div className="space-y-6">
+          {/* Phase list */}
+          <div className="space-y-6 mb-10">
             {currentDoc.phases.map((phase) =>
             <div key={phase.number} className="border-l border-border pl-5">
                 <div className="flex items-baseline gap-3 mb-1.5">
-                  <span className="font-serif text-lg text-foreground">Phase {phase.number}: {phase.title}</span>
+                  <span className="text-sm font-medium text-foreground">Phase {phase.number}: {phase.title}</span>
                   <span className="text-xs text-muted-foreground">{phase.weeks}</span>
                 </div>
                 <p className="text-sm text-foreground/80 leading-[1.8]">{phase.description}</p>
               </div>
             )}
+          </div>
+
+          {/* Gantt chart */}
+          <div>
+            <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground mb-4">Timeline overview</p>
+            <div className="space-y-2">
+              {/* Week markers */}
+              <div className="flex items-center ml-[140px]">
+                {Array.from({ length: 16 }, (_, i) => (
+                  <div key={i} className="flex-1 text-center">
+                    <span className="text-[9px] text-muted-foreground">{i + 1}</span>
+                  </div>
+                ))}
+              </div>
+              {/* Bars */}
+              {currentDoc.phases.map((phase) => {
+                const match = phase.weeks.match(/(\d+)[–-](\d+)/);
+                const start = match ? parseInt(match[1]) : 1;
+                const end = match ? parseInt(match[2]) : 16;
+                const totalWeeks = 16;
+                const leftPct = ((start - 1) / totalWeeks) * 100;
+                const widthPct = ((end - start + 1) / totalWeeks) * 100;
+                return (
+                  <div key={phase.number} className="flex items-center gap-0">
+                    <div className="w-[140px] flex-shrink-0 pr-3 text-right">
+                      <span className="text-xs text-foreground/70">Phase {phase.number}</span>
+                    </div>
+                    <div className="flex-1 h-7 bg-muted/40 rounded-sm relative">
+                      <div
+                        className="absolute top-0 h-full bg-foreground/15 rounded-sm flex items-center px-2"
+                        style={{ left: `${leftPct}%`, width: `${widthPct}%` }}
+                      >
+                        <span className="text-[10px] text-foreground/60 truncate">{phase.title}</span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </Section>
 
@@ -215,7 +255,7 @@ function Section({ number, title, delay, children
       className="mb-14 scroll-mt-28">
       
       <div className="flex items-baseline gap-3 mb-5">
-        <span className="text-muted-foreground tracking-[0.1em] font-sans text-base">{number}</span>
+        <span className="text-foreground/40 tracking-[0.1em] font-serif text-2xl">{number}</span>
         <h2 className="font-serif text-2xl text-foreground">{title}</h2>
       </div>
       {children}
