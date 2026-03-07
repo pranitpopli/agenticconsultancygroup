@@ -8,6 +8,7 @@ import FixedInputBar from "./FixedInputBar";
 import InlineOQR from "./InlineOQR";
 import BriefingIndex from "./BriefingIndex";
 import ProposedSystemView from "./ProposedSystem";
+import GanttChart from "./GanttChart";
 
 interface BriefingDocumentProps {
   doc: BriefingDocType;
