@@ -8,6 +8,7 @@ import FixedInputBar from "./FixedInputBar";
 import InlineOQR from "./InlineOQR";
 import BriefingIndex from "./BriefingIndex";
 import ProposedSystemView from "./ProposedSystem";
+import GanttChart from "./GanttChart";
 
 interface BriefingDocumentProps {
   doc: BriefingDocType;
@@ -159,43 +160,7 @@ const BriefingDocumentView = ({ doc, onBack, oqrOpen, onOQRToggle }: BriefingDoc
           </div>
 
           {/* Gantt chart */}
-          <div>
-            <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground mb-4">Timeline overview</p>
-            <div className="space-y-2">
-              {/* Week markers */}
-              <div className="flex items-center ml-[140px]">
-                {Array.from({ length: 16 }, (_, i) => (
-                  <div key={i} className="flex-1 text-center">
-                    <span className="text-[9px] text-muted-foreground">{i + 1}</span>
-                  </div>
-                ))}
-              </div>
-              {/* Bars */}
-              {currentDoc.phases.map((phase) => {
-                const match = phase.weeks.match(/(\d+)[–-](\d+)/);
-                const start = match ? parseInt(match[1]) : 1;
-                const end = match ? parseInt(match[2]) : 16;
-                const totalWeeks = 16;
-                const leftPct = ((start - 1) / totalWeeks) * 100;
-                const widthPct = ((end - start + 1) / totalWeeks) * 100;
-                return (
-                  <div key={phase.number} className="flex items-center gap-0">
-                    <div className="w-[140px] flex-shrink-0 pr-3 text-right">
-                      <span className="text-xs text-foreground/70">Phase {phase.number}</span>
-                    </div>
-                    <div className="flex-1 h-7 bg-muted/40 rounded-sm relative">
-                      <div
-                        className="absolute top-0 h-full bg-foreground/15 rounded-sm flex items-center px-2"
-                        style={{ left: `${leftPct}%`, width: `${widthPct}%` }}
-                      >
-                        <span className="text-[10px] text-foreground/60 truncate">{phase.title}</span>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+          <GanttChart phases={currentDoc.phases} />
         </Section>
 
         {/* Section 06 — Org Key Results */}
