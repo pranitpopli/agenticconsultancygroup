@@ -25,8 +25,7 @@ const FixedInputBar = ({ onSend, onExportPDF, onExportPPT, onExportDocx, oqrOpen
 
   return (
     <div
-      className={`fixed bottom-0 left-0 z-30 border-t border-border transition-all duration-300 ${oqrOpen ? "right-[360px]" : "right-0"}`}
-      style={{ backgroundColor: "#FAF8F4" }}
+      className={`fixed bottom-0 left-0 z-30 border-t border-border bg-background transition-all duration-300 ${oqrOpen ? "right-[360px]" : "right-0"}`}
     >
       {/* Suggestion chips — hidden once conversation starts */}
       {suggestions && suggestions.length > 0 && (
@@ -82,8 +81,7 @@ const FixedInputBar = ({ onSend, onExportPDF, onExportPPT, onExportDocx, oqrOpen
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 4 }}
                 transition={{ duration: 0.15 }}
-                className="absolute bottom-full mb-2 right-0 w-56 border border-border shadow-sm"
-                style={{ backgroundColor: "#FAF8F4" }}
+                className="absolute bottom-full mb-2 right-0 w-56 border border-border shadow-sm bg-background"
               >
                 <button
                   onClick={() => { onExportPDF(); setExportOpen(false); }}

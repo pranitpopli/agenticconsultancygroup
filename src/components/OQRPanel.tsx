@@ -54,11 +54,11 @@ const OQRPanel = ({ isOpen, onToggle }: OQRPanelProps) => {
         animate={{ x: 0 }}
         exit={{ x: "100%" }}
         transition={{ duration: 0.3, ease: "easeOut" }}
-        className="fixed right-0 top-[65px] bottom-0 z-40 w-[360px] border-l border-border overflow-y-auto"
-        style={{ backgroundColor: "#FAF8F4" }}>
+        className="fixed right-0 top-[65px] bottom-0 z-40 w-[360px] border-l border-border overflow-y-auto bg-background"
+        >
         
         {/* Header */}
-        <div className="sticky top-0 z-10 border-b border-border px-5 py-4" style={{ backgroundColor: "#FAF8F4" }}>
+        <div className="sticky top-0 z-10 border-b border-border px-5 py-4 bg-background">
           <div className="flex items-center justify-between">
             <span className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground font-serif">
               Org Key Results
@@ -326,8 +326,8 @@ function Tooltip({ text }: {text: string;}) {
     <motion.div
       initial={{ opacity: 0, y: 4 }}
       animate={{ opacity: 1, y: 0 }}
-      className="absolute top-full left-0 mt-2 z-50 border border-border p-3 text-[10px] text-muted-foreground max-w-xs leading-relaxed"
-      style={{ backgroundColor: "#FAF8F4" }}>
+      className="absolute top-full left-0 mt-2 z-50 border border-border p-3 text-[10px] text-muted-foreground max-w-xs leading-relaxed bg-background"
+      >
       
       {text}
     </motion.div>);
