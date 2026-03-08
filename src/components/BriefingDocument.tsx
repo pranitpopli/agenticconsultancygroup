@@ -34,7 +34,7 @@ const BriefingDocumentView = ({ doc, onBack }: BriefingDocumentProps) => {
   };
 
   return (
-    <div className="transition-all duration-300 relative">
+    <main className="transition-all duration-300 relative" aria-label="Briefing document">
       <BriefingIndex />
 
       {/* OQR Panel */}
