@@ -74,10 +74,18 @@ const OverviewDashboard = () => {
   }, {});
 
   // Spider chart data — department maturity
+  // Projected maturity: active AI projects boost their department's score
+  const projectBoost = aiProjects.reduce<Record<string, number>>((acc, proj) => {
+    const boost = proj.status === "in-build" ? 8 : proj.status === "live" ? 5 : 0;
+    acc[proj.department] = (acc[proj.department] || 0) + boost;
+    return acc;
+  }, {});
+
   const radarData = departments.map((d) => ({
     department: d.name.length > 12 ? d.name.slice(0, 10) + "…" : d.name,
     fullName: d.name,
     score: d.score,
+    projected: Math.min(100, d.score + (projectBoost[d.name] || 0)),
   }));
 
   // Spider chart data — capability coverage (skills across org)
