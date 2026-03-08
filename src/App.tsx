@@ -6,14 +6,13 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@/hooks/use-theme";
 import { AuthProvider } from "@/contexts/AuthContext";
 import AuthGuard from "@/components/AuthGuard";
+import Dashboard from "./pages/Dashboard";
 import Index from "./pages/Index";
-import OQR from "./pages/OQR";
+import Organisation from "./pages/Organisation";
 import Login from "./pages/Login";
 import People from "./pages/People";
 import PersonProfile from "./pages/PersonProfile";
 import Settings from "./pages/Settings";
-import Portfolio from "./pages/Portfolio";
-import Insights from "./pages/Insights";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,12 +27,11 @@ const App = () => (
           <BrowserRouter>
             <Routes>
               <Route path="/login" element={<Login />} />
-              <Route path="/" element={<AuthGuard><Index /></AuthGuard>} />
-              <Route path="/oqr" element={<AuthGuard><OQR /></AuthGuard>} />
+              <Route path="/" element={<AuthGuard><Dashboard /></AuthGuard>} />
+              <Route path="/briefings" element={<AuthGuard><Index /></AuthGuard>} />
+              <Route path="/organisation" element={<AuthGuard><Organisation /></AuthGuard>} />
               <Route path="/people" element={<AuthGuard><People /></AuthGuard>} />
               <Route path="/people/:id" element={<AuthGuard><PersonProfile /></AuthGuard>} />
-              <Route path="/portfolio" element={<AuthGuard><Portfolio /></AuthGuard>} />
-              <Route path="/insights" element={<AuthGuard><Insights /></AuthGuard>} />
               <Route path="/settings" element={<AuthGuard><Settings /></AuthGuard>} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />

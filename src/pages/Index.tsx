@@ -135,21 +135,12 @@ const Index = () => {
     setPreSelectedPeople(new Set());
   };
 
-  const handleTabChange = (tab: "briefings" | "oqr") => {
-    if (tab === "briefings") {
-      setSearchParams({});
-      setPreSelectedPeople(new Set());
-    }
-  };
 
   const activeDoc = activeBriefId ? allDocs[activeBriefId] : null;
 
   return (
     <div className="min-h-screen bg-background">
-      <BriefingNav
-        activeTab={activeTab}
-        onTabChange={handleTabChange}
-      />
+      <BriefingNav />
 
       <AnimatePresence mode="wait">
         {view === "briefings" && (

@@ -31,12 +31,7 @@ const Settings = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <BriefingNav
-        activeTab="settings"
-        onTabChange={(tab) => {
-          if (tab === "briefings") navigate("/");
-        }}
-      />
+      <BriefingNav />
 
       <motion.main
         className="max-w-[600px] mx-auto px-4 sm:px-8 pt-28 pb-24"

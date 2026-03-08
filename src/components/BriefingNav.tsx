@@ -1,56 +1,43 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Moon, Sun, LogOut, Settings, Users, ChevronDown, Globe } from "lucide-react";
 import { useTheme } from "@/hooks/use-theme";
 import { useAuth } from "@/contexts/AuthContext";
-
-interface BriefingNavProps {
-  activeTab: "briefings" | "oqr" | "people" | "settings" | "portfolio" | "insights";
-  onTabChange?: (tab: "briefings" | "oqr") => void;
-}
 
 const LANGUAGES = [
   { code: "en", label: "English" },
   { code: "sv", label: "Svenska" },
 ] as const;
 
-const BriefingNav = ({ activeTab, onTabChange }: BriefingNavProps) => {
+type TabId = "dashboard" | "briefings" | "organisation";
+
+const TABS: { id: TabId; label: string; path: string }[] = [
+  { id: "dashboard", label: "Dashboard", path: "/" },
+  { id: "briefings", label: "Briefings", path: "/briefings" },
+  { id: "organisation", label: "Organisation", path: "/organisation" },
+];
+
+function resolveActiveTab(pathname: string): TabId | "people" | "settings" | null {
+  if (pathname === "/") return "dashboard";
+  if (pathname.startsWith("/briefings")) return "briefings";
+  if (pathname.startsWith("/organisation")) return "organisation";
+  if (pathname.startsWith("/people")) return "people";
+  if (pathname.startsWith("/settings")) return "settings";
+  return null;
+}
+
+const BriefingNav = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { theme, toggleTheme } = useTheme();
   const { user, logout } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const [language, setLanguage] = useState("en");
   const [langOpen, setLangOpen] = useState(false);
 
+  const activeTab = resolveActiveTab(location.pathname);
   const currentLang = LANGUAGES.find((l) => l.code === language) || LANGUAGES[0];
-
-  const tabs = [
-    { id: "oqr" as const, label: "Overview" },
-    { id: "briefings" as const, label: "Briefings" },
-    { id: "portfolio" as const, label: "Portfolio" },
-    { id: "insights" as const, label: "Insights" },
-  ];
-
-  const handleClick = (tab: typeof tabs[number]) => {
-    if (tab.id === "briefings") {
-      navigate("/");
-      onTabChange?.(tab.id);
-      return;
-    }
-    if (tab.id === "oqr") {
-      navigate("/oqr");
-      return;
-    }
-    if (tab.id === "portfolio") {
-      navigate("/portfolio");
-      return;
-    }
-    if (tab.id === "insights") {
-      navigate("/insights");
-      return;
-    }
-  };
 
   const handleLogout = () => {
     setMenuOpen(false);
@@ -71,10 +58,10 @@ const BriefingNav = ({ activeTab, onTabChange }: BriefingNavProps) => {
           ACG
         </button>
         <div className="flex items-center gap-6">
-          {tabs.map((tab) => (
+          {TABS.map((tab) => (
             <button
               key={tab.id}
-              onClick={() => handleClick(tab)}
+              onClick={() => navigate(tab.path)}
               className={`relative text-xs tracking-[0.15em] uppercase transition-colors pb-0.5 ${
                 activeTab === tab.id
                   ? "text-foreground"
@@ -92,14 +79,16 @@ const BriefingNav = ({ activeTab, onTabChange }: BriefingNavProps) => {
             </button>
           ))}
 
+          {/* People — utility nav */}
           <button
             onClick={() => navigate("/people")}
-            className={`relative text-xs tracking-[0.15em] uppercase transition-colors pb-0.5 ${
+            className={`flex items-center gap-1.5 text-xs tracking-[0.15em] uppercase transition-colors pb-0.5 ${
               activeTab === "people"
                 ? "text-foreground"
                 : "text-muted-foreground hover:text-foreground"
             }`}
           >
+            <Users className="w-3.5 h-3.5" strokeWidth={1.5} />
             People
             {activeTab === "people" && (
               <motion.span
@@ -110,7 +99,7 @@ const BriefingNav = ({ activeTab, onTabChange }: BriefingNavProps) => {
             )}
           </button>
 
-          {/* User menu — contains theme, language, settings, logout */}
+          {/* User menu */}
           {user && (
             <div className="relative">
               <button
@@ -134,13 +123,11 @@ const BriefingNav = ({ activeTab, onTabChange }: BriefingNavProps) => {
                     className="absolute right-0 top-full mt-2 w-52 bg-card border border-border shadow-lg z-50"
                     role="menu"
                   >
-                    {/* User info */}
                     <div className="px-4 py-3 border-b border-border">
                       <p className="text-xs font-medium text-foreground">{user.name}</p>
                       <p className="text-[11px] text-muted-foreground truncate">{user.email}</p>
                     </div>
 
-                    {/* Theme toggle */}
                     <button
                       onClick={toggleTheme}
                       className="w-full flex items-center justify-between px-4 py-2.5 text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
@@ -156,7 +143,6 @@ const BriefingNav = ({ activeTab, onTabChange }: BriefingNavProps) => {
                       </span>
                     </button>
 
-                    {/* Language selector */}
                     <div className="relative">
                       <button
                         onClick={() => setLangOpen(!langOpen)}
