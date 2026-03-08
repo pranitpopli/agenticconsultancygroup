@@ -10,6 +10,7 @@ import Index from "./pages/Index";
 import OQR from "./pages/OQR";
 import Login from "./pages/Login";
 import People from "./pages/People";
+import PersonProfile from "./pages/PersonProfile";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
