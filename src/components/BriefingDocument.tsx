@@ -7,7 +7,7 @@ import ConversationLayer from "./ConversationLayer";
 import ExportBanner from "./ExportBanner";
 import FixedInputBar from "./FixedInputBar";
 import InlineOQR from "./InlineOQR";
-import BriefingIndex from "./BriefingIndex";
+
 import ProposedSystemView from "./ProposedSystem";
 import GanttChart from "./GanttChart";
 import BriefingOQRPanel from "./BriefingOQRPanel";
