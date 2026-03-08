@@ -50,11 +50,12 @@ const OverviewDashboard = ({ onReadBriefing }: OverviewDashboardProps) => {
   };
 
   return (
-    <motion.div
+    <motion.main
       className="max-w-[780px] mx-auto px-8 pt-28 pb-24"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
+      aria-label="Dashboard overview"
     >
       {/* ━━━ GREETING ━━━ */}
       <motion.div variants={itemVariants} className="mb-12">
