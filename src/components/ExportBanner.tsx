@@ -242,15 +242,15 @@ function SlideContent({ slide, doc }: { slide: typeof SLIDES[0]; doc: BriefingDo
         <div className="grid grid-cols-3 gap-6 mb-6">
           <div>
             <p className="text-[10px] uppercase tracking-[0.12em] text-muted-foreground mb-1">Internal</p>
-            <p className="font-serif text-3xl text-foreground">£{doc.internalCost.toLocaleString()}</p>
+            <p className="text-3xl font-sans tabular-nums text-foreground">£{doc.internalCost.toLocaleString()}</p>
           </div>
           <div>
             <p className="text-[10px] uppercase tracking-[0.12em] text-muted-foreground mb-1">External</p>
-            <p className="font-serif text-3xl text-muted-foreground">£{doc.externalCost.toLocaleString()}</p>
+            <p className="text-3xl font-sans tabular-nums text-muted-foreground">£{doc.externalCost.toLocaleString()}</p>
           </div>
           <div>
             <p className="text-[10px] uppercase tracking-[0.12em] text-muted-foreground mb-1">Saving</p>
-            <p className="font-serif text-3xl text-foreground">£{doc.saving.toLocaleString()}</p>
+            <p className="text-3xl font-sans tabular-nums text-foreground">£{doc.saving.toLocaleString()}</p>
           </div>
         </div>
         <p className="text-xs text-muted-foreground font-serif italic">{doc.costNarrative}</p>
