@@ -6,8 +6,8 @@ import { useTheme } from "@/hooks/use-theme";
 import { useAuth } from "@/contexts/AuthContext";
 
 interface BriefingNavProps {
-  activeTab: "briefings" | "oqr" | "archive" | "people" | "settings" | "portfolio" | "insights";
-  onTabChange?: (tab: "briefings" | "oqr" | "archive") => void;
+  activeTab: "briefings" | "oqr" | "people" | "settings" | "portfolio" | "insights";
+  onTabChange?: (tab: "briefings" | "oqr") => void;
 }
 
 const LANGUAGES = [
