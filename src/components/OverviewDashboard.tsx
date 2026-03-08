@@ -12,6 +12,7 @@ interface OverviewDashboardProps {
 }
 
 const OverviewDashboard = ({ onReadBriefing }: OverviewDashboardProps) => {
+  const { toast } = useToast();
   const [briefText, setBriefText] = useState("");
   const [fileName, setFileName] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
