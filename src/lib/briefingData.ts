@@ -81,6 +81,33 @@ export interface Scenario {
 }
 
 
+export type RACIRole = "R" | "A" | "C" | "I" | "—";
+
+export interface RACIEntry {
+  memberName: string;
+  role: string;
+  phases: RACIRole[];
+}
+
+export interface Milestone {
+  name: string;
+  complete: boolean;
+}
+
+export interface PhaseDeliveryStatus {
+  phaseNumber: number;
+  phaseTitle: string;
+  progressPercent: number;
+  milestones: Milestone[];
+  blockers: string[];
+}
+
+export interface DeliveryStatus {
+  approvedDate: string;
+  overallProgress: number;
+  phases: PhaseDeliveryStatus[];
+}
+
 export interface BriefingSummary {
   id: string;
   title: string;
@@ -108,6 +135,8 @@ export interface BriefingDocument {
   successMetrics?: SuccessMetric[];
   recommendation?: DecisionRecommendation;
   scenarios?: Scenario[];
+  raciMatrix?: RACIEntry[];
+  deliveryStatus?: DeliveryStatus;
 }
 
 export const BRIEFING_SUMMARIES: BriefingSummary[] = [
