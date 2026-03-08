@@ -36,7 +36,22 @@ const InboxCard = ({ brief, index, onRead }: InboxCardProps) => {
         <div className="flex-1 space-y-3">
            <div className="flex items-center gap-3 flex-wrap">
               <h3 className="font-serif text-xl text-foreground">{brief.title}</h3>
-              {decision === "approved" ? (
+              {brief.status === "completed" && brief.outcome === "deployed" ? (
+                <span className="text-[10px] uppercase tracking-[0.12em] px-2.5 py-1 border border-[hsl(var(--status-positive)/0.3)] text-[hsl(var(--status-positive))] flex items-center gap-1">
+                  <Rocket className="w-3 h-3" strokeWidth={1.5} />
+                  Deployed
+                </span>
+              ) : brief.status === "completed" && brief.outcome === "partially-deployed" ? (
+                <span className="text-[10px] uppercase tracking-[0.12em] px-2.5 py-1 border border-[hsl(var(--status-warning)/0.3)] text-[hsl(var(--status-warning))] flex items-center gap-1">
+                  <AlertTriangle className="w-3 h-3" strokeWidth={1.5} />
+                  Partial
+                </span>
+              ) : brief.status === "completed" && brief.outcome === "shelved" ? (
+                <span className="text-[10px] uppercase tracking-[0.12em] px-2.5 py-1 border border-border text-muted-foreground flex items-center gap-1">
+                  <Archive className="w-3 h-3" strokeWidth={1.5} />
+                  Shelved
+                </span>
+              ) : decision === "approved" ? (
                 <span className="text-[10px] uppercase tracking-[0.12em] px-2.5 py-1 border border-[hsl(var(--status-positive)/0.3)] text-[hsl(var(--status-positive))] bg-[hsl(var(--status-positive-bg))] flex items-center gap-1">
                   <CheckCircle2 className="w-3 h-3" strokeWidth={1.5} />
                   Approved
