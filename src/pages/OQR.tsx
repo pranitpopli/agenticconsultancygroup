@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import { TrendingUp, Building2, Users, Zap } from "lucide-react";
 import { OQR_DATA } from "@/lib/oqrData";
 import { EMPLOYEES } from "@/lib/simulatedData";
@@ -23,6 +24,7 @@ const capabilityData = [
 ];
 
 const OQR = () => {
+  const navigate = useNavigate();
   const {
     totalSavings,
     previousQuarterSavings,
@@ -86,7 +88,10 @@ const OQR = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <BriefingNav activeTab="oqr" onTabChange={() => {}} />
+      <BriefingNav activeTab="oqr" onTabChange={(tab) => {
+        if (tab === "briefings") navigate("/");
+        if (tab === "archive") navigate("/?tab=archive");
+      }} />
 
       <motion.div
         className="max-w-[1000px] mx-auto px-8 pt-28 pb-24"

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FileDown, Presentation, ArrowRight, ExternalLink } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 import type { BriefingDocument } from "@/lib/briefingData";
 import { OQR_DATA } from "@/lib/oqrData";
 
@@ -21,6 +22,11 @@ const SLIDES = [
 const ExportBanner = ({ doc }: ExportBannerProps) => {
   const [showDeck, setShowDeck] = useState(false);
   const [activeSlide, setActiveSlide] = useState(5);
+  const { toast } = useToast();
+
+  const handleExportAction = (label: string) => {
+    toast({ title: `${label}`, description: "This feature will be available in the next release." });
+  };
 
   return (
     <motion.div
@@ -38,7 +44,7 @@ const ExportBanner = ({ doc }: ExportBannerProps) => {
           Download the feasibility brief or generate a board-ready presentation from this analysis.
         </p>
         <div className="flex items-center gap-3 flex-wrap">
-          <button className="flex items-center gap-2 text-xs tracking-[0.1em] uppercase text-foreground border border-foreground px-5 py-2.5 hover:bg-foreground hover:text-primary-foreground transition-colors">
+          <button onClick={() => handleExportAction("PDF export queued")} className="flex items-center gap-2 text-xs tracking-[0.1em] uppercase text-foreground border border-foreground px-5 py-2.5 hover:bg-foreground hover:text-primary-foreground transition-colors">
             <FileDown className="w-3.5 h-3.5" strokeWidth={1.5} />
             Download Feasibility Brief (PDF)
           </button>
@@ -50,7 +56,7 @@ const ExportBanner = ({ doc }: ExportBannerProps) => {
             Create Board Presentation (PPT)
             <ArrowRight className="w-3 h-3" strokeWidth={1.5} />
           </button>
-          <button className="flex items-center gap-2 text-xs tracking-[0.1em] uppercase text-foreground border border-foreground px-5 py-2.5 hover:bg-foreground hover:text-primary-foreground transition-colors">
+          <button onClick={() => handleExportAction("Jira push initiated")} className="flex items-center gap-2 text-xs tracking-[0.1em] uppercase text-foreground border border-foreground px-5 py-2.5 hover:bg-foreground hover:text-primary-foreground transition-colors">
             <ExternalLink className="w-3.5 h-3.5" strokeWidth={1.5} />
             Push to Jira
           </button>
@@ -102,10 +108,10 @@ const ExportBanner = ({ doc }: ExportBannerProps) => {
 
                 {/* Download buttons */}
                 <div className="flex items-center justify-end gap-3 mt-4">
-                  <button className="text-[10px] tracking-[0.1em] uppercase text-muted-foreground border border-border px-4 py-2 hover:text-foreground hover:border-foreground/30 transition-colors">
+                 <button onClick={() => handleExportAction("PPTX download started")} className="text-[10px] tracking-[0.1em] uppercase text-muted-foreground border border-border px-4 py-2 hover:text-foreground hover:border-foreground/30 transition-colors">
                     Download .pptx
                   </button>
-                  <button className="text-[10px] tracking-[0.1em] uppercase text-muted-foreground border border-border px-4 py-2 hover:text-foreground hover:border-foreground/30 transition-colors">
+                  <button onClick={() => handleExportAction("PDF download started")} className="text-[10px] tracking-[0.1em] uppercase text-muted-foreground border border-border px-4 py-2 hover:text-foreground hover:border-foreground/30 transition-colors">
                     Download .pdf
                   </button>
                 </div>

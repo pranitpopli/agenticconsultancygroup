@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
 import { ArrowRight, Upload, Send, X, FileText, Zap, TrendingUp, Circle } from "lucide-react";
 import { OQR_DATA } from "@/lib/oqrData";
@@ -11,6 +12,7 @@ interface OverviewDashboardProps {
 }
 
 const OverviewDashboard = ({ onReadBriefing }: OverviewDashboardProps) => {
+  const { toast } = useToast();
   const [briefText, setBriefText] = useState("");
   const [fileName, setFileName] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -34,6 +36,7 @@ const OverviewDashboard = ({ onReadBriefing }: OverviewDashboardProps) => {
       setSubmitting(false);
       setBriefText("");
       setFileName(null);
+      toast({ title: "Brief submitted", description: "Your agents are analysing the brief. It will appear in your inbox shortly." });
     }, 1500);
   };
 
