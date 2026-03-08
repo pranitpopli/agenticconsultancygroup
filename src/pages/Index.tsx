@@ -1,5 +1,6 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { AnimatePresence } from "framer-motion";
+import { useSearchParams } from "react-router-dom";
 import BriefingNav from "@/components/BriefingNav";
 import OverviewDashboard from "@/components/OverviewDashboard";
 import BriefingDocumentView from "@/components/BriefingDocument";
@@ -46,11 +47,31 @@ const OVERLAPS_MAP: Record<string, OverlappingProject[]> = {
 };
 
 const Index = () => {
-  const [view, setView] = useState<View>("briefings");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const tabFromUrl = searchParams.get("tab") === "archive" ? "archive" : "briefings";
+
+  const [view, setView] = useState<View>(tabFromUrl === "archive" ? "archive" : "briefings");
   const [activeBriefId, setActiveBriefId] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<"briefings" | "oqr" | "archive">("briefings");
+  const [activeTab, setActiveTab] = useState<"briefings" | "oqr" | "archive">(tabFromUrl);
   const [showOverlapDrawer, setShowOverlapDrawer] = useState(false);
   const [preSelectedPeople, setPreSelectedPeople] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    const currentTab = searchParams.get("tab");
+
+    if (currentTab === "archive") {
+      setActiveTab("archive");
+      setView("archive");
+      return;
+    }
+
+    if (activeTab === "archive") {
+      setActiveTab("briefings");
+      setView("briefings");
+      setActiveBriefId(null);
+      setPreSelectedPeople(new Set());
+    }
+  }, [searchParams, activeTab]);
 
   const currentOverlaps = activeBriefId ? (OVERLAPS_MAP[activeBriefId] || []) : [];
   const currentSwarmLines = activeBriefId ? (SWARM_LINES_MAP[activeBriefId] || SWARM_LINES_MAP["brief-001"]) : [];
@@ -93,10 +114,15 @@ const Index = () => {
 
   const handleTabChange = (tab: "briefings" | "oqr" | "archive") => {
     setActiveTab(tab);
+
     if (tab === "briefings") {
+      setSearchParams({ tab: "briefings" });
       handleBack();
+      return;
     }
+
     if (tab === "archive") {
+      setSearchParams({ tab: "archive" });
       setView("archive");
     }
   };
@@ -160,3 +186,4 @@ const Index = () => {
 };
 
 export default Index;
+
