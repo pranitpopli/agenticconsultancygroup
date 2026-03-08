@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Moon, Sun, LogOut, ChevronDown } from "lucide-react";
 import { Settings as SettingsIcon } from "lucide-react";
+import NotificationCentre from "./NotificationCentre";
 import { useTheme } from "@/hooks/use-theme";
 import { useAuth } from "@/contexts/AuthContext";
 import MobileNav from "./MobileNav";
