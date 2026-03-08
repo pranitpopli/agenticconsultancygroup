@@ -8,7 +8,7 @@ import { BRIEFING_DOCUMENTS } from "@/lib/briefingData";
 const Index = () => {
   const [view, setView] = useState<"briefings" | "briefing-doc">("briefings");
   const [activeBriefId, setActiveBriefId] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<"briefings" | "archive">("briefings");
+  const [activeTab, setActiveTab] = useState<"briefings" | "oqr" | "archive">("briefings");
 
   const handleReadBriefing = (id: string) => {
     setActiveBriefId(id);
@@ -20,7 +20,7 @@ const Index = () => {
     setActiveBriefId(null);
   };
 
-  const handleTabChange = (tab: "briefings" | "archive") => {
+  const handleTabChange = (tab: "briefings" | "oqr" | "archive") => {
     setActiveTab(tab);
     if (tab === "briefings") {
       setView("briefings");
