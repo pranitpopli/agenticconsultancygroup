@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { AnimatePresence } from "framer-motion";
 import { useSearchParams } from "react-router-dom";
 import BriefingNav from "@/components/BriefingNav";
@@ -43,51 +43,53 @@ const SWARM_LINES_MAP: Record<string, string[]> = {
 
 const OVERLAPS_MAP: Record<string, OverlappingProject[]> = {
   "brief-001": OVERLAPPING_PROJECTS,
-  "brief-002": [], // No overlaps for the data intelligence brief
+  "brief-002": [],
 };
+
+// Derive view and briefId from search params
+function deriveState(searchParams: URLSearchParams): { view: View; briefId: string | null; activeTab: "briefings" | "oqr" | "archive" } {
+  const tab = searchParams.get("tab");
+  const v = searchParams.get("view") as View | null;
+  const briefId = searchParams.get("brief");
+
+  if (tab === "archive") {
+    return { view: "archive", briefId: null, activeTab: "archive" };
+  }
+
+  if (v && briefId && ["swarm-thinking", "silo-check", "briefing-doc"].includes(v)) {
+    return { view: v as View, briefId, activeTab: "briefings" };
+  }
+
+  return { view: "briefings", briefId: null, activeTab: "briefings" };
+}
 
 const Index = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const tabFromUrl = searchParams.get("tab") === "archive" ? "archive" : "briefings";
+  const { view, briefId: activeBriefId, activeTab } = useMemo(() => deriveState(searchParams), [searchParams]);
 
-  const [view, setView] = useState<View>(tabFromUrl === "archive" ? "archive" : "briefings");
-  const [activeBriefId, setActiveBriefId] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<"briefings" | "oqr" | "archive">(tabFromUrl);
   const [showOverlapDrawer, setShowOverlapDrawer] = useState(false);
   const [preSelectedPeople, setPreSelectedPeople] = useState<Set<string>>(new Set());
-
-  useEffect(() => {
-    const currentTab = searchParams.get("tab");
-
-    if (currentTab === "archive") {
-      setActiveTab("archive");
-      setView("archive");
-      return;
-    }
-
-    if (activeTab === "archive") {
-      setActiveTab("briefings");
-      setView("briefings");
-      setActiveBriefId(null);
-      setPreSelectedPeople(new Set());
-    }
-  }, [searchParams, activeTab]);
 
   const currentOverlaps = activeBriefId ? (OVERLAPS_MAP[activeBriefId] || []) : [];
   const currentSwarmLines = activeBriefId ? (SWARM_LINES_MAP[activeBriefId] || SWARM_LINES_MAP["brief-001"]) : [];
 
   const handleReadBriefing = (id: string) => {
-    setActiveBriefId(id);
-    setView("swarm-thinking");
+    setSearchParams({ view: "swarm-thinking", brief: id });
   };
 
   const handleSwarmComplete = useCallback(() => {
-    setView("silo-check");
-  }, []);
+    const brief = searchParams.get("brief");
+    if (brief) {
+      setSearchParams({ view: "silo-check", brief });
+    }
+  }, [searchParams, setSearchParams]);
 
   const handleSkipToDoc = useCallback(() => {
-    setView("briefing-doc");
-  }, []);
+    const brief = searchParams.get("brief");
+    if (brief) {
+      setSearchParams({ view: "briefing-doc", brief });
+    }
+  }, [searchParams, setSearchParams]);
 
   const handleReviewOverlaps = () => {
     setShowOverlapDrawer(true);
@@ -95,7 +97,10 @@ const Index = () => {
 
   const handleOverlapProceed = () => {
     setShowOverlapDrawer(false);
-    setView("briefing-doc");
+    const brief = searchParams.get("brief");
+    if (brief) {
+      setSearchParams({ view: "briefing-doc", brief });
+    }
   };
 
   const handleTogglePerson = (id: string) => {
@@ -107,23 +112,19 @@ const Index = () => {
   };
 
   const handleBack = () => {
-    setView("briefings");
-    setActiveBriefId(null);
+    setSearchParams({});
     setPreSelectedPeople(new Set());
   };
 
   const handleTabChange = (tab: "briefings" | "oqr" | "archive") => {
-    setActiveTab(tab);
-
     if (tab === "briefings") {
-      setSearchParams({ tab: "briefings" });
-      handleBack();
+      setSearchParams({});
+      setPreSelectedPeople(new Set());
       return;
     }
 
     if (tab === "archive") {
       setSearchParams({ tab: "archive" });
-      setView("archive");
     }
   };
 
@@ -171,7 +172,6 @@ const Index = () => {
         )}
       </AnimatePresence>
 
-      {/* Overlap Drawer */}
       {showOverlapDrawer && (
         <OverlapDrawer
           overlaps={currentOverlaps}
@@ -186,4 +186,3 @@ const Index = () => {
 };
 
 export default Index;
-
