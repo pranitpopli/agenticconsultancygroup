@@ -6,15 +6,13 @@ import { useTheme } from "@/hooks/use-theme";
 import { useAuth } from "@/contexts/AuthContext";
 
 interface BriefingNavProps {
-  activeTab: "briefings" | "oqr" | "archive";
+  activeTab: "briefings" | "oqr" | "archive" | "people" | "settings";
   onTabChange?: (tab: "briefings" | "oqr" | "archive") => void;
 }
 
 const LANGUAGES = [
   { code: "en", label: "English" },
-  { code: "ar", label: "العربية" },
-  { code: "fr", label: "Français" },
-  { code: "de", label: "Deutsch" },
+  { code: "sv", label: "Svenska" },
 ] as const;
 
 const BriefingNav = ({ activeTab, onTabChange }: BriefingNavProps) => {
