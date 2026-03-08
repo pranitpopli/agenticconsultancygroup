@@ -137,16 +137,55 @@
   nav,
   [aria-label="Briefing index"],
   [aria-label="OQR panel"],
-  .fixed {
+  [aria-label="Table of contents"],
+  .fixed,
+  .print\:hidden {
     display: none !important;
   }
 
   body {
     background: white !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    font-size: 11pt;
   }
 
   main {
     padding-top: 0 !important;
     padding-bottom: 0 !important;
+  }
+
+  .max-w-\[780px\] {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 1cm !important;
+  }
+
+  section {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  h1 {
+    font-size: 22pt !important;
+  }
+
+  h2 {
+    font-size: 14pt !important;
+  }
+
+  /* Show borders clearly */
+  .border {
+    border-color: #ccc !important;
+  }
+
+  /* Avoid page breaks inside cards/tables */
+  .border.border-border {
+    break-inside: avoid;
+  }
+
+  @page {
+    margin: 1.5cm;
+    size: A4;
   }
 }
