@@ -95,7 +95,7 @@ const Insights = () => {
 
         {/* Insight cards */}
         <div className="space-y-4">
-          <AnimatePresence mode="popLayout">
+          <AnimatePresence>
             {filtered.map((insight, i) => (
               <motion.div
                 key={insight.id}
