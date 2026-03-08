@@ -1,7 +1,7 @@
 import { useState, useRef, useMemo } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
-import { Upload, Send, X, FileText, Search, Filter } from "lucide-react";
+import { Upload, Send, X, FileText, Search } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import type { BriefingSummary } from "@/lib/briefingData";
 import InboxCard from "./InboxCard";
