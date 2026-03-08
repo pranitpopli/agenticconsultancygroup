@@ -12,8 +12,8 @@ interface OverlapDrawerProps {
 }
 
 const outcomeIcon = {
-  completed: <CheckCircle2 className="w-3.5 h-3.5 text-green-600" strokeWidth={1.5} />,
-  stalled: <PauseCircle className="w-3.5 h-3.5 text-warm-accent" strokeWidth={1.5} />,
+  completed: <CheckCircle2 className="w-3.5 h-3.5 text-[hsl(var(--status-positive))]" strokeWidth={1.5} />,
+  stalled: <PauseCircle className="w-3.5 h-3.5 text-[hsl(var(--status-warning))]" strokeWidth={1.5} />,
   cancelled: <XCircle className="w-3.5 h-3.5 text-destructive" strokeWidth={1.5} />,
 };
 
