@@ -564,6 +564,13 @@ export const BRIEFING_DOCUMENTS: Record<string, BriefingDocument> = {
         tradeOffNarrative: "Solves the infrastructure problem (3 duplicate pipelines → 1) but delivers no business-facing intelligence. The board's Q2 retention mandate won't be addressed until ML models are built in a follow-up. Cost-effective as a foundation but doesn't move the needle on customer churn.",
       },
     ],
+    raciMatrix: [
+      { memberName: "Aisha Okonkwo", role: "Data Science Lead", phases: ["A", "R", "C"] },
+      { memberName: "Kenji Yamamoto", role: "ML Engineer", phases: ["C", "R", "C"] },
+      { memberName: "Sarah Chen", role: "API Engineer", phases: ["R", "I", "C"] },
+      { memberName: "Tom Richards", role: "Technical Writer", phases: ["C", "I", "R"] },
+      { memberName: "Priya Sharma", role: "UX Researcher", phases: ["I", "C", "R"] },
+    ],
   },
 };
 
