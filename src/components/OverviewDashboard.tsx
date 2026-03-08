@@ -80,7 +80,7 @@ const OverviewDashboard = ({ onReadBriefing }: OverviewDashboardProps) => {
 
       {/* ━━━ QUARTER PULSE ━━━ */}
       <motion.div variants={itemVariants} className="mb-14">
-        <div className="border-t border-b border-border py-6">
+        <div className="border border-border p-8">
           <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground mb-5">
             {currentQuarter} · Organisation pulse
           </p>
