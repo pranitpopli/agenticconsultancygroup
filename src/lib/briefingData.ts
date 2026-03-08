@@ -305,12 +305,19 @@ export const BRIEFING_DOCUMENTS: Record<string, BriefingDocument> = {
       { dimension: "Org knowledge retained", internal: "Full", external: "Partial at best" },
       { dimension: "Post-project value", internal: "Models improve over time", external: "Static deliverable" },
     ],
-    phases: [
-      { number: 1, title: "Data Unification", weeks: "Weeks 1–8", description: "Consolidate ETL pipelines into unified event stream. Establish data contracts between product, finance, and customer success teams." },
-      { number: 2, title: "ML Model Development", weeks: "Weeks 6–16", description: "Train and validate churn prediction and revenue forecasting models against historical data. Deploy to staging for A/B testing." },
-      { number: 3, title: "Dashboard & Integration", weeks: "Weeks 14–20", description: "Build executive dashboard with real-time metrics, integrate predictions into CRM and finance tooling, and conduct user research validation." },
+    risks: [
+      { risk: "Legacy data warehouse migration dependency blocks pipeline unification", likelihood: "high", impact: "high", mitigation: "Identify minimal viable data subset; build adapter layer to work with both old and new warehouse" },
+      { risk: "ML model accuracy below threshold delays churn prediction launch", likelihood: "medium", impact: "medium", mitigation: "Set clear go/no-go accuracy gates at week 12; fallback to rule-based scoring" },
+      { risk: "Cross-team data ownership disputes stall schema agreement", likelihood: "medium", impact: "high", mitigation: "Appoint data steward per domain in Phase 1; escalation path to VP Data" },
+      { risk: "GDPR/privacy constraints limit customer data unification", likelihood: "low", impact: "high", mitigation: "Privacy impact assessment in week 1; anonymisation pipeline built into ingestion layer" },
     ],
-  },
+    successMetrics: [
+      { metric: "Customer churn rate", baseline: "8.2% quarterly", target: "< 7.0% quarterly", measurement: "CRM churn dashboard, measured quarterly post-launch" },
+      { metric: "Revenue forecast accuracy", baseline: "±22%", target: "±8%", measurement: "Finance variance report, monthly comparison" },
+      { metric: "ETL pipeline duplication", baseline: "3 separate pipelines", target: "1 unified pipeline", measurement: "Infrastructure audit at end of Phase 1" },
+      { metric: "Time to generate board report", baseline: "3 weeks manual", target: "< 1 day automated", measurement: "Timed end-to-end from data refresh to PDF output" },
+    ],
+    recommendation: "proceed-with-conditions",
 };
 
 // ━━━ Archived briefs ━━━

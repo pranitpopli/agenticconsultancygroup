@@ -1,16 +1,17 @@
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft } from "lucide-react";
 import type { BriefingDocument as BriefingDocType } from "@/lib/briefingData";
 import ConversationLayer from "./ConversationLayer";
 import ExportBanner from "./ExportBanner";
 import FixedInputBar from "./FixedInputBar";
 import InlineOQR from "./InlineOQR";
-
 import ProposedSystemView from "./ProposedSystem";
 import GanttChart from "./GanttChart";
 import BriefingOQRPanel from "./BriefingOQRPanel";
+import ExecutiveDecisionSummary from "./ExecutiveDecisionSummary";
+import RiskRegister from "./RiskRegister";
+import SuccessMetrics from "./SuccessMetrics";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -61,10 +62,12 @@ const BriefingDocumentView = ({ doc, onBack, readOnly = false }: BriefingDocumen
     setShowExport(true);
   };
 
+  // Section counter for dynamic numbering
+  let sectionNum = 0;
+  const nextSection = () => String(++sectionNum).padStart(2, "0");
+
   return (
     <main className="transition-all duration-300 relative" aria-label="Briefing document">
-      
-
       {/* OQR Panel */}
       <AnimatePresence>
         {oqrOpen && (
@@ -139,17 +142,20 @@ const BriefingDocumentView = ({ doc, onBack, readOnly = false }: BriefingDocumen
           <div className="w-12 h-px bg-foreground/20" />
         </motion.div>
 
-        {/* Section 01 — Initiative */}
-        <Section number="01" title="The Initiative" delay={0.1}>
+        {/* Executive Decision Summary */}
+        <ExecutiveDecisionSummary doc={currentDoc} readOnly={readOnly} />
+
+        {/* Section — Initiative */}
+        <Section number={nextSection()} title="The Initiative" delay={0.1}>
           {currentDoc.initiative.map((para, i) =>
-          <p key={i} className="text-sm text-foreground/80 leading-[1.8] mb-4 last:mb-0">
+            <p key={i} className="text-sm text-foreground/80 leading-[1.8] mb-4 last:mb-0">
               {para}
             </p>
           )}
         </Section>
 
-        {/* Section 02 — Cost & Business Value */}
-        <Section number="02" title="Cost & Business Value" delay={0.2}>
+        {/* Section — Cost & Business Value */}
+        <Section number={nextSection()} title="Cost & Business Value" delay={0.2}>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 mb-6">
             <div>
               <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground mb-1">Internal cost</p>
@@ -178,7 +184,7 @@ const BriefingDocumentView = ({ doc, onBack, readOnly = false }: BriefingDocumen
                 <div className="p-3 text-[10px] uppercase tracking-[0.12em] text-muted-foreground border-l border-border">External approach</div>
               </div>
               {currentDoc.comparison.map((row, i) =>
-              <div key={i} className={`grid grid-cols-3 ${i > 0 ? "border-t border-border" : ""}`}>
+                <div key={i} className={`grid grid-cols-3 ${i > 0 ? "border-t border-border" : ""}`}>
                   <div className="p-3 text-xs text-muted-foreground">{row.dimension}</div>
                   <div className="p-3 text-xs text-foreground border-l border-border">{row.internal}</div>
                   <div className="p-3 text-xs text-muted-foreground border-l border-border">{row.external}</div>
@@ -188,17 +194,17 @@ const BriefingDocumentView = ({ doc, onBack, readOnly = false }: BriefingDocumen
           </div>
         </Section>
 
-        {/* Section 03 — Feasibility */}
-        <Section number="03" title="Feasibility Assessment" delay={0.3}>
+        {/* Section — Feasibility */}
+        <Section number={nextSection()} title="Feasibility Assessment" delay={0.3}>
           <div className="space-y-0">
             {currentDoc.feasibility.map((row, i) =>
-            <div
-              key={i}
-              className={`flex items-baseline justify-between py-3.5 border-l-2 pl-4 ${
-              i > 0 ? "border-t border-border" : ""} ${
-              row.indicator === "green" ? "indicator-green" :
-              row.indicator === "amber" ? "indicator-amber" : "indicator-red"}`
-              }>
+              <div
+                key={i}
+                className={`flex items-baseline justify-between py-3.5 border-l-2 pl-4 ${
+                  i > 0 ? "border-t border-border" : ""} ${
+                  row.indicator === "green" ? "indicator-green" :
+                  row.indicator === "amber" ? "indicator-amber" : "indicator-red"}`
+                }>
                 <div className="flex items-baseline gap-3">
                   <span className="text-sm text-foreground font-medium">{row.label}</span>
                   <span className="text-xs text-muted-foreground">·</span>
@@ -210,17 +216,23 @@ const BriefingDocumentView = ({ doc, onBack, readOnly = false }: BriefingDocumen
           </div>
         </Section>
 
-        {/* Section 04 — Proposed System */}
-        <Section number="04" title="Proposed System" delay={0.4}>
+        {/* Section — Risk Register */}
+        {currentDoc.risks && currentDoc.risks.length > 0 && (
+          <Section number={nextSection()} title="Risk Register" delay={0.35}>
+            <RiskRegister risks={currentDoc.risks} />
+          </Section>
+        )}
+
+        {/* Section — Proposed System */}
+        <Section number={nextSection()} title="Proposed System" delay={0.4}>
           <ProposedSystemView system={currentDoc.system} />
         </Section>
 
-        {/* Section 05 — Recommended Approach */}
-        <Section number="05" title="Recommended Approach" delay={0.5}>
-          {/* Phase list */}
+        {/* Section — Recommended Approach */}
+        <Section number={nextSection()} title="Recommended Approach" delay={0.5}>
           <div className="space-y-6 mb-10">
             {currentDoc.phases.map((phase) =>
-            <div key={phase.number} className="border-l border-border pl-5">
+              <div key={phase.number} className="border-l border-border pl-5">
                 <div className="flex items-baseline gap-3 mb-1.5 flex-wrap">
                   <span className="text-sm font-medium text-foreground">Phase {phase.number}: {phase.title}</span>
                   <span className="text-xs text-muted-foreground">{phase.weeks}</span>
@@ -229,22 +241,26 @@ const BriefingDocumentView = ({ doc, onBack, readOnly = false }: BriefingDocumen
               </div>
             )}
           </div>
-
-          {/* Gantt chart */}
           <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
             <GanttChart phases={currentDoc.phases} />
           </div>
         </Section>
 
-        {/* Section 06 — Org Key Results */}
-        <Section number="06" title="Org Key Results" delay={0.6}>
+        {/* Section — Success Metrics */}
+        {currentDoc.successMetrics && currentDoc.successMetrics.length > 0 && (
+          <Section number={nextSection()} title="Success Criteria" delay={0.55}>
+            <SuccessMetrics metrics={currentDoc.successMetrics} />
+          </Section>
+        )}
+
+        {/* Section — Org Key Results */}
+        <Section number={nextSection()} title="Org Key Results" delay={0.6}>
           <InlineOQR doc={currentDoc} />
         </Section>
 
         {/* Conversation & Export — hidden in read-only mode */}
         {!readOnly && (
           <>
-            {/* Divider into conversation */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -253,7 +269,6 @@ const BriefingDocumentView = ({ doc, onBack, readOnly = false }: BriefingDocumen
               <div className="w-full h-px bg-border" />
             </motion.div>
 
-            {/* Conversation Layer */}
             <ConversationLayer
               doc={currentDoc}
               onUpdate={handleConversationUpdate}
@@ -263,11 +278,8 @@ const BriefingDocumentView = ({ doc, onBack, readOnly = false }: BriefingDocumen
               externalInput={pendingInput}
               onExternalInputHandled={() => setPendingInput(null)} />
 
-            {/* Export Banner */}
             <AnimatePresence>
-              {showExport &&
-              <ExportBanner doc={currentDoc} />
-              }
+              {showExport && <ExportBanner doc={currentDoc} />}
             </AnimatePresence>
           </>
         )}
@@ -299,7 +311,6 @@ function Section({ number, title, delay, children
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay }}
       className="mb-14 scroll-mt-28">
-      
       <div className="flex items-baseline gap-3 mb-5">
         <span className="text-muted-foreground tracking-[0.1em] font-sans text-sm tabular-nums">{number}</span>
         <h2 className="font-serif text-2xl text-foreground">{title}</h2>
