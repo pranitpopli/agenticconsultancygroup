@@ -13,6 +13,8 @@ import ExecutiveDecisionSummary from "./ExecutiveDecisionSummary";
 import RiskRegister from "./RiskRegister";
 import SuccessMetrics from "./SuccessMetrics";
 import ScenarioModelling from "./ScenarioModelling";
+import RACIMatrix from "./RACIMatrix";
+import DeliveryTracker from "./DeliveryTracker";
 import {
   AlertDialog,
   AlertDialogAction,
