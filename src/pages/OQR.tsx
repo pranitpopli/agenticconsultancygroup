@@ -299,7 +299,8 @@ const OQR = () => {
               <span>{completed} completed</span>
             </div>
           </div>
-          <div className="border border-border overflow-hidden">
+          <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+          <div className="border border-border overflow-hidden min-w-[530px]">
             {/* Table header */}
             <div className="grid grid-cols-[1fr_130px_150px_120px] border-b border-border">
               <div className="px-4 py-2.5 text-[10px] uppercase tracking-[0.12em] text-muted-foreground">Project</div>
