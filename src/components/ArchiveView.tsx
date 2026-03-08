@@ -296,7 +296,7 @@ const ArchiveView = () => {
       <p className="text-xs text-muted-foreground/50 italic text-center font-serif mt-14">
         Archive reflects all briefs processed through ACG since September 2024.
       </p>
-    </motion.div>
+    </motion.main>
   );
 };
 
