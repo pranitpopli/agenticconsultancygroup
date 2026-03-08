@@ -75,12 +75,14 @@ const ArchiveView = ({ onViewBrief }: ArchiveViewProps) => {
 
       {/* Brief cards */}
       <div className="space-y-4">
-        {ARCHIVED_BRIEFS.length === 0 && (
+        {filtered.length === 0 && (
           <div className="border border-border p-10 text-center">
-            <p className="text-sm text-muted-foreground">No archived briefs yet. Completed briefings will appear here.</p>
+            <p className="text-sm text-muted-foreground">
+              {search ? "No archived briefs match your search." : "No archived briefs yet. Completed briefings will appear here."}
+            </p>
           </div>
         )}
-        {ARCHIVED_BRIEFS.map((brief) => {
+        {filtered.map((brief) => {
           const isExpanded = expandedId === brief.id;
           const style = outcomeStyles[brief.outcome];
           const doc = brief.doc;
