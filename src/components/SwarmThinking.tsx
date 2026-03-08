@@ -8,8 +8,10 @@ interface SwarmThinkingProps {
 
 const SwarmThinking = ({ lines, onComplete }: SwarmThinkingProps) => {
   const [visibleLines, setVisibleLines] = useState<string[]>([]);
+  const [skipped, setSkipped] = useState(false);
 
   useEffect(() => {
+    if (skipped) return;
     let i = 0;
     const interval = setInterval(() => {
       if (i < lines.length) {
@@ -17,12 +19,18 @@ const SwarmThinking = ({ lines, onComplete }: SwarmThinkingProps) => {
         i++;
       } else {
         clearInterval(interval);
-        setTimeout(onComplete, 800);
+        setTimeout(onComplete, 500);
       }
-    }, 250 + Math.random() * 150);
+    }, 120);
 
     return () => clearInterval(interval);
-  }, [lines, onComplete]);
+  }, [lines, onComplete, skipped]);
+
+  const handleSkip = () => {
+    setSkipped(true);
+    setVisibleLines(lines);
+    setTimeout(onComplete, 300);
+  };
 
   return (
     <motion.div
@@ -39,7 +47,7 @@ const SwarmThinking = ({ lines, onComplete }: SwarmThinkingProps) => {
               key={i}
               initial={{ opacity: 0, x: -8 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.2 }}
+              transition={{ duration: 0.15 }}
               className="font-mono text-xs text-muted-foreground leading-loose"
             >
               <span className="text-muted-foreground/30 mr-3 select-none">›</span>
@@ -50,6 +58,14 @@ const SwarmThinking = ({ lines, onComplete }: SwarmThinkingProps) => {
             <span className="inline-block w-1.5 h-3.5 bg-foreground/40 animate-pulse ml-5" />
           )}
         </div>
+        {!skipped && visibleLines.length < lines.length && (
+          <button
+            onClick={handleSkip}
+            className="mt-6 text-[10px] uppercase tracking-[0.15em] text-muted-foreground hover:text-foreground transition-colors"
+          >
+            Skip →
+          </button>
+        )}
       </div>
     </motion.div>
   );
