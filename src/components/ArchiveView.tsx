@@ -37,6 +37,17 @@ const ArchiveView = ({ onViewBrief }: ArchiveViewProps) => {
         <p className="text-sm text-muted-foreground">
           Previously completed briefings and their outcomes.
         </p>
+
+        {/* Search */}
+        <div className="relative mt-4">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
+          <input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search archived briefs…"
+            className="w-full text-sm bg-background border border-border pl-10 pr-4 py-2.5 outline-none focus:border-foreground/30 transition-colors placeholder:text-muted-foreground/50"
+          />
+        </div>
       </div>
 
       {/* Summary strip */}
