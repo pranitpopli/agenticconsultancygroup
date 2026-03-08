@@ -171,7 +171,7 @@ const OQRPanel = ({ isOpen, onToggle }: OQRPanelProps) => {
               
                 <div className="pb-5 space-y-4">
                   <p className="text-xs text-muted-foreground">
-                    <span className="font-serif text-base text-foreground">{data.aiProjects.length}</span>
+                    <span className="font-sans text-base text-foreground tabular-nums">{data.aiProjects.length}</span>
                     {" "}active across{" "}
                     <span className="text-foreground">{uniqueDepts} departments</span>
                   </p>
