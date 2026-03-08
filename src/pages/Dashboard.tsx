@@ -1,9 +1,10 @@
 import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { AlertTriangle, TrendingUp, Zap, ArrowRight, Building2 } from "lucide-react";
+import { AlertTriangle, TrendingUp, Zap, ArrowRight, Building2, FileText } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import BriefingNav from "@/components/BriefingNav";
+import EmptyState from "@/components/EmptyState";
 import { BRIEFING_SUMMARIES } from "@/lib/briefingData";
 import { useBriefingStore } from "@/lib/briefingStore";
 import { PORTFOLIO_PROJECTS, SWARM_ALERTS, PORTFOLIO_TOTALS } from "@/lib/portfolioData";
