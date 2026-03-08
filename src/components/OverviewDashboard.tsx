@@ -232,7 +232,7 @@ const OverviewDashboard = ({ onReadBriefing }: OverviewDashboardProps) => {
       >
         Swarm last scanned {EMPLOYEES.length} nodes across Meridian Group — 4 minutes ago.
       </motion.p>
-    </motion.div>
+    </motion.main>
   );
 };
 
