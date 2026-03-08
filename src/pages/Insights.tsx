@@ -32,7 +32,7 @@ const Insights = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <BriefingNav activeTab={"briefings" as any} />
+      <BriefingNav activeTab="insights" />
 
       <main className="max-w-[900px] mx-auto px-4 sm:px-8 pt-28 pb-20">
         {/* Header */}
