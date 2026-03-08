@@ -2,6 +2,13 @@ import { motion } from "framer-motion";
 import { OQR_DATA } from "@/lib/oqrData";
 import { EMPLOYEES } from "@/lib/simulatedData";
 import BriefingNav from "@/components/BriefingNav";
+import {
+  RadarChart,
+  PolarGrid,
+  PolarAngleAxis,
+  Radar,
+  ResponsiveContainer,
+} from "recharts";
 
 const OQR = () => {
   const {
@@ -171,6 +178,55 @@ const OQR = () => {
             <p className="font-serif text-4xl text-foreground">{orgMaturity}%</p>
             <span className="text-sm text-[hsl(var(--status-positive))]">+{maturityDelta}</span>
             <span className="text-[11px] text-muted-foreground">AI maturity</span>
+          </div>
+
+          {/* ━━━ SPIDER CHART ━━━ */}
+          <div className="mb-8">
+            <ResponsiveContainer width="100%" height={320}>
+              <RadarChart
+                data={departments
+                  .sort((a, b) => b.score - a.score)
+                  .map((d) => ({
+                    dept: d.name,
+                    score: d.score,
+                    target: 80,
+                  }))}
+                cx="50%"
+                cy="50%"
+                outerRadius="75%"
+              >
+                <PolarGrid stroke="hsl(35 15% 88%)" />
+                <PolarAngleAxis
+                  dataKey="dept"
+                  tick={{ fontSize: 10, fill: "hsl(0 0% 45%)" }}
+                />
+                <Radar
+                  name="Target"
+                  dataKey="target"
+                  stroke="hsl(38 35% 58%)"
+                  fill="hsl(38 35% 58%)"
+                  fillOpacity={0.06}
+                  strokeDasharray="4 4"
+                  strokeWidth={1}
+                />
+                <Radar
+                  name="Current"
+                  dataKey="score"
+                  stroke="hsl(0 0% 10%)"
+                  fill="hsl(0 0% 10%)"
+                  fillOpacity={0.08}
+                  strokeWidth={1.5}
+                />
+              </RadarChart>
+            </ResponsiveContainer>
+            <div className="flex items-center justify-center gap-6 text-[10px] text-muted-foreground mt-2">
+              <span className="flex items-center gap-1.5">
+                <span className="w-3 h-[2px] bg-foreground inline-block" /> Current
+              </span>
+              <span className="flex items-center gap-1.5">
+                <span className="w-3 h-[2px] border-t border-dashed border-[hsl(var(--status-warning))] inline-block" /> Target
+              </span>
+            </div>
           </div>
 
           <div className="space-y-2.5 mb-5">
