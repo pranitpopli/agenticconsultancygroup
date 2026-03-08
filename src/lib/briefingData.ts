@@ -88,7 +88,7 @@ export const BRIEFING_SUMMARIES: BriefingSummary[] = [
     submittedBy: { name: "Priya Patel", role: "Lead Data Scientist" },
     dateReceived: "3 March 2025",
     aiSummary: "Unified analytics pipeline connecting product, finance, and customer success data. ML-driven churn prediction and revenue forecasting components identified.",
-    status: "swarm-ready",
+    status: "analysis-complete",
   },
 ];
 
