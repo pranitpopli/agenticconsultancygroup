@@ -211,6 +211,7 @@ export const BRIEFING_DOCUMENTS: Record<string, BriefingDocument> = {
       { metric: "Blocked product teams", baseline: "3 teams", target: "0 teams", measurement: "Sprint retrospective survey, measured end of Phase 3" },
     ],
     recommendation: "proceed",
+  },
   "brief-002": {
     id: "brief-002",
     title: "Customer Data Intelligence Layer",
