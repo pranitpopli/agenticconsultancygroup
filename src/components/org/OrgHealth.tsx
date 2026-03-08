@@ -18,6 +18,7 @@ const capabilityData = [
 ];
 
 const OrgHealth = () => {
+  const navigate = useNavigate();
   const { theme } = useTheme();
   const {
     totalSavings, previousQuarterSavings, currentQuarter,
