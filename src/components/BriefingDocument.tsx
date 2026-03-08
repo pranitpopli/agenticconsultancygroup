@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { motion, AnimatePresence } from "framer-motion";
-import type { BriefingDocument as BriefingDocType } from "@/lib/briefingData";
+import type { BriefingDocument as BriefingDocType, Scenario } from "@/lib/briefingData";
 import ConversationLayer from "./ConversationLayer";
 import ExportBanner from "./ExportBanner";
 import FixedInputBar from "./FixedInputBar";
@@ -15,6 +15,7 @@ import SuccessMetrics from "./SuccessMetrics";
 import ScenarioModelling from "./ScenarioModelling";
 import RACIMatrix from "./RACIMatrix";
 import DeliveryTracker from "./DeliveryTracker";
+import BriefingTableOfContents from "./BriefingTableOfContents";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -33,6 +34,7 @@ import {
   BreadcrumbSeparator,
   BreadcrumbPage,
 } from "@/components/ui/breadcrumb";
+import { Printer } from "lucide-react";
 
 interface BriefingDocumentProps {
   doc: BriefingDocType;
@@ -47,6 +49,7 @@ const BriefingDocumentView = ({ doc, onBack, readOnly = false }: BriefingDocumen
   const [pendingInput, setPendingInput] = useState<string | null>(null);
   const [oqrOpen, setOqrOpen] = useState(false);
   const [showLeaveWarning, setShowLeaveWarning] = useState(false);
+  const [selectedScenarioId, setSelectedScenarioId] = useState<string | null>(null);
   const { toast } = useToast();
 
   const handleBack = () => {
@@ -65,12 +68,53 @@ const BriefingDocumentView = ({ doc, onBack, readOnly = false }: BriefingDocumen
     setShowExport(true);
   };
 
-  // Section counter for dynamic numbering
+  const handleSelectScenario = (scenario: Scenario) => {
+    setSelectedScenarioId(scenario.id);
+    setCurrentDoc((prev) => ({
+      ...prev,
+      internalCost: scenario.cost,
+      saving: prev.externalCost - scenario.cost,
+    }));
+    toast({
+      title: `Scenario selected: ${scenario.name}`,
+      description: `Cost updated to £${scenario.cost.toLocaleString()} · ${scenario.weeks} weeks · ${scenario.scopePercent}% scope`,
+    });
+  };
+
+  const handlePrint = () => {
+    window.print();
+  };
+
+  // Build sections list for ToC
+  const sections = useMemo(() => {
+    const s: { number: string; title: string }[] = [];
+    let n = 0;
+    const next = () => String(++n).padStart(2, "0");
+
+    s.push({ number: next(), title: "The Initiative" });
+    s.push({ number: next(), title: "Cost & Business Value" });
+    s.push({ number: next(), title: "Feasibility Assessment" });
+    if (currentDoc.risks && currentDoc.risks.length > 0) s.push({ number: next(), title: "Risk Register" });
+    s.push({ number: next(), title: "Proposed System" });
+    if (currentDoc.raciMatrix && currentDoc.raciMatrix.length > 0) s.push({ number: next(), title: "Governance (RACI)" });
+    s.push({ number: next(), title: "Recommended Approach" });
+    if (currentDoc.scenarios && currentDoc.scenarios.length > 0) s.push({ number: next(), title: "Scenario Modelling" });
+    if (currentDoc.successMetrics && currentDoc.successMetrics.length > 0) s.push({ number: next(), title: "Success Criteria" });
+    if (currentDoc.deliveryStatus) s.push({ number: next(), title: "Delivery Status" });
+    s.push({ number: next(), title: "Org Key Results" });
+
+    return s;
+  }, [currentDoc]);
+
+  // Section counter for dynamic numbering (must match ToC logic)
   let sectionNum = 0;
   const nextSection = () => String(++sectionNum).padStart(2, "0");
 
   return (
     <main className="transition-all duration-300 relative" aria-label="Briefing document">
+      {/* Table of Contents */}
+      <BriefingTableOfContents sections={sections} />
+
       {/* OQR Panel */}
       <AnimatePresence>
         {oqrOpen && (
@@ -103,7 +147,7 @@ const BriefingDocumentView = ({ doc, onBack, readOnly = false }: BriefingDocumen
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
-          className="mb-6"
+          className="mb-6 flex items-center justify-between"
         >
           <Breadcrumb>
             <BreadcrumbList>
@@ -118,6 +162,16 @@ const BriefingDocumentView = ({ doc, onBack, readOnly = false }: BriefingDocumen
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
+
+          {/* Print button */}
+          <button
+            onClick={handlePrint}
+            className="flex items-center gap-2 text-[10px] uppercase tracking-[0.12em] text-muted-foreground hover:text-foreground transition-colors print:hidden"
+            aria-label="Print briefing"
+          >
+            <Printer className="w-3.5 h-3.5" />
+            Print
+          </button>
         </motion.div>
 
         {/* Status row */}
@@ -146,7 +200,9 @@ const BriefingDocumentView = ({ doc, onBack, readOnly = false }: BriefingDocumen
         </motion.div>
 
         {/* Executive Decision Summary */}
-        <ExecutiveDecisionSummary doc={currentDoc} readOnly={readOnly} />
+        <div id="executive-summary" className="scroll-mt-28">
+          <ExecutiveDecisionSummary doc={currentDoc} readOnly={readOnly} />
+        </div>
 
         {/* Section — Initiative */}
         <Section number={nextSection()} title="The Initiative" delay={0.1}>
@@ -237,6 +293,7 @@ const BriefingDocumentView = ({ doc, onBack, readOnly = false }: BriefingDocumen
             <RACIMatrix entries={currentDoc.raciMatrix} phases={currentDoc.phases} />
           </Section>
         )}
+
         {/* Section — Recommended Approach */}
         <Section number={nextSection()} title="Recommended Approach" delay={0.5}>
           <div className="space-y-6 mb-10">
@@ -258,7 +315,12 @@ const BriefingDocumentView = ({ doc, onBack, readOnly = false }: BriefingDocumen
         {/* Section — Scenario Modelling */}
         {currentDoc.scenarios && currentDoc.scenarios.length > 0 && (
           <Section number={nextSection()} title="Scenario Modelling" delay={0.52}>
-            <ScenarioModelling scenarios={currentDoc.scenarios} />
+            <ScenarioModelling
+              scenarios={currentDoc.scenarios}
+              onSelectScenario={readOnly ? undefined : handleSelectScenario}
+              selectedScenarioId={selectedScenarioId}
+              readOnly={readOnly}
+            />
           </Section>
         )}
 
@@ -312,7 +374,7 @@ const BriefingDocumentView = ({ doc, onBack, readOnly = false }: BriefingDocumen
       {!readOnly && (
         <FixedInputBar
           onSend={(text) => setPendingInput(text)}
-          onExportPDF={() => setShowExport(true)}
+          onExportPDF={handlePrint}
           onExportPPT={() => setShowExport(true)}
           onExportDocx={() => setShowExport(true)}
           oqrOpen={oqrOpen}
