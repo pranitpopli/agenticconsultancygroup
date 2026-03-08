@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { X, Check } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 import type { OQRData } from "@/lib/oqrData";
 
 interface BoardDeckExportProps {
