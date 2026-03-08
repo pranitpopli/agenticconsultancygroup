@@ -2,6 +2,14 @@ import { motion } from "framer-motion";
 import { OQR_DATA } from "@/lib/oqrData";
 import { EMPLOYEES } from "@/lib/simulatedData";
 import BriefingNav from "@/components/BriefingNav";
+import {
+  RadarChart,
+  PolarGrid,
+  PolarAngleAxis,
+  Radar,
+  ResponsiveContainer,
+} from "recharts";
+import BriefingNav from "@/components/BriefingNav";
 
 const OQR = () => {
   const {
