@@ -58,7 +58,7 @@ const OQRPanel = ({ isOpen, onToggle }: OQRPanelProps) => {
         >
         
         {/* Header */}
-        <div className="sticky top-0 z-10 border-b border-border px-5 py-4" style={{ backgroundColor: "#FAF8F4" }}>
+        <div className="sticky top-0 z-10 border-b border-border px-5 py-4 bg-background">
           <div className="flex items-center justify-between">
             <span className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground font-serif">
               Org Key Results
