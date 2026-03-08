@@ -157,9 +157,10 @@ const Dashboard = () => {
             </div>
             <div className="space-y-3">
               {atRiskProjects.slice(0, 3).map((proj) => (
-                <div
+                <button
                   key={proj.id}
-                  className="border border-border p-5 flex items-center justify-between"
+                  onClick={() => navigate("/organisation?tab=portfolio")}
+                  className="w-full text-left border border-border p-5 flex items-center justify-between hover:bg-muted/30 transition-colors"
                 >
                   <div>
                     <div className="flex items-center gap-2 mb-1">
