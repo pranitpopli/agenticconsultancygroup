@@ -65,7 +65,7 @@ const ArchiveView = ({ onViewBrief }: ArchiveViewProps) => {
             <p className="text-2xl font-sans tabular-nums text-foreground">
               {deployedCount}
               <span className="text-base text-muted-foreground ml-1">
-                / {ARCHIVED_BRIEFS.length}
+                / {filtered.length}
               </span>
             </p>
             <p className="text-[11px] text-muted-foreground mt-1">Successfully deployed</p>
