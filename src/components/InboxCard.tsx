@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
-import { ArrowRight, Zap } from "lucide-react";
+import { ArrowRight, Zap, Users, Building2, TrendingDown } from "lucide-react";
 import type { BriefingSummary } from "@/lib/briefingData";
+import { BRIEFING_DOCUMENTS } from "@/lib/briefingData";
 
 interface InboxCardProps {
   brief: BriefingSummary;
@@ -9,6 +10,11 @@ interface InboxCardProps {
 }
 
 const InboxCard = ({ brief, index, onRead }: InboxCardProps) => {
+  const doc = BRIEFING_DOCUMENTS[brief.id];
+  const teamCount = doc?.team?.length ?? 0;
+  const deptCount = doc?.system?.departments?.length ?? 0;
+  const saving = doc?.saving ?? 0;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}
@@ -51,6 +57,24 @@ const InboxCard = ({ brief, index, onRead }: InboxCardProps) => {
           <p className="text-sm text-foreground/70 leading-relaxed max-w-2xl">
             {brief.aiSummary}
           </p>
+
+          {/* Subtle OQR metrics */}
+          {doc && (
+            <div className="flex items-center gap-5 pt-1">
+              <span className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                <Users className="w-3 h-3" strokeWidth={1.5} />
+                {teamCount} assembled
+              </span>
+              <span className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                <Building2 className="w-3 h-3" strokeWidth={1.5} />
+                {deptCount} dept{deptCount !== 1 ? "s" : ""}
+              </span>
+              <span className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                <TrendingDown className="w-3 h-3" strokeWidth={1.5} />
+                £{(saving / 1000).toFixed(0)}k projected saving
+              </span>
+            </div>
+          )}
         </div>
 
         <button

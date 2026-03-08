@@ -1,15 +1,13 @@
 import { motion } from "framer-motion";
 
 interface BriefingNavProps {
-  activeTab: "briefings" | "oqr" | "archive";
-  onTabChange: (tab: "briefings" | "oqr" | "archive") => void;
-  onOQRToggle?: () => void;
+  activeTab: "briefings" | "archive";
+  onTabChange: (tab: "briefings" | "archive") => void;
 }
 
 const BriefingNav = ({ activeTab, onTabChange }: BriefingNavProps) => {
   const tabs = [
     { id: "briefings" as const, label: "Briefings" },
-    { id: "oqr" as const, label: "OQR" },
     { id: "archive" as const, label: "Archive" },
   ];
 
