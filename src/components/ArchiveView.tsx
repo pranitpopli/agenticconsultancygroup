@@ -14,6 +14,7 @@ const outcomeStyles = {
 };
 
 const ArchiveView = ({ onViewBrief }: ArchiveViewProps) => {
+  const [search, setSearch] = useState("");
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
   const totalSaved = ARCHIVED_BRIEFS.reduce((sum, b) => sum + b.doc.saving, 0);
