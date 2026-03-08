@@ -157,6 +157,21 @@ const OQR = () => {
                   tick={{ fontSize: 8, fill: "hsl(0 0% 60%)" }}
                   axisLine={false}
                 />
+                <Tooltip
+                  content={({ payload, label }) => {
+                    if (!payload?.length) return null;
+                    return (
+                      <div className="bg-card border border-border px-3 py-2 shadow-sm">
+                        <p className="text-[11px] font-serif text-foreground mb-1">{label}</p>
+                        {payload.map((p: any) => (
+                          <p key={p.name} className="text-[10px] text-muted-foreground">
+                            {p.name}: <span className="text-foreground font-mono">{p.value}%</span>
+                          </p>
+                        ))}
+                      </div>
+                    );
+                  }}
+                />
                 <Radar
                   name="Projected"
                   dataKey="projected"
@@ -165,6 +180,8 @@ const OQR = () => {
                   fillOpacity={0.06}
                   strokeDasharray="5 5"
                   strokeWidth={1.5}
+                  isAnimationActive
+                  animationDuration={1200}
                 />
                 <Radar
                   name="Current"
@@ -173,6 +190,8 @@ const OQR = () => {
                   fill="hsl(0 0% 10%)"
                   fillOpacity={0.08}
                   strokeWidth={1.5}
+                  isAnimationActive
+                  animationDuration={1000}
                 />
               </RadarChart>
             </ResponsiveContainer>
