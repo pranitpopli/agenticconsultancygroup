@@ -104,46 +104,6 @@ const OverviewDashboard = ({ briefs, onReadBriefing, onSubmitBrief }: OverviewDa
             className="w-full text-sm bg-transparent border border-border px-4 py-3 outline-none resize-none placeholder:text-muted-foreground/60 focus:border-foreground/30 transition-colors leading-relaxed"
           />
 
-          {/* Integration pills */}
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground mr-1">Connect:</span>
-            {["Jira", "Trello", "Slack", "Confluence", "GitHub"].map((name) => {
-              const isConnected = connectedIntegrations.has(name);
-              const isConnecting = connectingIntegration === name;
-              return (
-                <button
-                  key={name}
-                  onClick={() => {
-                    if (isConnected || isConnecting) return;
-                    setConnectingIntegration(name);
-                    setTimeout(() => {
-                      setConnectedIntegrations(prev => new Set([...prev, name]));
-                      setConnectingIntegration(null);
-                    }, 1200);
-                  }}
-                  className={`flex items-center gap-1.5 text-[11px] px-2.5 py-1.5 border transition-all ${
-                    isConnected
-                      ? "border-foreground/20 text-foreground"
-                      : isConnecting
-                      ? "border-border text-muted-foreground animate-pulse"
-                      : "border-border text-muted-foreground hover:border-foreground/30 hover:text-foreground"
-                  }`}
-                >
-                  <Circle
-                    className={`w-2 h-2 flex-shrink-0 ${
-                      isConnected
-                        ? "fill-[hsl(var(--status-positive))] text-[hsl(var(--status-positive))]"
-                        : isConnecting
-                        ? "fill-[hsl(var(--warm-accent))] text-[hsl(var(--warm-accent))]"
-                        : "fill-muted text-muted"
-                    }`}
-                  />
-                  {isConnecting ? `Pulling ${name} history…` : name}
-                </button>
-              );
-            })}
-          </div>
-
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <button
