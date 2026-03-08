@@ -48,6 +48,10 @@ const Index = () => {
       />
 
       <AnimatePresence mode="wait">
+        {view === "overview" && (
+          <OverviewDashboard key="overview" />
+        )}
+
         {view === "inbox" && (
           <InboxView key="inbox" onReadBriefing={handleReadBriefing} />
         )}

@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 
 interface BriefingNavProps {
-  activeTab: "briefings" | "oqr" | "archive";
-  onTabChange: (tab: "briefings" | "oqr" | "archive") => void;
+  activeTab: "overview" | "briefings" | "oqr" | "archive";
+  onTabChange: (tab: "overview" | "briefings" | "oqr" | "archive") => void;
   onOQRToggle?: () => void;
 }
 
