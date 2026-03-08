@@ -22,6 +22,7 @@ const SLIDES = [
 const BoardDeckExport = ({ onClose, data }: BoardDeckExportProps) => {
   const [buildingSlide, setBuildingSlide] = useState(0);
   const [complete, setComplete] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     if (buildingSlide < SLIDES.length) {
