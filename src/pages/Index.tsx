@@ -6,6 +6,7 @@ import BriefingDocumentView from "@/components/BriefingDocument";
 import SwarmThinking from "@/components/SwarmThinking";
 import SiloCheck from "@/components/SiloCheck";
 import OverlapDrawer from "@/components/OverlapDrawer";
+import ArchiveView from "@/components/ArchiveView";
 import { BRIEFING_DOCUMENTS } from "@/lib/briefingData";
 import { OVERLAPPING_PROJECTS } from "@/lib/simulatedData";
 import type { OverlappingProject } from "@/lib/types";
