@@ -47,7 +47,7 @@ const BriefingOQRPanel = ({ open, onToggle }: BriefingOQRPanelProps) => {
       <div className="px-5">
         <div className="flex items-center justify-between mb-6">
           <span className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground font-serif">
-            Org Quarterly Review
+            Overview
           </span>
           <button
             onClick={onToggle}
