@@ -358,8 +358,22 @@ const BriefingDocumentView = ({ doc, onBack, readOnly = false }: BriefingDocumen
           </Section>
         )}
 
+        {/* Section — Impact Ledger */}
+        {impactLedger && (
+          <Section number={nextSection()} title="Impact Ledger" delay={0.6}>
+            <ImpactLedger data={impactLedger} />
+          </Section>
+        )}
+
+        {/* Section — Change Readiness */}
+        {changeReadiness && (
+          <Section number={nextSection()} title="Change Readiness" delay={0.62}>
+            <ChangeReadiness data={changeReadiness} />
+          </Section>
+        )}
+
         {/* Section — Org Key Results */}
-        <Section number={nextSection()} title="Org Key Results" delay={0.6}>
+        <Section number={nextSection()} title="Org Key Results" delay={0.65}>
           <InlineOQR doc={currentDoc} />
         </Section>
 
