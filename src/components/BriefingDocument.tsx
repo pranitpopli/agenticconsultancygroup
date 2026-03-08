@@ -232,7 +232,7 @@ function Section({ number, title, delay, children
       className="mb-14 scroll-mt-28">
       
       <div className="flex items-baseline gap-3 mb-5">
-        <span className="text-foreground/40 tracking-[0.1em] font-serif text-2xl">{number}</span>
+        <span className="text-muted-foreground tracking-[0.1em] font-sans text-sm tabular-nums">{number}</span>
         <h2 className="font-serif text-2xl text-foreground">{title}</h2>
       </div>
       {children}
