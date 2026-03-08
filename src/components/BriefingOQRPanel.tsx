@@ -157,7 +157,7 @@ const BriefingOQRPanel = ({ open, onToggle }: BriefingOQRPanelProps) => {
             >
               <div className="pb-5 space-y-3">
                 <div className="flex items-baseline gap-2">
-                  <span className="font-serif text-2xl text-foreground">{oqr.orgMaturity}%</span>
+                  <span className="font-sans text-2xl text-foreground tabular-nums">{oqr.orgMaturity}%</span>
                   <span className="text-[10px] text-[hsl(var(--status-positive))]">+{oqr.maturityDelta} pts</span>
                 </div>
                 <div className="space-y-1.5">
