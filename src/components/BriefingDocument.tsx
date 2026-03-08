@@ -12,6 +12,7 @@ import BriefingOQRPanel from "./BriefingOQRPanel";
 import ExecutiveDecisionSummary from "./ExecutiveDecisionSummary";
 import RiskRegister from "./RiskRegister";
 import SuccessMetrics from "./SuccessMetrics";
+import ScenarioModelling from "./ScenarioModelling";
 import {
   AlertDialog,
   AlertDialogAction,
