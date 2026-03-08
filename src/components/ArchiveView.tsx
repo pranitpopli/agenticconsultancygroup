@@ -54,7 +54,7 @@ const ArchiveView = ({ onViewBrief }: ArchiveViewProps) => {
       <div className="border border-border p-6 sm:p-8 mb-10">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
           <div>
-            <p className="text-2xl font-sans tabular-nums text-foreground">{ARCHIVED_BRIEFS.length}</p>
+            <p className="text-2xl font-sans tabular-nums text-foreground">{filtered.length}</p>
             <p className="text-[11px] text-muted-foreground mt-1">Briefs completed</p>
           </div>
           <div>
