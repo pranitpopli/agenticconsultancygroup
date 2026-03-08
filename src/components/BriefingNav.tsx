@@ -184,7 +184,7 @@ const BriefingNav = () => {
                       className="w-full flex items-center gap-2 px-4 py-2.5 text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
                       role="menuitem"
                     >
-                      <Settings className="w-3.5 h-3.5" strokeWidth={1.5} />
+                      <SettingsIcon className="w-3.5 h-3.5" strokeWidth={1.5} />
                       Settings
                     </button>
                     <button
