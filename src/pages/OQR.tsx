@@ -261,9 +261,6 @@ const OQR = () => {
                 
               </RadarChart>
             </ResponsiveContainer>
-                
-              </RadarChart>
-            </ResponsiveContainer>
           </div>
         </motion.div>
 
