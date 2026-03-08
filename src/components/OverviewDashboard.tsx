@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
 import { ArrowRight, Upload, Send, X, FileText, Zap, TrendingUp, Circle } from "lucide-react";
 import { OQR_DATA } from "@/lib/oqrData";
