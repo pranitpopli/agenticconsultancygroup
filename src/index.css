@@ -43,6 +43,18 @@
     --red: 0 55% 48%;
     --red-light: 0 40% 94%;
 
+    /* Subtle status tokens */
+    --status-positive: 152 30% 54%;
+    --status-positive-bg: 152 25% 94%;
+    --status-warning: 38 35% 58%;
+    --status-warning-bg: 38 25% 93%;
+    --status-danger: 4 30% 55%;
+    --status-danger-bg: 4 20% 95%;
+    --status-info: 210 25% 58%;
+    --status-info-bg: 210 20% 94%;
+    --status-neutral: 30 10% 55%;
+    --status-neutral-bg: 30 10% 93%;
+
     --font-serif: 'Cormorant Garamond', Georgia, serif;
     --font-sans: 'DM Sans', system-ui, sans-serif;
 
