@@ -146,10 +146,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <BriefingNav
-        activeTab={activeTab}
-        onTabChange={handleTabChange}
-      />
+      <BriefingNav />
 
       <AnimatePresence mode="wait">
         {view === "briefings" && (

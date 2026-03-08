@@ -265,12 +265,7 @@ const People = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <BriefingNav
-        activeTab="people"
-        onTabChange={(tab) => {
-          if (tab === "briefings") navigate("/");
-        }}
-      />
+      <BriefingNav />
 
       <motion.main
         className="max-w-[1100px] mx-auto px-4 sm:px-8 pt-28 pb-24"
