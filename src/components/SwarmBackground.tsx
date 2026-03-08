@@ -1,4 +1,5 @@
 import { useRef, useEffect, useCallback } from "react";
+import { useTheme } from "@/hooks/use-theme";
 
 interface Boid {
   x: number;
@@ -7,37 +8,47 @@ interface Boid {
   vy: number;
   size: number;
   opacity: number;
-  blur: number;
+  trail: { x: number; y: number }[];
+  group: number; // 0 = dark, 1 = accent
 }
 
-const BOID_COUNT = 60;
-const MAX_SPEED = 1.8;
-const PERCEPTION = 80;
-const SEPARATION_DIST = 30;
-const COHESION_WEIGHT = 0.003;
-const ALIGNMENT_WEIGHT = 0.04;
-const SEPARATION_WEIGHT = 0.06;
-const MOUSE_REPEL = 120;
-const EDGE_MARGIN = 60;
+const BOID_COUNT = 120;
+const MAX_SPEED = 2.2;
+const MIN_SPEED = 0.6;
+const PERCEPTION = 100;
+const SEPARATION_DIST = 24;
+const COHESION_WEIGHT = 0.005;
+const ALIGNMENT_WEIGHT = 0.06;
+const SEPARATION_WEIGHT = 0.08;
+const MOUSE_ATTRACT = 200;
+const EDGE_MARGIN = 80;
+const TRAIL_LENGTH = 8;
+const CONNECTION_DIST = 50;
 
-function createBoid(w: number, h: number): Boid {
+function createBoid(w: number, h: number, centerBias: boolean): Boid {
   const angle = Math.random() * Math.PI * 2;
+  const cx = w / 2;
+  const cy = h / 2;
+  const spread = Math.min(w, h) * (centerBias ? 0.25 : 0.4);
+  const x = cx + (Math.random() - 0.5) * spread * 2;
+  const y = cy + (Math.random() - 0.5) * spread * 2;
+
   return {
-    x: Math.random() * w,
-    y: Math.random() * h,
-    vx: Math.cos(angle) * (0.5 + Math.random()),
-    vy: Math.sin(angle) * (0.5 + Math.random()),
-    size: 2 + Math.random() * 3,
-    opacity: 0.15 + Math.random() * 0.45,
-    blur: Math.random() > 0.5 ? 1 + Math.random() * 3 : 0,
+    x,
+    y,
+    vx: Math.cos(angle) * (0.8 + Math.random() * 1.2),
+    vy: Math.sin(angle) * (0.8 + Math.random() * 1.2),
+    size: 1.5 + Math.random() * 2.5,
+    opacity: 0.3 + Math.random() * 0.5,
+    trail: [],
+    group: Math.random() < 0.06 ? 1 : 0,
   };
 }
 
-function clampSpeed(vx: number, vy: number, max: number) {
+function clampSpeed(vx: number, vy: number, min: number, max: number) {
   const speed = Math.sqrt(vx * vx + vy * vy);
-  if (speed > max) {
-    return { vx: (vx / speed) * max, vy: (vy / speed) * max };
-  }
+  if (speed > max) return { vx: (vx / speed) * max, vy: (vy / speed) * max };
+  if (speed < min && speed > 0) return { vx: (vx / speed) * min, vy: (vy / speed) * min };
   return { vx, vy };
 }
 
@@ -47,6 +58,8 @@ const SwarmBackground = () => {
   const mouse = useRef({ x: -1000, y: -1000 });
   const raf = useRef<number>(0);
   const dims = useRef({ w: 0, h: 0 });
+  const initialized = useRef(false);
+  const { theme } = useTheme();
 
   const resize = useCallback(() => {
     const canvas = canvasRef.current;
@@ -63,26 +76,29 @@ const SwarmBackground = () => {
   useEffect(() => {
     resize();
     const { w, h } = dims.current;
-    boids.current = Array.from({ length: BOID_COUNT }, () => createBoid(w, h));
 
-    const handleResize = () => {
-      resize();
-    };
+    if (!initialized.current) {
+      boids.current = Array.from({ length: BOID_COUNT }, (_, i) =>
+        createBoid(w, h, i < BOID_COUNT * 0.7)
+      );
+      initialized.current = true;
+    }
 
+    const handleResize = () => resize();
     const handleMouse = (e: MouseEvent) => {
       const rect = canvasRef.current?.getBoundingClientRect();
-      if (rect) {
-        mouse.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
-      }
+      if (rect) mouse.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
     };
-
-    const handleLeave = () => {
-      mouse.current = { x: -1000, y: -1000 };
-    };
+    const handleLeave = () => { mouse.current = { x: -1000, y: -1000 }; };
 
     window.addEventListener("resize", handleResize);
     window.addEventListener("mousemove", handleMouse);
     window.addEventListener("mouseleave", handleLeave);
+
+    const isDark = theme === "dark";
+    const particleColor = isDark ? "210, 30%, 85%" : "0, 0%, 10%";
+    const accentColor = isDark ? "185, 70%, 55%" : "185, 80%, 48%";
+    const lineColor = isDark ? "rgba(180,195,210," : "rgba(26,26,26,";
 
     const animate = () => {
       const canvas = canvasRef.current;
@@ -91,12 +107,24 @@ const SwarmBackground = () => {
       if (!ctx) return;
       const { w, h } = dims.current;
 
-      ctx.clearRect(0, 0, w, h);
+      // Fade trail effect
+      ctx.fillStyle = isDark
+        ? "hsla(220, 15%, 10%, 0.15)"
+        : "hsla(40, 33%, 97%, 0.15)";
+      ctx.fillRect(0, 0, w, h);
 
       const bs = boids.current;
+      const cx = w / 2;
+      const cy = h / 2;
 
+      // Update boids
       for (let i = 0; i < bs.length; i++) {
         const b = bs[i];
+
+        // Store trail
+        b.trail.push({ x: b.x, y: b.y });
+        if (b.trail.length > TRAIL_LENGTH) b.trail.shift();
+
         let avgX = 0, avgY = 0, avgVx = 0, avgVy = 0;
         let sepX = 0, sepY = 0;
         let neighbors = 0;
@@ -114,7 +142,7 @@ const SwarmBackground = () => {
             avgVy += bs[j].vy;
             neighbors++;
 
-            if (dist < SEPARATION_DIST) {
+            if (dist < SEPARATION_DIST && dist > 0) {
               sepX -= dx / dist;
               sepY -= dy / dist;
             }
@@ -122,40 +150,55 @@ const SwarmBackground = () => {
         }
 
         if (neighbors > 0) {
-          // Cohesion
           avgX /= neighbors;
           avgY /= neighbors;
           b.vx += (avgX - b.x) * COHESION_WEIGHT;
           b.vy += (avgY - b.y) * COHESION_WEIGHT;
 
-          // Alignment
           avgVx /= neighbors;
           avgVy /= neighbors;
           b.vx += (avgVx - b.vx) * ALIGNMENT_WEIGHT;
           b.vy += (avgVy - b.vy) * ALIGNMENT_WEIGHT;
 
-          // Separation
           b.vx += sepX * SEPARATION_WEIGHT;
           b.vy += sepY * SEPARATION_WEIGHT;
         }
 
-        // Mouse repel
-        const mdx = b.x - mouse.current.x;
-        const mdy = b.y - mouse.current.y;
+        // Gentle center gravity to keep swarm visible
+        const dcx = cx - b.x;
+        const dcy = cy - b.y;
+        const centerDist = Math.sqrt(dcx * dcx + dcy * dcy);
+        const maxDrift = Math.min(w, h) * 0.4;
+        if (centerDist > maxDrift) {
+          b.vx += (dcx / centerDist) * 0.08;
+          b.vy += (dcy / centerDist) * 0.08;
+        }
+
+        // Mouse attraction (gentle orbit)
+        const mdx = mouse.current.x - b.x;
+        const mdy = mouse.current.y - b.y;
         const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
-        if (mdist < MOUSE_REPEL && mdist > 0) {
-          const force = (MOUSE_REPEL - mdist) / MOUSE_REPEL;
-          b.vx += (mdx / mdist) * force * 0.8;
-          b.vy += (mdy / mdist) * force * 0.8;
+        if (mdist < MOUSE_ATTRACT && mdist > 30) {
+          // Attract but also orbit — perpendicular force
+          const force = ((MOUSE_ATTRACT - mdist) / MOUSE_ATTRACT) * 0.3;
+          b.vx += (mdx / mdist) * force * 0.4;
+          b.vy += (mdy / mdist) * force * 0.4;
+          // Perpendicular
+          b.vx += (-mdy / mdist) * force * 0.3;
+          b.vy += (mdx / mdist) * force * 0.3;
+        } else if (mdist <= 30 && mdist > 0) {
+          // Repel if too close
+          b.vx -= (mdx / mdist) * 1.5;
+          b.vy -= (mdy / mdist) * 1.5;
         }
 
         // Edge steering
-        if (b.x < EDGE_MARGIN) b.vx += 0.15;
-        if (b.x > w - EDGE_MARGIN) b.vx -= 0.15;
-        if (b.y < EDGE_MARGIN) b.vy += 0.15;
-        if (b.y > h - EDGE_MARGIN) b.vy -= 0.15;
+        if (b.x < EDGE_MARGIN) b.vx += 0.2;
+        if (b.x > w - EDGE_MARGIN) b.vx -= 0.2;
+        if (b.y < EDGE_MARGIN) b.vy += 0.2;
+        if (b.y > h - EDGE_MARGIN) b.vy -= 0.2;
 
-        const clamped = clampSpeed(b.vx, b.vy, MAX_SPEED);
+        const clamped = clampSpeed(b.vx, b.vy, MIN_SPEED, MAX_SPEED);
         b.vx = clamped.vx;
         b.vy = clamped.vy;
 
@@ -163,44 +206,81 @@ const SwarmBackground = () => {
         b.y += b.vy;
 
         // Wrap
-        if (b.x < -20) b.x = w + 20;
-        if (b.x > w + 20) b.x = -20;
-        if (b.y < -20) b.y = h + 20;
-        if (b.y > h + 20) b.y = -20;
+        if (b.x < -30) b.x = w + 30;
+        if (b.x > w + 30) b.x = -30;
+        if (b.y < -30) b.y = h + 30;
+        if (b.y > h + 30) b.y = -30;
       }
 
-      // Draw
-      for (const b of bs) {
-        ctx.save();
-        if (b.blur > 0) {
-          ctx.filter = `blur(${b.blur}px)`;
+      // Draw connections (thin lines between close boids)
+      ctx.lineWidth = 0.5;
+      for (let i = 0; i < bs.length; i++) {
+        for (let j = i + 1; j < bs.length; j++) {
+          const dx = bs[j].x - bs[i].x;
+          const dy = bs[j].y - bs[i].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < CONNECTION_DIST) {
+            const alpha = (1 - dist / CONNECTION_DIST) * 0.15;
+            ctx.strokeStyle = `${lineColor}${alpha})`;
+            ctx.beginPath();
+            ctx.moveTo(bs[i].x, bs[i].y);
+            ctx.lineTo(bs[j].x, bs[j].y);
+            ctx.stroke();
+          }
         }
-        ctx.globalAlpha = b.opacity;
-        ctx.fillStyle = "hsl(0 0% 10%)";
+      }
+
+      // Draw trails
+      for (const b of bs) {
+        if (b.trail.length < 2) continue;
+        const isAccent = b.group === 1;
+        const color = isAccent ? accentColor : particleColor;
+
         ctx.beginPath();
-        
-        // Draw elongated shape in direction of velocity
+        ctx.moveTo(b.trail[0].x, b.trail[0].y);
+        for (let t = 1; t < b.trail.length; t++) {
+          ctx.lineTo(b.trail[t].x, b.trail[t].y);
+        }
+        ctx.lineTo(b.x, b.y);
+        ctx.strokeStyle = `hsla(${color}, ${b.opacity * (isAccent ? 0.6 : 0.3)})`;
+        ctx.lineWidth = b.size * 0.4;
+        ctx.stroke();
+      }
+
+      // Draw particles
+      for (const b of bs) {
+        const isAccent = b.group === 1;
+        const color = isAccent ? accentColor : particleColor;
         const angle = Math.atan2(b.vy, b.vx);
         const speed = Math.sqrt(b.vx * b.vx + b.vy * b.vy);
-        const stretch = 1 + speed * 0.8;
-        
+        const stretch = 1 + speed * 0.6;
+
+        ctx.save();
         ctx.translate(b.x, b.y);
         ctx.rotate(angle);
-        ctx.ellipse(0, 0, b.size * stretch, b.size * 0.5, 0, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.restore();
-      }
+        ctx.globalAlpha = b.opacity;
 
-      // Draw a few accent particles (cyan-ish)
-      for (let i = 0; i < 3; i++) {
-        const b = bs[i];
-        ctx.save();
-        ctx.filter = `blur(${4 + i * 2}px)`;
-        ctx.globalAlpha = 0.25;
-        ctx.fillStyle = "hsl(185 80% 55%)";
-        ctx.beginPath();
-        ctx.arc(b.x, b.y, 6 + i * 2, 0, Math.PI * 2);
-        ctx.fill();
+        if (isAccent) {
+          // Glow for accent particles
+          ctx.filter = "blur(6px)";
+          ctx.fillStyle = `hsl(${accentColor})`;
+          ctx.beginPath();
+          ctx.ellipse(0, 0, b.size * 3, b.size * 3, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.filter = "none";
+
+          ctx.fillStyle = `hsl(${accentColor})`;
+          ctx.globalAlpha = 0.9;
+          ctx.beginPath();
+          ctx.arc(0, 0, b.size * 1.2, 0, Math.PI * 2);
+          ctx.fill();
+        } else {
+          ctx.fillStyle = `hsl(${color})`;
+          ctx.beginPath();
+          ctx.ellipse(0, 0, b.size * stretch, b.size * 0.45, 0, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
         ctx.restore();
       }
 
@@ -215,13 +295,13 @@ const SwarmBackground = () => {
       window.removeEventListener("mousemove", handleMouse);
       window.removeEventListener("mouseleave", handleLeave);
     };
-  }, [resize]);
+  }, [resize, theme]);
 
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 w-full h-full pointer-events-none"
-      style={{ opacity: 0.7 }}
+      className="absolute inset-0 w-full h-full"
+      style={{ opacity: 0.85 }}
     />
   );
 };
