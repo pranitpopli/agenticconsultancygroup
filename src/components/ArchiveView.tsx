@@ -121,7 +121,7 @@ const ArchiveView = () => {
       </div>
 
       {/* Summary strip */}
-      <div className="border-t border-b border-border py-5 mb-10">
+      <div className="border border-border p-8 mb-10">
         <div className="grid grid-cols-3 gap-8">
           <div>
             <p className="text-2xl font-sans tabular-nums text-foreground">{ARCHIVED_BRIEFS.length}</p>
