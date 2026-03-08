@@ -109,7 +109,7 @@ const OQR = () => {
           {kpis.map((kpi) => (
             <div
               key={kpi.label}
-              className="border border-border bg-card p-5 space-y-3"
+              className="border border-border bg-card rounded-lg shadow-sm p-5 space-y-3"
             >
               <div className="flex items-center gap-2 text-muted-foreground">
                 <kpi.icon className="w-3.5 h-3.5" strokeWidth={1.5} />
@@ -126,7 +126,7 @@ const OQR = () => {
         {/* ━━━ TWO SPIDER CHARTS ━━━ */}
         <motion.div variants={itemVariants} className="grid grid-cols-2 gap-4 mb-10">
           {/* Department Maturity */}
-          <div className="border border-border bg-card p-6">
+          <div className="border border-border bg-card rounded-lg shadow-sm p-6">
             <div className="flex items-center justify-between mb-1">
               <div className="flex items-center gap-2">
                 <TrendingUp className="w-3.5 h-3.5 text-muted-foreground" strokeWidth={1.5} />
@@ -198,7 +198,7 @@ const OQR = () => {
           </div>
 
           {/* Capability Coverage */}
-          <div className="border border-border bg-card p-6">
+          <div className="border border-border bg-card rounded-lg shadow-sm p-6">
             <div className="flex items-center gap-2 mb-1">
               <Users className="w-3.5 h-3.5 text-muted-foreground" strokeWidth={1.5} />
               <span className="font-serif text-sm text-foreground">Capability Coverage</span>
@@ -250,7 +250,7 @@ const OQR = () => {
         </motion.div>
 
         {/* ━━━ FINANCIAL BREAKDOWN ━━━ */}
-        <motion.div variants={itemVariants} className="border border-border bg-card p-6 mb-10">
+        <motion.div variants={itemVariants} className="border border-border bg-card rounded-lg shadow-sm p-6 mb-10">
           <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground mb-5">
             Savings breakdown
           </p>
@@ -283,7 +283,7 @@ const OQR = () => {
         </motion.div>
 
         {/* ━━━ AI PROJECTS ━━━ */}
-        <motion.div variants={itemVariants} className="border border-border bg-card p-6 mb-10">
+        <motion.div variants={itemVariants} className="border border-border bg-card rounded-lg shadow-sm p-6 mb-10">
           <div className="flex items-center justify-between mb-5">
             <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
               AI projects in flight
@@ -324,7 +324,7 @@ const OQR = () => {
         </motion.div>
 
         {/* ━━━ DEPARTMENT MATURITY BARS ━━━ */}
-        <motion.div variants={itemVariants} className="border border-border bg-card p-6 mb-10">
+        <motion.div variants={itemVariants} className="border border-border bg-card rounded-lg shadow-sm p-6 mb-10">
           <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground mb-5">
             Org shift index · {orgMaturity}%
           </p>
