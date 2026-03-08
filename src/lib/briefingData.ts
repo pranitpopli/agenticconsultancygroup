@@ -49,6 +49,23 @@ export interface Phase {
   description: string;
 }
 
+export interface RiskRow {
+  risk: string;
+  likelihood: "high" | "medium" | "low";
+  impact: "high" | "medium" | "low";
+  mitigation: string;
+}
+
+export interface SuccessMetric {
+  metric: string;
+  baseline: string;
+  target: string;
+  measurement: string;
+}
+
+export type DecisionRecommendation = "proceed" | "proceed-with-conditions" | "defer";
+
+
 export interface BriefingSummary {
   id: string;
   title: string;
@@ -72,6 +89,9 @@ export interface BriefingDocument {
   costNarrative: string;
   comparison: ComparisonRow[];
   phases: Phase[];
+  risks?: RiskRow[];
+  successMetrics?: SuccessMetric[];
+  recommendation?: DecisionRecommendation;
 }
 
 export const BRIEFING_SUMMARIES: BriefingSummary[] = [
@@ -182,6 +202,20 @@ export const BRIEFING_DOCUMENTS: Record<string, BriefingDocument> = {
       { number: 2, title: "Frontend Migration", weeks: "Weeks 5–12", description: "Migrate frontend to modern component architecture with parallel rendering pipeline. Phased rollout to reduce risk." },
       { number: 3, title: "Stabilisation & Handover", weeks: "Weeks 12–16", description: "Performance validation, load testing at scale, documentation, and knowledge transfer to platform support team." },
     ],
+    risks: [
+      { risk: "Legacy auth service coupling delays API gateway migration", likelihood: "medium", impact: "high", mitigation: "Parallel auth service rebuild in Phase 1; feature-flag cutover to limit blast radius" },
+      { risk: "Frontend migration causes regression in critical user flows", likelihood: "medium", impact: "medium", mitigation: "Phased rollout with A/B traffic splitting; automated visual regression tests" },
+      { risk: "Key team member unavailability (illness, reassignment)", likelihood: "low", impact: "high", mitigation: "Cross-training in Phase 1; documented runbooks for all workstreams" },
+      { risk: "Observability stack integration conflicts with existing monitoring", likelihood: "low", impact: "medium", mitigation: "Run new stack in parallel for 2 weeks before decommissioning legacy" },
+    ],
+    successMetrics: [
+      { metric: "Deploy time", baseline: "45 minutes", target: "< 10 minutes", measurement: "CI/CD pipeline metrics, measured weekly from Phase 2" },
+      { metric: "Incident response time", baseline: "34 min avg", target: "< 15 min avg", measurement: "PagerDuty MTTR across all services" },
+      { metric: "API gateway latency (p99)", baseline: "420ms", target: "< 200ms", measurement: "Datadog APM, measured post-Phase 1" },
+      { metric: "Frontend Lighthouse score", baseline: "62", target: "> 90", measurement: "Automated Lighthouse CI on every merge to main" },
+      { metric: "Blocked product teams", baseline: "3 teams", target: "0 teams", measurement: "Sprint retrospective survey, measured end of Phase 3" },
+    ],
+    recommendation: "proceed",
   },
   "brief-002": {
     id: "brief-002",
@@ -282,6 +316,19 @@ export const BRIEFING_DOCUMENTS: Record<string, BriefingDocument> = {
       { number: 2, title: "ML Model Development", weeks: "Weeks 6–16", description: "Train and validate churn prediction and revenue forecasting models against historical data. Deploy to staging for A/B testing." },
       { number: 3, title: "Dashboard & Integration", weeks: "Weeks 14–20", description: "Build executive dashboard with real-time metrics, integrate predictions into CRM and finance tooling, and conduct user research validation." },
     ],
+    risks: [
+      { risk: "Legacy data warehouse migration dependency blocks pipeline unification", likelihood: "high", impact: "high", mitigation: "Identify minimal viable data subset; build adapter layer to work with both old and new warehouse" },
+      { risk: "ML model accuracy below threshold delays churn prediction launch", likelihood: "medium", impact: "medium", mitigation: "Set clear go/no-go accuracy gates at week 12; fallback to rule-based scoring" },
+      { risk: "Cross-team data ownership disputes stall schema agreement", likelihood: "medium", impact: "high", mitigation: "Appoint data steward per domain in Phase 1; escalation path to VP Data" },
+      { risk: "GDPR/privacy constraints limit customer data unification", likelihood: "low", impact: "high", mitigation: "Privacy impact assessment in week 1; anonymisation pipeline built into ingestion layer" },
+    ],
+    successMetrics: [
+      { metric: "Customer churn rate", baseline: "8.2% quarterly", target: "< 7.0% quarterly", measurement: "CRM churn dashboard, measured quarterly post-launch" },
+      { metric: "Revenue forecast accuracy", baseline: "±22%", target: "±8%", measurement: "Finance variance report, monthly comparison" },
+      { metric: "ETL pipeline duplication", baseline: "3 separate pipelines", target: "1 unified pipeline", measurement: "Infrastructure audit at end of Phase 1" },
+      { metric: "Time to generate board report", baseline: "3 weeks manual", target: "< 1 day automated", measurement: "Timed end-to-end from data refresh to PDF output" },
+    ],
+    recommendation: "proceed-with-conditions",
   },
 };
 
