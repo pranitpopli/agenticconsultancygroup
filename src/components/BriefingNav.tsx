@@ -6,7 +6,7 @@ import { useTheme } from "@/hooks/use-theme";
 import { useAuth } from "@/contexts/AuthContext";
 
 interface BriefingNavProps {
-  activeTab: "briefings" | "oqr" | "archive" | "people" | "settings";
+  activeTab: "briefings" | "oqr" | "archive" | "people" | "settings" | "portfolio" | "insights";
   onTabChange?: (tab: "briefings" | "oqr" | "archive") => void;
 }
 
