@@ -93,7 +93,7 @@ const OQRPanel = ({ isOpen, onToggle }: OQRPanelProps) => {
                   onMouseLeave={() => setHoveredMetric(null)}>
                   
                     <div className="flex items-baseline gap-2">
-                      <span className="font-serif text-3xl text-foreground">
+                      <span className="font-sans text-3xl text-foreground tabular-nums">
                         £{data.totalSavings.toLocaleString()}
                       </span>
                       <TrendingUp className="w-4 h-4 text-foreground/40" strokeWidth={1.5} />
