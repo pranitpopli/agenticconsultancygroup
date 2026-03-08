@@ -128,7 +128,7 @@ const People = () => {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState<Filters>(emptyFilters());
-  const [sortKey, setSortKey] = useState<SortKey>("name");
+  const [sortKey, setSortKey] = useState<SortKey>("availability");
   const [sortAsc, setSortAsc] = useState(true);
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [sortOpen, setSortOpen] = useState(false);
