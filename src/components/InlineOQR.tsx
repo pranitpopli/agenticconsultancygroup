@@ -49,7 +49,7 @@ const InlineOQR = ({ doc }: InlineOQRProps) => {
             <p className="text-[11px] uppercase tracking-[0.15em] text-foreground/60 mb-1">
               Org quarterly savings
             </p>
-            <p className="text-3xl text-foreground/40 font-sans">
+            <p className="text-3xl text-muted-foreground font-sans tabular-nums">
               £{data.totalSavings.toLocaleString()}
             </p>
             <div className="flex items-center gap-1.5 text-foreground/60">
