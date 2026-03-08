@@ -117,7 +117,7 @@ const InboxCard = ({ brief, index, onRead }: InboxCardProps) => {
           disabled={brief.status === "swarm-searching"}
           className="flex items-center gap-2 text-xs tracking-[0.1em] uppercase text-foreground border border-foreground px-5 py-2.5 hover:bg-foreground hover:text-primary-foreground transition-colors mt-1 whitespace-nowrap disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-foreground"
         >
-          {brief.status === "swarm-searching" ? "Analysing…" : decision ? "View briefing" : "Read briefing"}
+          {brief.status === "swarm-searching" ? "Analysing…" : brief.status === "completed" ? "View briefing" : decision ? "View briefing" : "Read briefing"}
           {brief.status !== "swarm-searching" && <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.5} />}
         </button>
       </div>
