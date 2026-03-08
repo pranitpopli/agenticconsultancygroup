@@ -10,6 +10,17 @@ const SwarmThinking = ({ lines, onComplete }: SwarmThinkingProps) => {
   const [visibleLines, setVisibleLines] = useState<string[]>([]);
   const [skipped, setSkipped] = useState(false);
 
+  // Keyboard shortcut: Escape to skip
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && !skipped) {
+        handleSkip();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [skipped]);
+
   useEffect(() => {
     if (skipped) return;
     let i = 0;

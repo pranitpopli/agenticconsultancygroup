@@ -79,14 +79,20 @@ const OverviewDashboard = ({ briefs, onReadBriefing, onSubmitBrief }: OverviewDa
 
       {/* ━━━ BRIEF CARDS ━━━ */}
       <motion.div variants={itemVariants} className="space-y-4 mb-14">
-        {briefs.map((brief, i) => (
-          <InboxCard
-            key={brief.id}
-            brief={brief}
-            index={i}
-            onRead={onReadBriefing ?? (() => {})}
-          />
-        ))}
+        {briefs.length > 0 ? (
+          briefs.map((brief, i) => (
+            <InboxCard
+              key={brief.id}
+              brief={brief}
+              index={i}
+              onRead={onReadBriefing ?? (() => {})}
+            />
+          ))
+        ) : (
+          <div className="border border-border p-10 text-center">
+            <p className="text-sm text-muted-foreground">No briefs yet. Submit one below to get started.</p>
+          </div>
+        )}
       </motion.div>
 
       {/* ━━━ QUARTER PULSE ━━━ */}

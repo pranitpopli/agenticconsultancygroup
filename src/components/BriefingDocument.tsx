@@ -75,7 +75,45 @@ const BriefingDocumentView = ({ doc, onBack, readOnly = false }: BriefingDocumen
         <BriefingOQRPanel open={false} onToggle={() => setOqrOpen(true)} />
       )}
 
+      {/* Unsaved conversation warning */}
+      <AlertDialog open={showLeaveWarning} onOpenChange={setShowLeaveWarning}>
+        <AlertDialogContent className="border border-border bg-background">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="font-serif text-xl">Leave this briefing?</AlertDialogTitle>
+            <AlertDialogDescription className="text-sm text-muted-foreground">
+              Your conversation progress will be lost. This can't be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="text-xs uppercase tracking-[0.1em]">Stay</AlertDialogCancel>
+            <AlertDialogAction onClick={onBack} className="text-xs uppercase tracking-[0.1em] bg-foreground text-primary-foreground hover:bg-foreground/90">Leave</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
       <div className={`max-w-[780px] mx-auto px-4 sm:px-8 pt-28 pb-28 transition-all duration-300 ${oqrOpen ? "mr-[340px]" : ""}`}>
+        {/* Breadcrumb */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
+          className="mb-6"
+        >
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink onClick={handleBack} className="cursor-pointer text-xs uppercase tracking-[0.1em]">
+                  Briefings
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage className="text-xs uppercase tracking-[0.1em]">{currentDoc.title}</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </motion.div>
+
         {/* Navigation row */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -83,7 +121,7 @@ const BriefingDocumentView = ({ doc, onBack, readOnly = false }: BriefingDocumen
           transition={{ delay: 0.4 }}
           className="flex items-center gap-6 mb-10 flex-wrap">
           <motion.button
-            onClick={onBack}
+            onClick={handleBack}
             className="flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground transition-colors">
             <ArrowLeft className="w-3.5 h-3.5" strokeWidth={1.5} />
             <span className="tracking-[0.1em] uppercase">Back to briefings</span>
