@@ -25,6 +25,13 @@ const App = () => (
           <Toaster />
           <Sonner />
           <BrowserRouter>
+            {/* Skip to content — accessibility */}
+            <a
+              href="#main-content"
+              className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:bg-foreground focus:text-primary-foreground focus:px-4 focus:py-2 focus:text-xs focus:uppercase focus:tracking-[0.12em]"
+            >
+              Skip to content
+            </a>
             <Routes>
               <Route path="/login" element={<Login />} />
               <Route path="/" element={<AuthGuard><Dashboard /></AuthGuard>} />

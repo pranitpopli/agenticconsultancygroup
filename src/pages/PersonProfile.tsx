@@ -26,11 +26,22 @@ const PersonProfile = () => {
     return (
       <div className="min-h-screen bg-background">
         <BriefingNav />
-        <main className="max-w-[800px] mx-auto px-4 sm:px-8 pt-28 pb-24 text-center">
-          <p className="text-sm text-muted-foreground">Person not found.</p>
-          <button onClick={() => navigate("/people")} className="mt-4 text-xs text-foreground underline underline-offset-4">
-            ← Back to People
-          </button>
+        <main id="main-content" className="max-w-[800px] mx-auto px-4 sm:px-8 pt-28 pb-24">
+          <div className="flex flex-col items-center justify-center py-20 text-center">
+            <div className="w-12 h-12 border border-border flex items-center justify-center mb-5">
+              <Users className="w-5 h-5 text-muted-foreground" strokeWidth={1.5} />
+            </div>
+            <h2 className="font-serif text-lg text-foreground mb-2">Person not found</h2>
+            <p className="text-sm text-muted-foreground mb-6">
+              This profile doesn't exist or may have been removed.
+            </p>
+            <button
+              onClick={() => navigate("/people")}
+              className="text-xs uppercase tracking-[0.12em] px-5 py-2.5 bg-foreground text-primary-foreground hover:bg-foreground/90 transition-colors"
+            >
+              Back to People
+            </button>
+          </div>
         </main>
       </div>
     );

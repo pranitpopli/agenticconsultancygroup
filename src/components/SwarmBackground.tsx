@@ -347,6 +347,8 @@ const SwarmBackground = forwardRef<SwarmHandle>((_, ref) => {
       ref={canvasRef}
       className="absolute inset-0 w-full h-full"
       style={{ opacity: 0.6 }}
+      aria-hidden="true"
+      role="presentation"
     />
   );
 });

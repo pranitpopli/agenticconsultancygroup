@@ -1,9 +1,10 @@
 import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { AlertTriangle, TrendingUp, Zap, ArrowRight, Building2 } from "lucide-react";
+import { AlertTriangle, TrendingUp, Zap, ArrowRight, Building2, FileText } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import BriefingNav from "@/components/BriefingNav";
+import EmptyState from "@/components/EmptyState";
 import { BRIEFING_SUMMARIES } from "@/lib/briefingData";
 import { useBriefingStore } from "@/lib/briefingStore";
 import { PORTFOLIO_PROJECTS, SWARM_ALERTS, PORTFOLIO_TOTALS } from "@/lib/portfolioData";
@@ -58,6 +59,7 @@ const Dashboard = () => {
       <BriefingNav />
 
       <motion.main
+        id="main-content"
         className="max-w-[900px] mx-auto px-4 sm:px-8 pt-28 pb-24"
         variants={containerVariants}
         initial="hidden"
@@ -92,7 +94,7 @@ const Dashboard = () => {
         </motion.div>
 
         {/* Briefs awaiting decision */}
-        {awaitingBriefs.length > 0 && (
+        {awaitingBriefs.length > 0 ? (
           <motion.section variants={itemVariants} className="mb-12">
             <div className="flex items-baseline justify-between mb-4">
               <div className="flex items-baseline gap-3">
@@ -117,15 +119,24 @@ const Dashboard = () => {
                     <div>
                       <p className="text-sm text-foreground font-medium group-hover:text-foreground">{brief.title}</p>
                       <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{brief.aiSummary}</p>
-                      <p className="text-[10px] text-muted-foreground/60 mt-2">
+                      <p className="text-[10px] text-muted-foreground mt-2">
                         Submitted by {brief.submittedBy.name} · {brief.dateReceived}
                       </p>
                     </div>
-                    <ArrowRight className="w-4 h-4 text-muted-foreground/40 group-hover:text-foreground mt-1 shrink-0 transition-colors" strokeWidth={1.5} />
+                    <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground mt-1 shrink-0 transition-colors" strokeWidth={1.5} />
                   </div>
                 </button>
               ))}
             </div>
+          </motion.section>
+        ) : (
+          <motion.section variants={itemVariants} className="mb-12">
+            <EmptyState
+              icon={FileText}
+              title="All caught up"
+              description="No briefs awaiting your decision right now. Submit a new brief to get started."
+              action={{ label: "Go to Briefings", onClick: () => navigate("/briefings") }}
+            />
           </motion.section>
         )}
 
