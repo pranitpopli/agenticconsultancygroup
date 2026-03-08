@@ -11,7 +11,7 @@ interface InboxCardProps {
   onRead: (id: string) => void;
 }
 
-const InboxCard = ({ brief, index, onRead }: InboxCardProps) => {
+const InboxCard = memo(({ brief, index, onRead }: InboxCardProps) => {
   const doc = BRIEFING_DOCUMENTS[brief.id] || ARCHIVE_DOCUMENTS[brief.id];
   const teamCount = doc?.team?.length ?? 0;
   const deptCount = doc?.system?.departments?.length ?? 0;
