@@ -1,10 +1,12 @@
 import { useState, useRef, useMemo } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
-import { Upload, Send, X, FileText, Search } from "lucide-react";
+import { Upload, Send, X, FileText, Search, Clock } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import type { BriefingSummary } from "@/lib/briefingData";
+import { useBriefingStore } from "@/lib/briefingStore";
 import InboxCard from "./InboxCard";
+import { formatDistanceToNow } from "date-fns";
 
 interface OverviewDashboardProps {
   briefs: BriefingSummary[];
@@ -19,7 +21,7 @@ function getGreeting(): string {
   return "Good evening";
 }
 
-const STATUS_FILTERS = ["All", "Analysis Complete", "In Delivery", "Draft"] as const;
+const STATUS_FILTERS = ["All", "Analysis Complete", "Approved", "Deferred", "In Delivery", "Draft"] as const;
 
 const OverviewDashboard = ({ briefs, onReadBriefing, onSubmitBrief }: OverviewDashboardProps) => {
   const { toast } = useToast();
@@ -30,14 +32,23 @@ const OverviewDashboard = ({ briefs, onReadBriefing, onSubmitBrief }: OverviewDa
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("All");
   const fileRef = useRef<HTMLInputElement>(null);
+  const activity = useBriefingStore((s) => s.activity);
+  const decisions = useBriefingStore((s) => s.decisions);
 
   const filteredBriefs = useMemo(() => {
     return briefs.filter((b) => {
       const matchesSearch = !search || b.title.toLowerCase().includes(search.toLowerCase());
-      const matchesStatus = statusFilter === "All" || b.status?.toLowerCase() === statusFilter.toLowerCase();
+      const briefDecision = decisions[b.id];
+      
+      if (statusFilter === "Approved") return matchesSearch && briefDecision === "approved";
+      if (statusFilter === "Deferred") return matchesSearch && briefDecision === "deferred";
+      if (statusFilter === "Analysis Complete") return matchesSearch && !briefDecision && b.status === "analysis-complete";
+      if (statusFilter === "All") return matchesSearch;
+      
+      const matchesStatus = b.status?.toLowerCase() === statusFilter.toLowerCase();
       return matchesSearch && matchesStatus;
     });
-  }, [briefs, search, statusFilter]);
+  }, [briefs, search, statusFilter, decisions]);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -145,6 +156,33 @@ const OverviewDashboard = ({ briefs, onReadBriefing, onSubmitBrief }: OverviewDa
           </div>
         )}
       </motion.div>
+
+      {/* ━━━ ACTIVITY FEED ━━━ */}
+      {activity.length > 0 && (
+        <motion.div variants={itemVariants} className="mb-14">
+          <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground block mb-3">
+            Recent activity
+          </span>
+          <div className="border border-border divide-y divide-border">
+            {activity.slice(0, 8).map((entry) => (
+              <div key={entry.id} className="px-5 py-3 flex items-start gap-3">
+                <Clock className="w-3 h-3 text-muted-foreground mt-0.5 shrink-0" strokeWidth={1.5} />
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs text-foreground">
+                    <span className="font-medium">{entry.user}</span>
+                    {" "}{entry.action.toLowerCase()}{" "}
+                    <span className="font-medium">{entry.briefTitle}</span>
+                  </p>
+                  <p className="text-[11px] text-muted-foreground mt-0.5">{entry.detail}</p>
+                </div>
+                <span className="text-[10px] text-muted-foreground/60 whitespace-nowrap shrink-0">
+                  {formatDistanceToNow(entry.timestamp, { addSuffix: true })}
+                </span>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      )}
 
       {/* ━━━ SUBMIT NEW BRIEF ━━━ */}
       <motion.div variants={itemVariants} className="mb-16">
