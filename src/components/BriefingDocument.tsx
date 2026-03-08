@@ -7,7 +7,7 @@ import ConversationLayer from "./ConversationLayer";
 import ExportBanner from "./ExportBanner";
 import FixedInputBar from "./FixedInputBar";
 import InlineOQR from "./InlineOQR";
-import BriefingIndex from "./BriefingIndex";
+
 import ProposedSystemView from "./ProposedSystem";
 import GanttChart from "./GanttChart";
 import BriefingOQRPanel from "./BriefingOQRPanel";
@@ -63,7 +63,7 @@ const BriefingDocumentView = ({ doc, onBack, readOnly = false }: BriefingDocumen
 
   return (
     <main className="transition-all duration-300 relative" aria-label="Briefing document">
-      <BriefingIndex />
+      
 
       {/* OQR Panel */}
       <AnimatePresence>
@@ -297,9 +297,9 @@ const BriefingDocumentView = ({ doc, onBack, readOnly = false }: BriefingDocumen
           onExportDocx={() => setShowExport(true)}
           oqrOpen={oqrOpen}
           suggestions={!conversationActive ? [
-            "Can we replace Sarah Chen? She's on another project.",
-            "What if we run this in 10 weeks instead of 14?",
-          ] : undefined} />
+            "Replace Sarah Chen — she's on another project",
+            "Compress to 10 weeks instead of 14",
+          ] : []} />
       )}
     </main>
   );

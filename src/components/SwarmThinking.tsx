@@ -30,9 +30,9 @@ const SwarmThinking = ({ lines, onComplete }: SwarmThinkingProps) => {
         i++;
       } else {
         clearInterval(interval);
-        setTimeout(onComplete, 500);
+        setTimeout(onComplete, 200);
       }
-    }, 120);
+    }, 60);
 
     return () => clearInterval(interval);
   }, [lines, onComplete, skipped]);
@@ -49,9 +49,10 @@ const SwarmThinking = ({ lines, onComplete }: SwarmThinkingProps) => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.4 }}
-      className="min-h-[80vh] flex items-center justify-center px-6"
+      className="min-h-[80vh] flex items-center justify-center px-6 cursor-pointer"
       role="status"
       aria-label="Analysing brief"
+      onClick={!skipped ? handleSkip : undefined}
     >
       <div className="w-full max-w-xl">
         <div className="space-y-0">
@@ -72,12 +73,9 @@ const SwarmThinking = ({ lines, onComplete }: SwarmThinkingProps) => {
           )}
         </div>
         {!skipped && visibleLines.length < lines.length && (
-          <button
-            onClick={handleSkip}
-            className="mt-6 text-[10px] uppercase tracking-[0.15em] text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Skip →
-          </button>
+          <p className="mt-6 text-[10px] uppercase tracking-[0.15em] text-muted-foreground">
+            Click anywhere or press Esc to skip
+          </p>
         )}
       </div>
     </motion.div>

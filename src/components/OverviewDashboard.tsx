@@ -1,9 +1,7 @@
 import { useState, useRef } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
-import { ArrowRight, Upload, Send, X, FileText, Zap, TrendingUp, Circle } from "lucide-react";
-import { OQR_DATA } from "@/lib/oqrData";
-import { EMPLOYEES } from "@/lib/simulatedData";
+import { Upload, Send, X, FileText } from "lucide-react";
 import type { BriefingSummary } from "@/lib/briefingData";
 import InboxCard from "./InboxCard";
 
@@ -18,13 +16,7 @@ const OverviewDashboard = ({ briefs, onReadBriefing, onSubmitBrief }: OverviewDa
   const [briefText, setBriefText] = useState("");
   const [fileName, setFileName] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
-  const [connectedIntegrations, setConnectedIntegrations] = useState<Set<string>>(new Set());
-  const [connectingIntegration, setConnectingIntegration] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
-
-  const { totalSavings, orgMaturity, maturityDelta, aiProjects, currentQuarter } = OQR_DATA;
-  const liveProjects = aiProjects.filter((p) => p.status === "live").length;
-  const inBuild = aiProjects.filter((p) => p.status === "in-build").length;
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -95,47 +87,6 @@ const OverviewDashboard = ({ briefs, onReadBriefing, onSubmitBrief }: OverviewDa
         )}
       </motion.div>
 
-      {/* ━━━ QUARTER PULSE ━━━ */}
-      <motion.div variants={itemVariants} className="mb-14">
-        <div className="border border-border p-6 sm:p-8">
-          <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground mb-5">
-            {currentQuarter} · Organisation pulse
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
-            <div>
-              <p className="text-2xl font-sans tabular-nums text-foreground">
-                £{(totalSavings / 1000).toFixed(0)}k
-              </p>
-              <p className="text-[11px] text-muted-foreground mt-1">
-                Cost avoided this quarter
-              </p>
-            </div>
-            <div>
-              <p className="text-2xl font-sans tabular-nums text-foreground">
-                {liveProjects}
-                <span className="text-base text-muted-foreground ml-1">
-                  +{inBuild}
-                </span>
-              </p>
-              <p className="text-[11px] text-muted-foreground mt-1">
-                AI projects live · in build
-              </p>
-            </div>
-            <div>
-              <p className="text-2xl font-sans tabular-nums text-foreground">
-                {orgMaturity}%
-                <span className="text-base text-[hsl(var(--status-positive))] ml-1">
-                  +{maturityDelta}
-                </span>
-              </p>
-              <p className="text-[11px] text-muted-foreground mt-1">
-                AI maturity · pts this quarter
-              </p>
-            </div>
-          </div>
-        </div>
-      </motion.div>
-
       {/* ━━━ SUBMIT NEW BRIEF ━━━ */}
       <motion.div variants={itemVariants} className="mb-16">
         <div className="border border-border p-6 space-y-4">
@@ -150,46 +101,6 @@ const OverviewDashboard = ({ briefs, onReadBriefing, onSubmitBrief }: OverviewDa
             rows={4}
             className="w-full text-sm bg-transparent border border-border px-4 py-3 outline-none resize-none placeholder:text-muted-foreground/60 focus:border-foreground/30 transition-colors leading-relaxed"
           />
-
-          {/* Integration pills */}
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground mr-1">Connect:</span>
-            {["Jira", "Trello", "Slack", "Confluence", "GitHub"].map((name) => {
-              const isConnected = connectedIntegrations.has(name);
-              const isConnecting = connectingIntegration === name;
-              return (
-                <button
-                  key={name}
-                  onClick={() => {
-                    if (isConnected || isConnecting) return;
-                    setConnectingIntegration(name);
-                    setTimeout(() => {
-                      setConnectedIntegrations(prev => new Set([...prev, name]));
-                      setConnectingIntegration(null);
-                    }, 1200);
-                  }}
-                  className={`flex items-center gap-1.5 text-[11px] px-2.5 py-1.5 border transition-all ${
-                    isConnected
-                      ? "border-foreground/20 text-foreground"
-                      : isConnecting
-                      ? "border-border text-muted-foreground animate-pulse"
-                      : "border-border text-muted-foreground hover:border-foreground/30 hover:text-foreground"
-                  }`}
-                >
-                  <Circle
-                    className={`w-2 h-2 flex-shrink-0 ${
-                      isConnected
-                        ? "fill-[hsl(var(--status-positive))] text-[hsl(var(--status-positive))]"
-                        : isConnecting
-                        ? "fill-[hsl(var(--warm-accent))] text-[hsl(var(--warm-accent))]"
-                        : "fill-muted text-muted"
-                    }`}
-                  />
-                  {isConnecting ? `Pulling ${name} history…` : name}
-                </button>
-              );
-            })}
-          </div>
 
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -241,13 +152,6 @@ const OverviewDashboard = ({ briefs, onReadBriefing, onSubmitBrief }: OverviewDa
         </div>
       </motion.div>
 
-      {/* ━━━ FOOTER ━━━ */}
-      <motion.p
-        variants={itemVariants}
-        className="text-xs text-muted-foreground/50 italic text-center font-serif"
-      >
-        Swarm last scanned {EMPLOYEES.length} nodes across Meridian Group — 4 minutes ago.
-      </motion.p>
     </motion.main>
   );
 };
