@@ -105,7 +105,7 @@ const BoardDeckExport = ({ onClose, data }: BoardDeckExportProps) => {
               7-slide McKinsey-format deck generated from live OQR data. Includes financial model, org maturity, and AI project inventory.
             </p>
             <button
-              onClick={onClose}
+              onClick={() => { toast({ title: "PPTX download started", description: "This feature will be available in the next release." }); onClose(); }}
               className="w-full flex items-center justify-center gap-2 text-[10px] uppercase tracking-[0.15em] text-foreground border border-foreground/30 px-4 py-3 rounded-sm hover:bg-foreground hover:text-background transition-colors"
             >
               Download .pptx
