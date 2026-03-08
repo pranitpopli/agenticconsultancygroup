@@ -328,6 +328,60 @@ export const BRIEFING_DOCUMENTS: Record<string, BriefingDocument> = {
         tradeOffNarrative: "Addresses the most critical infrastructure debt (API gateway and observability) at 60% of the cost and timeline. However, the frontend technical debt continues to compound — Lighthouse scores will remain low and the product team stays partially blocked. A follow-up initiative would be needed within 2 quarters, and re-mobilisation costs ~£20k.",
       },
     ],
+    raciMatrix: [
+      { memberName: "Sarah Chen", role: "Tech Lead", phases: ["A", "C", "C"] },
+      { memberName: "Leo Martinelli", role: "Backend Engineer", phases: ["R", "C", "I"] },
+      { memberName: "James O'Brien", role: "DevOps Engineer", phases: ["R", "R", "C"] },
+      { memberName: "Mei Lin", role: "Frontend Engineer", phases: ["I", "R", "C"] },
+      { memberName: "Fatima Al-Rashidi", role: "QA Lead", phases: ["C", "C", "R"] },
+      { memberName: "Omar Hassan", role: "Security Engineer", phases: ["C", "I", "I"] },
+    ],
+    deliveryStatus: {
+      approvedDate: "5 March 2025",
+      overallProgress: 38,
+      phases: [
+        {
+          phaseNumber: 1,
+          phaseTitle: "Foundation & API Gateway",
+          progressPercent: 72,
+          milestones: [
+            { name: "API gateway architecture finalised", complete: true },
+            { name: "New auth service deployed to staging", complete: true },
+            { name: "Observability baseline configured", complete: true },
+            { name: "Legacy auth feature-flag cutover", complete: false },
+            { name: "API gateway production rollout", complete: false },
+          ],
+          blockers: [
+            "Legacy auth service has undocumented dependency on billing module — requires 3-day investigation",
+          ],
+        },
+        {
+          phaseNumber: 2,
+          phaseTitle: "Frontend Migration",
+          progressPercent: 15,
+          milestones: [
+            { name: "Component library audit complete", complete: true },
+            { name: "Design system tokens migrated", complete: false },
+            { name: "Critical user flows migrated", complete: false },
+            { name: "A/B traffic splitting enabled", complete: false },
+            { name: "Visual regression tests passing", complete: false },
+          ],
+          blockers: [],
+        },
+        {
+          phaseNumber: 3,
+          phaseTitle: "Stabilisation & Handover",
+          progressPercent: 0,
+          milestones: [
+            { name: "Load testing at 2x peak traffic", complete: false },
+            { name: "Runbooks documented for all services", complete: false },
+            { name: "Knowledge transfer sessions complete", complete: false },
+            { name: "Platform support team onboarded", complete: false },
+          ],
+          blockers: [],
+        },
+      ],
+    },
   },
   "brief-002": {
     id: "brief-002",
