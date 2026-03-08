@@ -307,8 +307,8 @@ const OverviewDashboard = () => {
                 traditional: "bg-stone-200 text-stone-500",
               };
               return (
-                <div key={dept.name} className="flex items-center gap-3">
-                  <span className="font-sans text-xs text-muted-foreground w-[110px] shrink-0 truncate">
+                <div key={dept.name} className="flex items-center gap-3 h-7">
+                  <span className="font-sans text-xs text-muted-foreground w-[110px] shrink-0 truncate leading-none">
                     {dept.name}
                   </span>
                   <div className="flex-1 h-1.5 rounded-full bg-muted overflow-hidden">
@@ -319,11 +319,11 @@ const OverviewDashboard = () => {
                       transition={{ duration: 0.7, delay: 0.15 }}
                     />
                   </div>
-                  <span className="font-sans text-xs font-semibold tabular-nums text-foreground w-7 text-right">
+                  <span className="font-sans text-xs font-semibold tabular-nums text-foreground w-8 text-right leading-none">
                     {dept.score}
                   </span>
                   <span
-                    className={`font-sans text-[10px] px-1.5 py-0.5 rounded-full ${stageStyles[dept.stage] || stageStyles.traditional}`}
+                    className={`font-sans text-[10px] leading-none px-2 py-1 rounded-full w-[90px] text-center ${stageStyles[dept.stage] || stageStyles.traditional}`}
                   >
                     {dept.stage.replace("-", " ")}
                   </span>
