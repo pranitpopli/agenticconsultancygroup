@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Moon, Sun, LogOut, Settings, ChevronDown, Globe } from "lucide-react";
+import { Moon, Sun, LogOut, ChevronDown, Globe } from "lucide-react";
+import { Settings as SettingsIcon } from "lucide-react";
 import { useTheme } from "@/hooks/use-theme";
 import { useAuth } from "@/contexts/AuthContext";
 
