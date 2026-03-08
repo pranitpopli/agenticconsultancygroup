@@ -126,7 +126,7 @@ const OQR = () => {
         {/* ━━━ TWO SPIDER CHARTS ━━━ */}
         <motion.div variants={itemVariants} className="grid grid-cols-2 gap-4 mb-10">
           {/* Department Maturity */}
-          <div className="border border-border bg-card p-6">
+          <div className="border border-border bg-card rounded-lg shadow-sm p-6">
             <div className="flex items-center justify-between mb-1">
               <div className="flex items-center gap-2">
                 <TrendingUp className="w-3.5 h-3.5 text-muted-foreground" strokeWidth={1.5} />
