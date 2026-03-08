@@ -4,19 +4,21 @@ import BriefingNav from "@/components/BriefingNav";
 import InboxView from "@/components/InboxView";
 import BriefingDocumentView from "@/components/BriefingDocument";
 import OQRPanel from "@/components/OQRPanel";
+import OverviewDashboard from "@/components/OverviewDashboard";
 import { BRIEFING_DOCUMENTS } from "@/lib/briefingData";
 
-type View = "inbox" | "briefing";
+type View = "overview" | "inbox" | "briefing";
 
 const Index = () => {
-  const [view, setView] = useState<View>("inbox");
+  const [view, setView] = useState<View>("overview");
   const [activeBriefId, setActiveBriefId] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<"briefings" | "oqr" | "archive">("briefings");
+  const [activeTab, setActiveTab] = useState<"overview" | "briefings" | "oqr" | "archive">("overview");
   const [oqrOpen, setOqrOpen] = useState(false);
 
   const handleReadBriefing = (id: string) => {
     setActiveBriefId(id);
     setView("briefing");
+    setActiveTab("briefings");
   };
 
   const handleBack = () => {
@@ -24,9 +26,12 @@ const Index = () => {
     setActiveBriefId(null);
   };
 
-  const handleTabChange = (tab: "briefings" | "oqr" | "archive") => {
+  const handleTabChange = (tab: "overview" | "briefings" | "oqr" | "archive") => {
     setActiveTab(tab);
-    if (tab === "briefings") {
+    if (tab === "overview") {
+      setView("overview");
+      setActiveBriefId(null);
+    } else if (tab === "briefings") {
       if (view === "briefing") return;
       setView("inbox");
     }
