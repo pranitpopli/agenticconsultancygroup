@@ -269,6 +269,13 @@ const BriefingDocumentView = ({ doc, onBack, readOnly = false }: BriefingDocumen
           </Section>
         )}
 
+        {/* Section — Delivery Status */}
+        {currentDoc.deliveryStatus && (
+          <Section number={nextSection()} title="Delivery Status" delay={0.58}>
+            <DeliveryTracker status={currentDoc.deliveryStatus} />
+          </Section>
+        )}
+
         {/* Section — Org Key Results */}
         <Section number={nextSection()} title="Org Key Results" delay={0.6}>
           <InlineOQR doc={currentDoc} />
