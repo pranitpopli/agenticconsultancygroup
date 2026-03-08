@@ -105,12 +105,13 @@ const ArchiveView = () => {
   const deployedCount = ARCHIVED_BRIEFS.filter(b => b.outcome === "deployed").length;
 
   return (
-    <motion.div
+    <motion.main
       key="archive"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       className="max-w-[780px] mx-auto px-8 pt-28 pb-24"
+      aria-label="Archive view"
     >
       <div className="mb-10">
         <h1 className="font-serif text-3xl text-foreground mb-2">Archive</h1>
