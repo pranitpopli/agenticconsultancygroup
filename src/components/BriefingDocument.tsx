@@ -15,7 +15,13 @@ import SuccessMetrics from "./SuccessMetrics";
 import ScenarioModelling from "./ScenarioModelling";
 import RACIMatrix from "./RACIMatrix";
 import DeliveryTracker from "./DeliveryTracker";
+import ImpactLedger from "./ImpactLedger";
+import BenchmarkAnnotations from "./BenchmarkAnnotations";
+import ChangeReadiness from "./ChangeReadiness";
 import BriefingTableOfContents from "./BriefingTableOfContents";
+import { BENCHMARKS } from "@/lib/benchmarkData";
+import { CHANGE_READINESS } from "@/lib/changeReadinessData";
+import { IMPACT_LEDGER_DATA } from "@/lib/impactLedgerData";
 import {
   AlertDialog,
   AlertDialogAction,
