@@ -42,7 +42,16 @@ const BriefingDocumentView = ({ doc, onBack, readOnly = false }: BriefingDocumen
   const [showExport, setShowExport] = useState(false);
   const [pendingInput, setPendingInput] = useState<string | null>(null);
   const [oqrOpen, setOqrOpen] = useState(false);
+  const [showLeaveWarning, setShowLeaveWarning] = useState(false);
   const { toast } = useToast();
+
+  const handleBack = () => {
+    if (conversationActive && !readOnly) {
+      setShowLeaveWarning(true);
+    } else {
+      onBack();
+    }
+  };
 
   const handleConversationUpdate = (updates: Partial<BriefingDocType>) => {
     setCurrentDoc((prev) => ({ ...prev, ...updates }));
