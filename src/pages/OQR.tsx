@@ -24,6 +24,7 @@ const capabilityData = [
 ];
 
 const OQR = () => {
+  const navigate = useNavigate();
   const {
     totalSavings,
     previousQuarterSavings,
