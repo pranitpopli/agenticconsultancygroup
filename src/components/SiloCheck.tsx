@@ -12,11 +12,10 @@ interface SiloCheckProps {
 const SiloCheck = ({ overlaps, onReviewOverlaps, onSkipToTeam }: SiloCheckProps) => {
   const hasOverlaps = overlaps.length > 0;
 
-  // Auto-advance if no overlaps
+  // Instant skip if no overlaps
   useEffect(() => {
     if (!hasOverlaps) {
-      const timer = setTimeout(onSkipToTeam, 1500);
-      return () => clearTimeout(timer);
+      onSkipToTeam();
     }
   }, [hasOverlaps, onSkipToTeam]);
 

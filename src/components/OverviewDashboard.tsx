@@ -1,9 +1,7 @@
 import { useState, useRef } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
-import { ArrowRight, Upload, Send, X, FileText, Zap, TrendingUp, Circle } from "lucide-react";
-import { OQR_DATA } from "@/lib/oqrData";
-import { EMPLOYEES } from "@/lib/simulatedData";
+import { Upload, Send, X, FileText } from "lucide-react";
 import type { BriefingSummary } from "@/lib/briefingData";
 import InboxCard from "./InboxCard";
 
