@@ -122,7 +122,7 @@ const InlineOQR = ({ doc }: InlineOQRProps) => {
                   />
                 </svg>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-lg text-foreground/50 font-sans">{maturityBefore}%</span>
+                  <span className="text-lg text-muted-foreground font-sans tabular-nums">{maturityBefore}%</span>
                 </div>
               </div>
               <div>
