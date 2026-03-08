@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { CheckCircle2, Users, Building2, TrendingDown, ChevronDown, ChevronRight, Clock, Calendar, ArrowRight } from "lucide-react";
+import { CheckCircle2, Users, Building2, TrendingDown, ChevronDown, ChevronRight, Clock, Calendar, ArrowRight, Search } from "lucide-react";
 import { ARCHIVED_BRIEFS } from "@/lib/briefingData";
 
 interface ArchiveViewProps {
