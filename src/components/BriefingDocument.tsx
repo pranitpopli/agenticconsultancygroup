@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, FileText } from "lucide-react";
 import type { BriefingDocument as BriefingDocType } from "@/lib/briefingData";

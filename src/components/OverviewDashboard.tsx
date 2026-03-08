@@ -36,6 +36,7 @@ const OverviewDashboard = ({ onReadBriefing }: OverviewDashboardProps) => {
       setSubmitting(false);
       setBriefText("");
       setFileName(null);
+      toast({ title: "Brief submitted", description: "Your agents are analysing the brief. It will appear in your inbox shortly." });
     }, 1500);
   };
 
