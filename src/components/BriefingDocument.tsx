@@ -247,6 +247,13 @@ const BriefingDocumentView = ({ doc, onBack, readOnly = false }: BriefingDocumen
             {currentDoc.costNarrative}
           </p>
 
+          {/* Benchmark annotations for cost section */}
+          {benchmarks.filter((b) => b.section === "cost").length > 0 && (
+            <div className="mb-6">
+              <BenchmarkAnnotations annotations={benchmarks.filter((b) => b.section === "cost")} />
+            </div>
+          )}
+
           {/* Comparison table */}
           <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
             <div className="border border-border overflow-hidden min-w-[480px]">
