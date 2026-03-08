@@ -14,14 +14,11 @@ const ALL_LOCATIONS = [...new Set(EMPLOYEES.map((e) => e.location))].sort();
 const ALL_PROJECTS = [...new Set(EMPLOYEES.flatMap((e) => e.pastProjects.map((p) => p.name)))].sort();
 const ALL_SKILLS = [...new Set(EMPLOYEES.flatMap((e) => e.skills))].sort();
 
-type SortKey = "name" | "department" | "availability" | "experience" | "rate" | "location";
-const SORT_OPTIONS: { key: SortKey; label: string }[] = [
-  { key: "name", label: "Name" },
-  { key: "department", label: "Department" },
-  { key: "location", label: "Location" },
-  { key: "availability", label: "Availability" },
-  { key: "experience", label: "Experience" },
-  { key: "rate", label: "Hourly rate" },
+type SortKey = "availability" | "experience" | "rate";
+const SORT_OPTIONS: { key: SortKey; label: string; desc: string }[] = [
+  { key: "availability", label: "Availability", desc: "Free people first — who can start now" },
+  { key: "experience", label: "Seniority", desc: "Most experienced first for critical roles" },
+  { key: "rate", label: "Day rate", desc: "Budget-conscious staffing decisions" },
 ];
 
 const availabilityOrder: Record<string, number> = { available: 0, partial: 1, committed: 2 };
