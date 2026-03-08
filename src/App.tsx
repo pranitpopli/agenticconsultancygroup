@@ -6,14 +6,16 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@/hooks/use-theme";
 import { AuthProvider } from "@/contexts/AuthContext";
 import AuthGuard from "@/components/AuthGuard";
-import Dashboard from "./pages/Dashboard";
-import Index from "./pages/Index";
-import Organisation from "./pages/Organisation";
+import { lazy, Suspense } from "react";
 import Login from "./pages/Login";
-import People from "./pages/People";
-import PersonProfile from "./pages/PersonProfile";
-import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
+
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const Index = lazy(() => import("./pages/Index"));
+const Organisation = lazy(() => import("./pages/Organisation"));
+const People = lazy(() => import("./pages/People"));
+const PersonProfile = lazy(() => import("./pages/PersonProfile"));
+const Settings = lazy(() => import("./pages/Settings"));
 
 const queryClient = new QueryClient();
 
