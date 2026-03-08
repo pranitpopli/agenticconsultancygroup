@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import { AlertTriangle, TrendingUp, Users, DollarSign, Clock, ChevronDown, ChevronUp } from "lucide-react";
+import { EMPLOYEES } from "@/lib/simulatedData";
 import {
   PORTFOLIO_PROJECTS, RESOURCE_CONFLICTS, SWARM_ALERTS, PORTFOLIO_TOTALS,
 } from "@/lib/portfolioData";
