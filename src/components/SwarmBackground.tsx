@@ -127,6 +127,10 @@ const SwarmBackground = forwardRef<SwarmHandle>((_, ref) => {
     const lineColor = isDark ? "rgba(180,195,210," : "rgba(26,26,26,";
 
     const animate = () => {
+      if (paused) {
+        raf.current = requestAnimationFrame(animate);
+        return;
+      }
       const canvas = canvasRef.current;
       if (!canvas) return;
       const ctx = canvas.getContext("2d");
