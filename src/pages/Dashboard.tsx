@@ -129,6 +129,15 @@ const Dashboard = () => {
               ))}
             </div>
           </motion.section>
+        ) : (
+          <motion.section variants={itemVariants} className="mb-12">
+            <EmptyState
+              icon={FileText}
+              title="All caught up"
+              description="No briefs awaiting your decision right now. Submit a new brief to get started."
+              action={{ label: "Go to Briefings", onClick: () => navigate("/briefings") }}
+            />
+          </motion.section>
         )}
 
         {/* Projects at risk */}
