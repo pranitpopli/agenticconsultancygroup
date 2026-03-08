@@ -136,14 +136,11 @@
     font-family: var(--font-sans);
     font-weight: 400;
     letter-spacing: 0.005em;
-    color: hsl(0 0% 10%);
-    background-color: #FAF8F4;
   }
 
   h1, h2, h3 {
     font-family: var(--font-serif);
     font-weight: 400;
-    color: hsl(0 0% 10%);
   }
 
   /* Focus-visible for keyboard accessibility */
