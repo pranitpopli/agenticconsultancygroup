@@ -197,12 +197,20 @@ export const BRIEFING_DOCUMENTS: Record<string, BriefingDocument> = {
       { dimension: "Org knowledge retained", internal: "Full", external: "None" },
       { dimension: "Post-project value", internal: "Team stays in org", external: "Knowledge leaves" },
     ],
-    phases: [
-      { number: 1, title: "Foundation & API Gateway", weeks: "Weeks 1–6", description: "Consolidate API gateway, establish new authentication service, and set up observability baseline across all affected services." },
-      { number: 2, title: "Frontend Migration", weeks: "Weeks 5–12", description: "Migrate frontend to modern component architecture with parallel rendering pipeline. Phased rollout to reduce risk." },
-      { number: 3, title: "Stabilisation & Handover", weeks: "Weeks 12–16", description: "Performance validation, load testing at scale, documentation, and knowledge transfer to platform support team." },
+    risks: [
+      { risk: "Legacy auth service coupling delays API gateway migration", likelihood: "medium", impact: "high", mitigation: "Parallel auth service rebuild in Phase 1; feature-flag cutover to limit blast radius" },
+      { risk: "Frontend migration causes regression in critical user flows", likelihood: "medium", impact: "medium", mitigation: "Phased rollout with A/B traffic splitting; automated visual regression tests" },
+      { risk: "Key team member unavailability (illness, reassignment)", likelihood: "low", impact: "high", mitigation: "Cross-training in Phase 1; documented runbooks for all workstreams" },
+      { risk: "Observability stack integration conflicts with existing monitoring", likelihood: "low", impact: "medium", mitigation: "Run new stack in parallel for 2 weeks before decommissioning legacy" },
     ],
-  },
+    successMetrics: [
+      { metric: "Deploy time", baseline: "45 minutes", target: "< 10 minutes", measurement: "CI/CD pipeline metrics, measured weekly from Phase 2" },
+      { metric: "Incident response time", baseline: "34 min avg", target: "< 15 min avg", measurement: "PagerDuty MTTR across all services" },
+      { metric: "API gateway latency (p99)", baseline: "420ms", target: "< 200ms", measurement: "Datadog APM, measured post-Phase 1" },
+      { metric: "Frontend Lighthouse score", baseline: "62", target: "> 90", measurement: "Automated Lighthouse CI on every merge to main" },
+      { metric: "Blocked product teams", baseline: "3 teams", target: "0 teams", measurement: "Sprint retrospective survey, measured end of Phase 3" },
+    ],
+    recommendation: "proceed",
   "brief-002": {
     id: "brief-002",
     title: "Customer Data Intelligence Layer",
