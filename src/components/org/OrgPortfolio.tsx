@@ -29,6 +29,7 @@ const SEVERITY_DOT: Record<string, string> = {
 const maxWeek = Math.max(...PORTFOLIO_PROJECTS.map((p) => p.endWeek));
 
 const OrgPortfolio = () => {
+  const navigate = useNavigate();
   const [expandedAlert, setExpandedAlert] = useState<string | null>(null);
 
   return (
