@@ -299,18 +299,23 @@ const OQR = () => {
               <span>{completed} completed</span>
             </div>
           </div>
-          <div className="space-y-2">
-            {aiProjects.map((proj) => (
+          <div className="border border-border overflow-hidden">
+            {/* Table header */}
+            <div className="grid grid-cols-[1fr_140px_160px_90px] border-b border-border">
+              <div className="px-4 py-3 text-[10px] uppercase tracking-[0.12em] text-muted-foreground">Project</div>
+              <div className="px-4 py-3 text-[10px] uppercase tracking-[0.12em] text-muted-foreground border-l border-border">Department</div>
+              <div className="px-4 py-3 text-[10px] uppercase tracking-[0.12em] text-muted-foreground border-l border-border">Capability</div>
+              <div className="px-4 py-3 text-[10px] uppercase tracking-[0.12em] text-muted-foreground border-l border-border">Status</div>
+            </div>
+            {aiProjects.map((proj, i) => (
               <div
                 key={proj.id}
-                className="flex items-center justify-between border border-border px-4 py-3"
+                className={`grid grid-cols-[1fr_140px_160px_90px] ${i > 0 ? "border-t border-border" : ""}`}
               >
-                <div className="flex items-center gap-4">
-                  <span className="text-[12px] text-foreground">{proj.name}</span>
-                  <span className="text-[10px] text-muted-foreground">{proj.department}</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <span className="text-[10px] text-muted-foreground">{proj.capability}</span>
+                <div className="px-4 py-3 text-xs text-foreground">{proj.name}</div>
+                <div className="px-4 py-3 text-xs text-muted-foreground border-l border-border">{proj.department}</div>
+                <div className="px-4 py-3 text-xs text-muted-foreground border-l border-border">{proj.capability}</div>
+                <div className="px-4 py-3 border-l border-border">
                   <span
                     className={`text-[9px] uppercase tracking-[0.1em] px-1.5 py-0.5 border ${
                       proj.status === "live"
