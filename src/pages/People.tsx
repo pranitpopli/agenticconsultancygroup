@@ -79,17 +79,20 @@ const FacetGroup = ({ label, options, selected, onToggle, counts }: FacetGroupPr
   const showSearch = options.length > 6;
 
   return (
-    <div className="space-y-2">
-      <span className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-medium">{label}</span>
+    <div className="space-y-2.5">
+      <span className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground/70 font-semibold block">{label}</span>
       {showSearch && (
-        <input
-          value={facetSearch}
-          onChange={(e) => setFacetSearch(e.target.value)}
-          placeholder={`Search ${label.toLowerCase()}…`}
-          className="w-full text-[11px] bg-background border border-border px-2.5 py-1.5 outline-none focus:border-foreground/30 transition-colors placeholder:text-muted-foreground/40 text-foreground"
-        />
+        <div className="relative">
+          <Search className="absolute left-2 top-1/2 -translate-y-1/2 w-3 h-3 text-muted-foreground/40 pointer-events-none" strokeWidth={1.5} />
+          <input
+            value={facetSearch}
+            onChange={(e) => setFacetSearch(e.target.value)}
+            placeholder={`Filter…`}
+            className="w-full text-[11px] bg-muted/30 border border-border/50 rounded-md pl-7 pr-2.5 py-1.5 outline-none focus:border-foreground/20 focus:bg-background transition-colors placeholder:text-muted-foreground/40 text-foreground"
+          />
+        </div>
       )}
-      <div className={`space-y-0.5 ${showSearch ? "max-h-36 overflow-y-auto" : ""}`}>
+      <div className={`space-y-px ${showSearch ? "max-h-40 overflow-y-auto pr-1 scrollbar-thin" : ""}`}>
         {filtered.map((opt) => {
           const count = counts.get(opt) ?? 0;
           const isSelected = selected.has(opt);
@@ -97,26 +100,26 @@ const FacetGroup = ({ label, options, selected, onToggle, counts }: FacetGroupPr
             <button
               key={opt}
               onClick={() => onToggle(opt)}
-              className={`w-full flex items-center justify-between px-2 py-1.5 text-xs transition-colors rounded-sm group ${
+              className={`w-full flex items-center justify-between px-2 py-[5px] text-[11px] transition-colors rounded-md group ${
                 isSelected
-                  ? "bg-foreground/5 text-foreground"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                  ? "bg-foreground/[0.06] text-foreground"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/40"
               }`}
             >
-              <span className="flex items-center gap-2">
-                <span className={`w-3.5 h-3.5 border flex items-center justify-center transition-colors ${
-                  isSelected ? "border-foreground bg-foreground" : "border-border group-hover:border-foreground/30"
+              <span className="flex items-center gap-2 min-w-0">
+                <span className={`w-3.5 h-3.5 rounded-[3px] border flex-shrink-0 flex items-center justify-center transition-all ${
+                  isSelected ? "border-foreground bg-foreground" : "border-border/70 group-hover:border-foreground/30"
                 }`}>
                   {isSelected && <Check className="w-2.5 h-2.5 text-primary-foreground" strokeWidth={2.5} />}
                 </span>
                 <span className="truncate">{opt}</span>
               </span>
-              <span className="text-[10px] text-muted-foreground/50 tabular-nums">{count}</span>
+              <span className={`text-[10px] tabular-nums flex-shrink-0 ml-2 ${isSelected ? "text-muted-foreground/70" : "text-muted-foreground/40"}`}>{count}</span>
             </button>
           );
         })}
         {filtered.length === 0 && (
-          <p className="text-[11px] text-muted-foreground/50 px-2 py-1">No matches</p>
+          <p className="text-[11px] text-muted-foreground/40 px-2 py-2">No matches</p>
         )}
       </div>
     </div>
@@ -413,53 +416,33 @@ const People = () => {
                 exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.2 }}
                 className="overflow-hidden"
               >
-                <div className="border border-border bg-card p-5">
-                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-5">
-                    <FacetGroup
-                      label="Department"
-                      options={ALL_DEPARTMENTS}
-                      selected={filters.departments}
-                      onToggle={(v) => toggleFilter("departments", v)}
-                      counts={facetCounts.departments}
-                    />
-                    <FacetGroup
-                      label="Location"
-                      options={ALL_LOCATIONS}
-                      selected={filters.locations}
-                      onToggle={(v) => toggleFilter("locations", v)}
-                      counts={facetCounts.locations}
-                    />
-                    <FacetGroup
-                      label="Project"
-                      options={ALL_PROJECTS}
-                      selected={filters.projects}
-                      onToggle={(v) => toggleFilter("projects", v)}
-                      counts={facetCounts.projects}
-                    />
-                    <FacetGroup
-                      label="Skill"
-                      options={ALL_SKILLS}
-                      selected={filters.skills}
-                      onToggle={(v) => toggleFilter("skills", v)}
-                      counts={facetCounts.skills}
-                    />
-                    <FacetGroup
-                      label="Availability"
-                      options={["available", "partial", "committed"]}
-                      selected={filters.availability}
-                      onToggle={(v) => toggleFilter("availability", v)}
-                      counts={facetCounts.availability}
-                    />
+                <div className="border border-border/60 bg-card/80 backdrop-blur-sm rounded-lg p-5">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-0 divide-x divide-border/40">
+                    <div className="pr-4">
+                      <FacetGroup label="Department" options={ALL_DEPARTMENTS} selected={filters.departments} onToggle={(v) => toggleFilter("departments", v)} counts={facetCounts.departments} />
+                    </div>
+                    <div className="px-4">
+                      <FacetGroup label="Location" options={ALL_LOCATIONS} selected={filters.locations} onToggle={(v) => toggleFilter("locations", v)} counts={facetCounts.locations} />
+                    </div>
+                    <div className="px-4">
+                      <FacetGroup label="Project" options={ALL_PROJECTS} selected={filters.projects} onToggle={(v) => toggleFilter("projects", v)} counts={facetCounts.projects} />
+                    </div>
+                    <div className="px-4">
+                      <FacetGroup label="Skill" options={ALL_SKILLS} selected={filters.skills} onToggle={(v) => toggleFilter("skills", v)} counts={facetCounts.skills} />
+                    </div>
+                    <div className="pl-4">
+                      <FacetGroup label="Availability" options={["available", "partial", "committed"]} selected={filters.availability} onToggle={(v) => toggleFilter("availability", v)} counts={facetCounts.availability} />
+                    </div>
                   </div>
 
                   {activeCount > 0 && (
-                    <div className="flex justify-between items-center mt-4 pt-3 border-t border-border/50">
-                      <span className="text-[11px] text-muted-foreground">{results.length} result{results.length !== 1 ? "s" : ""}</span>
+                    <div className="flex justify-between items-center mt-4 pt-3 border-t border-border/30">
+                      <span className="text-[11px] text-muted-foreground/60">{results.length} result{results.length !== 1 ? "s" : ""} found</span>
                       <button
                         onClick={() => { setFilters(emptyFilters()); setPage(1); }}
-                        className="text-[11px] text-muted-foreground hover:text-foreground transition-colors"
+                        className="text-[11px] text-muted-foreground/60 hover:text-foreground transition-colors underline underline-offset-2"
                       >
-                        Clear all filters
+                        Clear all
                       </button>
                     </div>
                   )}
