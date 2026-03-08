@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import { AnimatePresence } from "framer-motion";
 import { useSearchParams } from "react-router-dom";
 import BriefingNav from "@/components/BriefingNav";
