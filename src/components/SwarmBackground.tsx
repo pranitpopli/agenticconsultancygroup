@@ -105,6 +105,11 @@ const SwarmBackground = forwardRef<SwarmHandle>((_, ref) => {
       initialized.current = true;
     }
 
+    // Pause when tab is hidden
+    let paused = false;
+    const handleVisibility = () => { paused = document.hidden; };
+    document.addEventListener("visibilitychange", handleVisibility);
+
     const handleResize = () => resize();
     const handleMouse = (e: MouseEvent) => {
       const rect = canvasRef.current?.getBoundingClientRect();
