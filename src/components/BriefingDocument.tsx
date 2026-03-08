@@ -247,6 +247,13 @@ const BriefingDocumentView = ({ doc, onBack, readOnly = false }: BriefingDocumen
           </div>
         </Section>
 
+        {/* Section — Scenario Modelling */}
+        {currentDoc.scenarios && currentDoc.scenarios.length > 0 && (
+          <Section number={nextSection()} title="Scenario Modelling" delay={0.52}>
+            <ScenarioModelling scenarios={currentDoc.scenarios} />
+          </Section>
+        )}
+
         {/* Section — Success Metrics */}
         {currentDoc.successMetrics && currentDoc.successMetrics.length > 0 && (
           <Section number={nextSection()} title="Success Criteria" delay={0.55}>
