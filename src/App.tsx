@@ -12,6 +12,8 @@ import Login from "./pages/Login";
 import People from "./pages/People";
 import PersonProfile from "./pages/PersonProfile";
 import Settings from "./pages/Settings";
+import Portfolio from "./pages/Portfolio";
+import Insights from "./pages/Insights";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
