@@ -56,7 +56,6 @@ const PersonProfile = () => {
         activeTab="people"
         onTabChange={(tab) => {
           if (tab === "briefings") navigate("/");
-          if (tab === "archive") navigate("/?tab=archive");
         }}
       />
 

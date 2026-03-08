@@ -7,71 +7,37 @@ import BriefingDocumentView from "@/components/BriefingDocument";
 import SwarmThinking from "@/components/SwarmThinking";
 import SiloCheck from "@/components/SiloCheck";
 import OverlapDrawer from "@/components/OverlapDrawer";
-import ArchiveView from "@/components/ArchiveView";
-import { BRIEFING_DOCUMENTS, BRIEFING_SUMMARIES, ARCHIVE_DOCUMENTS, createBriefDocument } from "@/lib/briefingData";
+import { BRIEFING_DOCUMENTS, BRIEFING_SUMMARIES, ARCHIVE_DOCUMENTS, ARCHIVED_BRIEFS, createBriefDocument } from "@/lib/briefingData";
 import { OVERLAPPING_PROJECTS } from "@/lib/simulatedData";
+import { BRIEF_AGENTS, DEFAULT_BRIEF_AGENTS } from "@/lib/swarmSimulator";
 import type { OverlappingProject } from "@/lib/types";
 import type { BriefingSummary, BriefingDocument } from "@/lib/briefingData";
 
-type View = "briefings" | "swarm-thinking" | "silo-check" | "briefing-doc" | "archive";
-
-const SWARM_LINES_MAP: Record<string, string[]> = {
-  "brief-001": [
-    "parsing brief...",
-    "identifying domain: platform · infrastructure · engineering",
-    "scanning 847 employee nodes...",
-    "cross-referencing project archive...",
-    "checking active workstreams...",
-    "2 overlapping projects detected",
-    "5 candidate profiles matched across 3 departments",
-    "assembling org structure...",
-    "generating value model...",
-    "projected saving: £284,000 vs external hire",
-  ],
-  "brief-002": [
-    "parsing brief...",
-    "identifying domain: data · analytics · machine learning",
-    "scanning 847 employee nodes...",
-    "cross-referencing project archive...",
-    "checking active workstreams...",
-    "0 overlapping projects detected",
-    "5 candidate profiles matched across 4 departments",
-    "assembling org structure...",
-    "generating value model...",
-    "projected saving: £370,000 vs external hire",
-  ],
-};
-
-const DEFAULT_SWARM_LINES = [
-  "parsing brief...",
-  "identifying domain from brief content...",
-  "scanning 847 employee nodes...",
-  "cross-referencing project archive...",
-  "checking active workstreams...",
-  "0 overlapping projects detected",
-  "3 candidate profiles matched across 2 departments",
-  "assembling org structure...",
-  "generating value model...",
-  "projected saving: £264,000 vs external hire",
-];
+type View = "briefings" | "swarm-thinking" | "silo-check" | "briefing-doc";
 
 const OVERLAPS_MAP: Record<string, OverlappingProject[]> = {
   "brief-001": OVERLAPPING_PROJECTS,
   "brief-002": [],
 };
 
-function deriveState(searchParams: URLSearchParams): { view: View; briefId: string | null; activeTab: "briefings" | "oqr" | "archive"; readOnly: boolean } {
-  const tab = searchParams.get("tab");
+// Convert archived briefs into BriefingSummary items
+const ARCHIVED_SUMMARIES: BriefingSummary[] = ARCHIVED_BRIEFS.map((ab) => ({
+  id: ab.id,
+  title: ab.title,
+  submittedBy: ab.submittedBy,
+  dateReceived: ab.completedDate,
+  aiSummary: ab.outcomeNote,
+  status: "completed" as const,
+  outcome: ab.outcome,
+}));
+
+function deriveState(searchParams: URLSearchParams): { view: View; briefId: string | null; activeTab: "briefings" | "oqr"; readOnly: boolean } {
   const v = searchParams.get("view") as View | null;
   const briefId = searchParams.get("brief");
   const readOnly = searchParams.get("readonly") === "true";
 
-  if (tab === "archive") {
-    return { view: "archive", briefId: null, activeTab: "archive", readOnly: false };
-  }
-
   if (v && briefId && ["swarm-thinking", "silo-check", "briefing-doc"].includes(v)) {
-    return { view: v as View, briefId, activeTab: readOnly ? "archive" : "briefings", readOnly };
+    return { view: v as View, briefId, activeTab: "briefings", readOnly };
   }
 
   return { view: "briefings", briefId: null, activeTab: "briefings", readOnly: false };
@@ -88,12 +54,12 @@ const Index = () => {
   const [dynamicBriefs, setDynamicBriefs] = useState<BriefingSummary[]>([]);
   const [dynamicDocs, setDynamicDocs] = useState<Record<string, BriefingDocument>>({});
 
-  // Merged data lookups
-  const allBriefs = useMemo(() => [...BRIEFING_SUMMARIES, ...dynamicBriefs], [dynamicBriefs]);
+  // Merged data lookups — active briefs first, then archived
+  const allBriefs = useMemo(() => [...BRIEFING_SUMMARIES, ...dynamicBriefs, ...ARCHIVED_SUMMARIES], [dynamicBriefs]);
   const allDocs = useMemo(() => ({ ...BRIEFING_DOCUMENTS, ...ARCHIVE_DOCUMENTS, ...dynamicDocs }), [dynamicDocs]);
 
   const currentOverlaps = activeBriefId ? (OVERLAPS_MAP[activeBriefId] || []) : [];
-  const currentSwarmLines = activeBriefId ? (SWARM_LINES_MAP[activeBriefId] || DEFAULT_SWARM_LINES) : [];
+  const currentAgents = activeBriefId ? (BRIEF_AGENTS[activeBriefId] || DEFAULT_BRIEF_AGENTS) : DEFAULT_BRIEF_AGENTS;
 
   // Scroll to top on view change
   useEffect(() => {
@@ -108,12 +74,17 @@ const Index = () => {
       "swarm-thinking": activeDoc ? `ACG — Analysing ${activeDoc.title}` : "ACG — Analysing",
       "silo-check": "ACG — Silo Check",
       "briefing-doc": activeDoc ? `ACG — ${activeDoc.title}` : "ACG — Briefing",
-      archive: "ACG — Archive",
     };
     document.title = titles[view] || "ACG";
   }, [view, activeBriefId, allDocs]);
 
   const handleReadBriefing = (id: string) => {
+    // Completed briefs go straight to the document (read-only)
+    const brief = allBriefs.find((b) => b.id === id);
+    if (brief?.status === "completed") {
+      setSearchParams({ view: "briefing-doc", brief: id, readonly: "true" });
+      return;
+    }
     setSearchParams({ view: "swarm-thinking", brief: id });
   };
 
@@ -164,21 +135,12 @@ const Index = () => {
     setPreSelectedPeople(new Set());
   };
 
-  const handleTabChange = (tab: "briefings" | "oqr" | "archive") => {
+  const handleTabChange = (tab: "briefings" | "oqr") => {
     if (tab === "briefings") {
       setSearchParams({});
       setPreSelectedPeople(new Set());
-      return;
-    }
-
-    if (tab === "archive") {
-      setSearchParams({ tab: "archive" });
     }
   };
-
-  const handleViewArchivedBrief = useCallback((id: string) => {
-    setSearchParams({ view: "briefing-doc", brief: id, readonly: "true" });
-  }, [setSearchParams]);
 
   const activeDoc = activeBriefId ? allDocs[activeBriefId] : null;
 
@@ -202,7 +164,7 @@ const Index = () => {
         {view === "swarm-thinking" && (
           <SwarmThinking
             key={`swarm-${activeBriefId}`}
-            lines={currentSwarmLines}
+            agents={currentAgents}
             onComplete={handleSwarmComplete}
           />
         )}
@@ -223,10 +185,6 @@ const Index = () => {
             onBack={handleBack}
             readOnly={readOnly}
           />
-        )}
-
-        {view === "archive" && (
-          <ArchiveView key="archive" onViewBrief={handleViewArchivedBrief} />
         )}
       </AnimatePresence>
 
