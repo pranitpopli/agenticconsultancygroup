@@ -283,7 +283,7 @@ const OQR = () => {
         </motion.div>
 
         {/* ━━━ AI PROJECTS ━━━ */}
-        <motion.div variants={itemVariants} className="border border-border bg-card p-6 mb-10">
+        <motion.div variants={itemVariants} className="border border-border bg-card rounded-lg shadow-sm p-6 mb-10">
           <div className="flex items-center justify-between mb-5">
             <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
               AI projects in flight
