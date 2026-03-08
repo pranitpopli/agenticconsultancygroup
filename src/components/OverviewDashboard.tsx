@@ -18,13 +18,7 @@ const OverviewDashboard = ({ briefs, onReadBriefing, onSubmitBrief }: OverviewDa
   const [briefText, setBriefText] = useState("");
   const [fileName, setFileName] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
-  const [connectedIntegrations, setConnectedIntegrations] = useState<Set<string>>(new Set());
-  const [connectingIntegration, setConnectingIntegration] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
-
-  const { totalSavings, orgMaturity, maturityDelta, aiProjects, currentQuarter } = OQR_DATA;
-  const liveProjects = aiProjects.filter((p) => p.status === "live").length;
-  const inBuild = aiProjects.filter((p) => p.status === "in-build").length;
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
