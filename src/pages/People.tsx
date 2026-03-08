@@ -40,7 +40,7 @@ const People = () => {
   return (
     <div className="min-h-screen bg-background">
       <BriefingNav
-        activeTab="briefings"
+        activeTab="people"
         onTabChange={(tab) => {
           if (tab === "briefings") navigate("/");
           if (tab === "archive") navigate("/?tab=archive");
