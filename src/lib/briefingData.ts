@@ -89,6 +89,9 @@ export interface BriefingDocument {
   costNarrative: string;
   comparison: ComparisonRow[];
   phases: Phase[];
+  risks?: RiskRow[];
+  successMetrics?: SuccessMetric[];
+  recommendation?: DecisionRecommendation;
 }
 
 export const BRIEFING_SUMMARIES: BriefingSummary[] = [
