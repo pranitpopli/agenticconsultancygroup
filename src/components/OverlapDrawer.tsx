@@ -117,7 +117,7 @@ const OverlapDrawer = ({ overlaps, onClose, onProceed, preSelectedPeople, onTogg
                             {emp.avatarInitials}
                           </span>
                           {emp.name}
-                          {isSelected && <span className="text-[8px] text-warm-accent">✓</span>}
+                          {isSelected && <span className="text-[8px] text-[hsl(var(--status-warning))]">✓</span>}
                         </button>
                       );
                     })}

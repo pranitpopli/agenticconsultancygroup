@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { TrendingUp, Building2, Users, Zap } from "lucide-react";
+import { useTheme } from "@/hooks/use-theme";
 import { OQR_DATA } from "@/lib/oqrData";
 import { EMPLOYEES } from "@/lib/simulatedData";
 import BriefingNav from "@/components/BriefingNav";

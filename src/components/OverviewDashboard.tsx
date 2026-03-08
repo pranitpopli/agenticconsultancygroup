@@ -1,7 +1,8 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useMemo } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
-import { Upload, Send, X, FileText } from "lucide-react";
+import { Upload, Send, X, FileText, Search, Filter } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 import type { BriefingSummary } from "@/lib/briefingData";
 import InboxCard from "./InboxCard";
 
@@ -11,12 +12,32 @@ interface OverviewDashboardProps {
   onSubmitBrief?: (text: string) => void;
 }
 
+function getGreeting(): string {
+  const h = new Date().getHours();
+  if (h < 12) return "Good morning";
+  if (h < 17) return "Good afternoon";
+  return "Good evening";
+}
+
+const STATUS_FILTERS = ["All", "Analysis Complete", "In Delivery", "Draft"] as const;
+
 const OverviewDashboard = ({ briefs, onReadBriefing, onSubmitBrief }: OverviewDashboardProps) => {
   const { toast } = useToast();
+  const { user } = useAuth();
   const [briefText, setBriefText] = useState("");
   const [fileName, setFileName] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState<string>("All");
   const fileRef = useRef<HTMLInputElement>(null);
+
+  const filteredBriefs = useMemo(() => {
+    return briefs.filter((b) => {
+      const matchesSearch = !search || b.title.toLowerCase().includes(search.toLowerCase());
+      const matchesStatus = statusFilter === "All" || b.status?.toLowerCase() === statusFilter.toLowerCase();
+      return matchesSearch && matchesStatus;
+    });
+  }, [briefs, search, statusFilter]);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -51,6 +72,8 @@ const OverviewDashboard = ({ briefs, onReadBriefing, onSubmitBrief }: OverviewDa
     visible: { opacity: 1, y: 0, transition: { duration: 0.45 } },
   };
 
+  const firstName = user?.name?.split(" ")[0] || "there";
+
   return (
     <motion.main
       className="max-w-[780px] mx-auto px-4 sm:px-8 pt-28 pb-24"
@@ -62,17 +85,46 @@ const OverviewDashboard = ({ briefs, onReadBriefing, onSubmitBrief }: OverviewDa
       {/* ━━━ GREETING ━━━ */}
       <motion.div variants={itemVariants} className="mb-12">
         <h1 className="font-serif text-3xl text-foreground mb-2">
-          Good morning, James.
+          {getGreeting()}, {firstName}.
         </h1>
         <p className="text-sm text-muted-foreground">
           {briefs.length} {briefs.length === 1 ? "brief" : "briefs"} ready for your review.
         </p>
       </motion.div>
 
+      {/* ━━━ SEARCH + FILTER ━━━ */}
+      <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-3 mb-6">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
+          <input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search briefs…"
+            className="w-full text-sm bg-background border border-border pl-10 pr-4 py-2.5 outline-none focus:border-foreground/30 transition-colors placeholder:text-muted-foreground/50"
+          />
+        </div>
+        <div className="flex items-center gap-2 overflow-x-auto">
+          <Filter className="w-3.5 h-3.5 text-muted-foreground shrink-0" strokeWidth={1.5} />
+          {STATUS_FILTERS.map((f) => (
+            <button
+              key={f}
+              onClick={() => setStatusFilter(f)}
+              className={`text-[11px] tracking-[0.08em] whitespace-nowrap px-3 py-1.5 border transition-colors ${
+                statusFilter === f
+                  ? "border-foreground/30 text-foreground bg-muted"
+                  : "border-border text-muted-foreground hover:border-foreground/20 hover:text-foreground"
+              }`}
+            >
+              {f}
+            </button>
+          ))}
+        </div>
+      </motion.div>
+
       {/* ━━━ BRIEF CARDS ━━━ */}
       <motion.div variants={itemVariants} className="space-y-4 mb-14">
-        {briefs.length > 0 ? (
-          briefs.map((brief, i) => (
+        {filteredBriefs.length > 0 ? (
+          filteredBriefs.map((brief, i) => (
             <InboxCard
               key={brief.id}
               brief={brief}
@@ -82,7 +134,11 @@ const OverviewDashboard = ({ briefs, onReadBriefing, onSubmitBrief }: OverviewDa
           ))
         ) : (
           <div className="border border-border p-10 text-center">
-            <p className="text-sm text-muted-foreground">No briefs yet. Submit one below to get started.</p>
+            <p className="text-sm text-muted-foreground">
+              {search || statusFilter !== "All"
+                ? "No briefs match your filters."
+                : "No briefs yet. Submit one below to get started."}
+            </p>
           </div>
         )}
       </motion.div>
@@ -99,7 +155,7 @@ const OverviewDashboard = ({ briefs, onReadBriefing, onSubmitBrief }: OverviewDa
             onChange={(e) => setBriefText(e.target.value)}
             placeholder="What do you need a team for? Describe the initiative, scope, or challenge…"
             rows={4}
-            className="w-full text-sm bg-transparent border border-border px-4 py-3 outline-none resize-none placeholder:text-muted-foreground/60 focus:border-foreground/30 transition-colors leading-relaxed"
+            className="w-full text-sm bg-transparent border border-border px-4 py-3 outline-none resize-none placeholder:text-muted-foreground/60 focus:border-foreground/30 transition-colors leading-relaxed text-foreground"
           />
 
           <div className="flex items-center justify-between">

@@ -22,7 +22,7 @@ const ProjectRow = ({ project }: { project: ProjectReference }) => {
     <div className="flex items-center justify-between py-1.5">
       <div className="flex items-center gap-2 text-[11px]">
         {project.status === "active" && (
-          <Circle className="w-2 h-2 fill-green-500 text-green-500 shrink-0" />
+          <Circle className="w-2 h-2 fill-[hsl(var(--status-positive))] text-[hsl(var(--status-positive))] shrink-0" />
         )}
         <span className="text-foreground/80">{project.name}</span>
         <span className="text-muted-foreground/40">·</span>
