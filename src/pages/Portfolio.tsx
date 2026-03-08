@@ -35,7 +35,7 @@ const Portfolio = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <BriefingNav activeTab="portfolio" />
+      <BriefingNav />
 
       <main className="max-w-[1200px] mx-auto px-4 sm:px-8 pt-28 pb-20">
         {/* Header */}

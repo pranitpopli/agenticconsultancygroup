@@ -118,7 +118,7 @@ const Dashboard = () => {
                       <p className="text-sm text-foreground font-medium group-hover:text-foreground">{brief.title}</p>
                       <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{brief.aiSummary}</p>
                       <p className="text-[10px] text-muted-foreground/60 mt-2">
-                        Submitted by {brief.submittedBy} · {brief.dateReceived as string}
+                        Submitted by {brief.submittedBy.name} · {brief.dateReceived}
                       </p>
                     </div>
                     <ArrowRight className="w-4 h-4 text-muted-foreground/40 group-hover:text-foreground mt-1 shrink-0 transition-colors" strokeWidth={1.5} />
