@@ -91,6 +91,11 @@ const BriefingDocumentView = ({ doc, onBack, readOnly = false }: BriefingDocumen
     window.print();
   };
 
+  // Retrieve benchmark/change/impact data for this doc
+  const benchmarks = BENCHMARKS[currentDoc.id] || [];
+  const changeReadiness = CHANGE_READINESS[currentDoc.id];
+  const impactLedger = IMPACT_LEDGER_DATA[currentDoc.id];
+
   // Build sections list for ToC
   const sections = useMemo(() => {
     const s: { number: string; title: string }[] = [];
@@ -107,10 +112,12 @@ const BriefingDocumentView = ({ doc, onBack, readOnly = false }: BriefingDocumen
     if (currentDoc.scenarios && currentDoc.scenarios.length > 0) s.push({ number: next(), title: "Scenario Modelling" });
     if (currentDoc.successMetrics && currentDoc.successMetrics.length > 0) s.push({ number: next(), title: "Success Criteria" });
     if (currentDoc.deliveryStatus) s.push({ number: next(), title: "Delivery Status" });
+    if (impactLedger) s.push({ number: next(), title: "Impact Ledger" });
+    if (changeReadiness) s.push({ number: next(), title: "Change Readiness" });
     s.push({ number: next(), title: "Org Key Results" });
 
     return s;
-  }, [currentDoc]);
+  }, [currentDoc, impactLedger, changeReadiness]);
 
   // Section counter for dynamic numbering (must match ToC logic)
   let sectionNum = 0;
