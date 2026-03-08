@@ -161,15 +161,15 @@ const OQR = () => {
             </p>
             <ResponsiveContainer width="100%" height={300}>
               <RadarChart data={maturityChartData} cx="50%" cy="50%" outerRadius="70%">
-                <PolarGrid stroke="hsl(35 15% 88%)" />
+                <PolarGrid stroke={gridColor} />
                 <PolarAngleAxis
                   dataKey="dept"
-                  tick={{ fontSize: 10, fill: "hsl(0 0% 45%)" }} />
+                  tick={{ fontSize: 10, fill: tickColor }} />
                 
                 <PolarRadiusAxis
                   angle={90}
                   domain={[0, 100]}
-                  tick={{ fontSize: 8, fill: "hsl(0 0% 60%)" }}
+                  tick={{ fontSize: 8, fill: tickLightColor }}
                   axisLine={false} />
                 
                 <Tooltip
@@ -190,8 +190,8 @@ const OQR = () => {
                 <Radar
                   name="Projected"
                   dataKey="projected"
-                  stroke="hsl(38 35% 58%)"
-                  fill="hsl(38 35% 58%)"
+                  stroke={projectedStroke}
+                  fill={projectedStroke}
                   fillOpacity={0.06}
                   strokeDasharray="5 5"
                   strokeWidth={1.5}
@@ -201,12 +201,15 @@ const OQR = () => {
                 <Radar
                   name="Current"
                   dataKey="score"
-                  stroke="hsl(0 0% 10%)"
-                  fill="hsl(0 0% 10%)"
+                  stroke={primaryStroke}
+                  fill={primaryFill}
                   fillOpacity={0.08}
                   strokeWidth={1.5}
                   isAnimationActive
                   animationDuration={1000} />
+                
+              </RadarChart>
+            </ResponsiveContainer>
                 
               </RadarChart>
             </ResponsiveContainer>
