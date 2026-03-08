@@ -25,6 +25,7 @@ const capabilityData = [
 
 
 const OQR = () => {
+  const { theme } = useTheme();
   const navigate = useNavigate();
   const {
     totalSavings,
