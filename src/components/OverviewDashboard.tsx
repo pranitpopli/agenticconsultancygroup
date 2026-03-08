@@ -89,47 +89,6 @@ const OverviewDashboard = ({ briefs, onReadBriefing, onSubmitBrief }: OverviewDa
         )}
       </motion.div>
 
-      {/* ━━━ QUARTER PULSE ━━━ */}
-      <motion.div variants={itemVariants} className="mb-14">
-        <div className="border border-border p-6 sm:p-8">
-          <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground mb-5">
-            {currentQuarter} · Organisation pulse
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
-            <div>
-              <p className="text-2xl font-sans tabular-nums text-foreground">
-                £{(totalSavings / 1000).toFixed(0)}k
-              </p>
-              <p className="text-[11px] text-muted-foreground mt-1">
-                Cost avoided this quarter
-              </p>
-            </div>
-            <div>
-              <p className="text-2xl font-sans tabular-nums text-foreground">
-                {liveProjects}
-                <span className="text-base text-muted-foreground ml-1">
-                  +{inBuild}
-                </span>
-              </p>
-              <p className="text-[11px] text-muted-foreground mt-1">
-                AI projects live · in build
-              </p>
-            </div>
-            <div>
-              <p className="text-2xl font-sans tabular-nums text-foreground">
-                {orgMaturity}%
-                <span className="text-base text-[hsl(var(--status-positive))] ml-1">
-                  +{maturityDelta}
-                </span>
-              </p>
-              <p className="text-[11px] text-muted-foreground mt-1">
-                AI maturity · pts this quarter
-              </p>
-            </div>
-          </div>
-        </div>
-      </motion.div>
-
       {/* ━━━ SUBMIT NEW BRIEF ━━━ */}
       <motion.div variants={itemVariants} className="mb-16">
         <div className="border border-border p-6 space-y-4">
