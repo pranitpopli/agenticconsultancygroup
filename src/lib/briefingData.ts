@@ -319,6 +319,7 @@ export const BRIEFING_DOCUMENTS: Record<string, BriefingDocument> = {
       { metric: "Time to generate board report", baseline: "3 weeks manual", target: "< 1 day automated", measurement: "Timed end-to-end from data refresh to PDF output" },
     ],
     recommendation: "proceed-with-conditions",
+  },
 };
 
 // ━━━ Archived briefs ━━━
