@@ -49,8 +49,6 @@ const BriefingNav = ({ activeTab, onTabChange }: BriefingNavProps) => {
     if (tab.id === "insights") {
       navigate("/insights");
       return;
-    }
-    onTabChange?.(tab.id);
   };
 
   const handleLogout = () => {
