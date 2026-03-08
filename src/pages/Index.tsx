@@ -141,17 +141,7 @@ const Index = () => {
         )}
 
         {view === "archive" && (
-          <div key="archive" className="max-w-[780px] mx-auto px-8 pt-28 pb-24">
-            <h1 className="font-serif text-3xl text-foreground mb-2">Archive</h1>
-            <p className="text-sm text-muted-foreground mb-10">
-              Previously completed briefings and their outcomes.
-            </p>
-            <div className="border border-border p-8 text-center">
-              <p className="text-sm text-muted-foreground font-serif italic">
-                No archived briefings yet. Completed briefings will appear here after deployment.
-              </p>
-            </div>
-          </div>
+          <ArchiveView key="archive" />
         )}
       </AnimatePresence>
 
