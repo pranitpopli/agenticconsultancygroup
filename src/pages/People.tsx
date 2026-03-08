@@ -14,14 +14,11 @@ const ALL_LOCATIONS = [...new Set(EMPLOYEES.map((e) => e.location))].sort();
 const ALL_PROJECTS = [...new Set(EMPLOYEES.flatMap((e) => e.pastProjects.map((p) => p.name)))].sort();
 const ALL_SKILLS = [...new Set(EMPLOYEES.flatMap((e) => e.skills))].sort();
 
-type SortKey = "name" | "department" | "availability" | "experience" | "rate" | "location";
-const SORT_OPTIONS: { key: SortKey; label: string }[] = [
-  { key: "name", label: "Name" },
-  { key: "department", label: "Department" },
-  { key: "location", label: "Location" },
-  { key: "availability", label: "Availability" },
-  { key: "experience", label: "Experience" },
-  { key: "rate", label: "Hourly rate" },
+type SortKey = "availability" | "experience" | "rate";
+const SORT_OPTIONS: { key: SortKey; label: string; desc: string }[] = [
+  { key: "availability", label: "Availability", desc: "Free people first — who can start now" },
+  { key: "experience", label: "Seniority", desc: "Most experienced first for critical roles" },
+  { key: "rate", label: "Day rate", desc: "Budget-conscious staffing decisions" },
 ];
 
 const availabilityOrder: Record<string, number> = { available: 0, partial: 1, committed: 2 };
@@ -131,7 +128,7 @@ const People = () => {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState<Filters>(emptyFilters());
-  const [sortKey, setSortKey] = useState<SortKey>("name");
+  const [sortKey, setSortKey] = useState<SortKey>("availability");
   const [sortAsc, setSortAsc] = useState(true);
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [sortOpen, setSortOpen] = useState(false);
@@ -179,13 +176,12 @@ const People = () => {
     list.sort((a, b) => {
       let cmp = 0;
       switch (sortKey) {
-        case "name": cmp = a.name.localeCompare(b.name); break;
-        case "department": cmp = a.department.localeCompare(b.department); break;
-        case "location": cmp = a.location.localeCompare(b.location); break;
         case "availability": cmp = (availabilityOrder[a.availability] ?? 2) - (availabilityOrder[b.availability] ?? 2); break;
         case "experience": cmp = a.yearsExperience - b.yearsExperience; break;
         case "rate": cmp = a.hourlyRate - b.hourlyRate; break;
       }
+      // Secondary sort: name for stable ordering
+      if (cmp === 0) cmp = a.name.localeCompare(b.name);
       return sortAsc ? cmp : -cmp;
     });
 
@@ -371,7 +367,7 @@ const People = () => {
                 }`}
               >
                 <ArrowUpDown className="w-3.5 h-3.5" strokeWidth={1.5} />
-                Sort
+                {SORT_OPTIONS.find(o => o.key === sortKey)?.label ?? "Sort"} {sortAsc ? "↑" : "↓"}
               </button>
 
               <AnimatePresence>
@@ -381,22 +377,25 @@ const People = () => {
                     <motion.div
                       initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 4 }}
                       transition={{ duration: 0.15 }}
-                      className="absolute right-0 top-full mt-1 w-48 bg-card border border-border shadow-lg z-50"
+                      className="absolute right-0 top-full mt-1 w-56 bg-card border border-border shadow-lg z-50 py-1"
                     >
                       {SORT_OPTIONS.map((opt) => (
                         <button
                           key={opt.key}
                           onClick={() => {
                             if (sortKey === opt.key) setSortAsc(!sortAsc);
-                            else { setSortKey(opt.key); setSortAsc(true); }
+                            else { setSortKey(opt.key); setSortAsc(opt.key === "experience" || opt.key === "rate" ? false : true); }
                             setSortOpen(false);
                           }}
-                          className={`w-full flex items-center justify-between px-4 py-2.5 text-xs transition-colors ${
-                            sortKey === opt.key ? "text-foreground font-medium bg-muted" : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                          className={`w-full flex flex-col items-start px-4 py-2.5 text-left transition-colors ${
+                            sortKey === opt.key ? "text-foreground bg-muted" : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
                           }`}
                         >
-                          {opt.label}
-                          {sortKey === opt.key && <span className="text-[10px] text-muted-foreground">{sortAsc ? "↑" : "↓"}</span>}
+                          <span className="flex items-center gap-2 w-full">
+                            <span className={`text-xs ${sortKey === opt.key ? "font-medium" : ""}`}>{opt.label}</span>
+                            {sortKey === opt.key && <span className="ml-auto text-[10px] text-muted-foreground">{sortAsc ? "↑" : "↓"}</span>}
+                          </span>
+                          <span className="text-[10px] text-muted-foreground/60 leading-tight mt-0.5">{opt.desc}</span>
                         </button>
                       ))}
                     </motion.div>
