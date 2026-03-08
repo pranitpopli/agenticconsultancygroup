@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { Moon, Sun } from "lucide-react";
+import { useTheme } from "@/hooks/use-theme";
 
 interface BriefingNavProps {
   activeTab: "briefings" | "oqr" | "archive";
@@ -8,6 +10,7 @@ interface BriefingNavProps {
 
 const BriefingNav = ({ activeTab, onTabChange }: BriefingNavProps) => {
   const navigate = useNavigate();
+  const { theme, toggleTheme } = useTheme();
 
   const tabs = [
     { id: "oqr" as const, label: "Overview" },
@@ -35,7 +38,7 @@ const BriefingNav = ({ activeTab, onTabChange }: BriefingNavProps) => {
         <button onClick={() => navigate("/")} className="font-serif text-xl tracking-wide text-foreground">
           ACG
         </button>
-        <div className="flex items-center gap-8">
+        <div className="flex items-center gap-6">
           {tabs.map((tab) => (
             <button
               key={tab.id}
@@ -49,6 +52,19 @@ const BriefingNav = ({ activeTab, onTabChange }: BriefingNavProps) => {
               {tab.label}
             </button>
           ))}
+
+          {/* Theme toggle */}
+          <button
+            onClick={toggleTheme}
+            className="ml-2 p-2 text-muted-foreground hover:text-foreground transition-colors"
+            aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
+          >
+            {theme === "light" ? (
+              <Moon className="w-4 h-4" strokeWidth={1.5} />
+            ) : (
+              <Sun className="w-4 h-4" strokeWidth={1.5} />
+            )}
+          </button>
         </div>
       </div>
     </motion.nav>
