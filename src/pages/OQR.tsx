@@ -219,6 +219,21 @@ const OQR = () => {
                   tick={{ fontSize: 8, fill: "hsl(0 0% 60%)" }}
                   axisLine={false}
                 />
+                <Tooltip
+                  content={({ payload, label }) => {
+                    if (!payload?.length) return null;
+                    return (
+                      <div className="bg-card border border-border px-3 py-2 shadow-sm">
+                        <p className="text-[11px] font-serif text-foreground mb-1">{label}</p>
+                        {payload.map((p: any) => (
+                          <p key={p.name} className="text-[10px] text-muted-foreground">
+                            {p.name}: <span className="text-foreground font-mono">{p.value}%</span>
+                          </p>
+                        ))}
+                      </div>
+                    );
+                  }}
+                />
                 <Radar
                   name="Coverage"
                   dataKey="coverage"
@@ -226,6 +241,8 @@ const OQR = () => {
                   fill="hsl(38 55% 50%)"
                   fillOpacity={0.1}
                   strokeWidth={1.5}
+                  isAnimationActive
+                  animationDuration={1200}
                 />
               </RadarChart>
             </ResponsiveContainer>
