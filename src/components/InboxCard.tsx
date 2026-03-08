@@ -124,8 +124,6 @@ const InboxCard = memo(({ brief, index, onRead }: InboxCardProps) => {
       </div>
     </motion.div>
   );
-};
-
 });
 
 InboxCard.displayName = "InboxCard";
