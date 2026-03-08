@@ -176,13 +176,12 @@ const People = () => {
     list.sort((a, b) => {
       let cmp = 0;
       switch (sortKey) {
-        case "name": cmp = a.name.localeCompare(b.name); break;
-        case "department": cmp = a.department.localeCompare(b.department); break;
-        case "location": cmp = a.location.localeCompare(b.location); break;
         case "availability": cmp = (availabilityOrder[a.availability] ?? 2) - (availabilityOrder[b.availability] ?? 2); break;
         case "experience": cmp = a.yearsExperience - b.yearsExperience; break;
         case "rate": cmp = a.hourlyRate - b.hourlyRate; break;
       }
+      // Secondary sort: name for stable ordering
+      if (cmp === 0) cmp = a.name.localeCompare(b.name);
       return sortAsc ? cmp : -cmp;
     });
 
