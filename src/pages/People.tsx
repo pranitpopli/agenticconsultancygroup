@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Search, MapPin, Briefcase, Filter } from "lucide-react";
+import { Search, MapPin, Briefcase } from "lucide-react";
 import BriefingNav from "@/components/BriefingNav";
 import { EMPLOYEES } from "@/lib/simulatedData";
 import { useNavigate } from "react-router-dom";
