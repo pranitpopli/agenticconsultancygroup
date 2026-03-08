@@ -135,12 +135,6 @@ const Index = () => {
     setPreSelectedPeople(new Set());
   };
 
-  const handleTabChange = (tab: "briefings" | "oqr") => {
-    if (tab === "briefings") {
-      setSearchParams({});
-      setPreSelectedPeople(new Set());
-    }
-  };
 
   const activeDoc = activeBriefId ? allDocs[activeBriefId] : null;
 
