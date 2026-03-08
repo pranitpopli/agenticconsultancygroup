@@ -23,11 +23,13 @@ const InboxCard = ({ brief, index, onRead }: InboxCardProps) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.3 + index * 0.15 }}
       className={`border p-8 hover:border-foreground/20 transition-colors group ${
-        decision === "approved"
-          ? "border-[hsl(var(--status-positive)/0.3)] bg-[hsl(var(--status-positive-bg))]"
-          : decision === "deferred"
-            ? "border-border bg-muted/30"
-            : "border-border"
+        brief.status === "completed"
+          ? "border-border bg-muted/20"
+          : decision === "approved"
+            ? "border-[hsl(var(--status-positive)/0.3)] bg-[hsl(var(--status-positive-bg))]"
+            : decision === "deferred"
+              ? "border-border bg-muted/30"
+              : "border-border"
       }`}
     >
       <div className="flex items-start justify-between gap-6">
