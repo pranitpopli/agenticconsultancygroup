@@ -1,7 +1,7 @@
 import { useState, useRef, useMemo } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
-import { Upload, Send, X, FileText, Search, Filter } from "lucide-react";
+import { Upload, Send, X, FileText, Search } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import type { BriefingSummary } from "@/lib/briefingData";
 import InboxCard from "./InboxCard";
@@ -93,25 +93,28 @@ const OverviewDashboard = ({ briefs, onReadBriefing, onSubmitBrief }: OverviewDa
       </motion.div>
 
       {/* ━━━ SEARCH + FILTER ━━━ */}
-      <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-3 mb-6">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
+      <motion.div variants={itemVariants} className="space-y-3 mb-6">
+        <div className="relative">
+          <label htmlFor="brief-search" className="sr-only">Search briefs</label>
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" strokeWidth={1.5} />
           <input
+            id="brief-search"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search briefs…"
-            className="w-full text-sm bg-background border border-border pl-10 pr-4 py-2.5 outline-none focus:border-foreground/30 transition-colors placeholder:text-muted-foreground/50"
+            className="w-full text-sm bg-background border border-border pl-10 pr-4 py-2.5 outline-none focus:border-foreground/30 focus:ring-1 focus:ring-ring transition-colors placeholder:text-muted-foreground/50"
           />
         </div>
-        <div className="flex items-center gap-2 overflow-x-auto">
-          <Filter className="w-3.5 h-3.5 text-muted-foreground shrink-0" strokeWidth={1.5} />
+        <div role="radiogroup" aria-label="Filter by status" className="flex items-center gap-2 flex-wrap">
           {STATUS_FILTERS.map((f) => (
             <button
               key={f}
+              role="radio"
+              aria-checked={statusFilter === f}
               onClick={() => setStatusFilter(f)}
-              className={`text-[11px] tracking-[0.08em] whitespace-nowrap px-3 py-1.5 border transition-colors ${
+              className={`text-xs px-3.5 py-1.5 border rounded-sm transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 ${
                 statusFilter === f
-                  ? "border-foreground/30 text-foreground bg-muted"
+                  ? "border-foreground text-foreground bg-foreground/5 font-medium"
                   : "border-border text-muted-foreground hover:border-foreground/20 hover:text-foreground"
               }`}
             >
