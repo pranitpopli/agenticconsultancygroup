@@ -22,6 +22,11 @@ const SLIDES = [
 const ExportBanner = ({ doc }: ExportBannerProps) => {
   const [showDeck, setShowDeck] = useState(false);
   const [activeSlide, setActiveSlide] = useState(5);
+  const { toast } = useToast();
+
+  const handleExportAction = (label: string) => {
+    toast({ title: `${label}`, description: "This feature will be available in the next release." });
+  };
 
   return (
     <motion.div
