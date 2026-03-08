@@ -21,10 +21,6 @@ const Index = () => {
   };
 
   const handleTabChange = (tab: "briefings" | "oqr" | "archive") => {
-    if (tab === "oqr") {
-      window.location.href = "/oqr";
-      return;
-    }
     setActiveTab(tab);
     if (tab === "briefings") {
       setView("briefings");
