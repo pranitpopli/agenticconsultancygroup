@@ -12,6 +12,7 @@ import BriefingOQRPanel from "./BriefingOQRPanel";
 import ExecutiveDecisionSummary from "./ExecutiveDecisionSummary";
 import RiskRegister from "./RiskRegister";
 import SuccessMetrics from "./SuccessMetrics";
+import ScenarioModelling from "./ScenarioModelling";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -245,6 +246,13 @@ const BriefingDocumentView = ({ doc, onBack, readOnly = false }: BriefingDocumen
             <GanttChart phases={currentDoc.phases} />
           </div>
         </Section>
+
+        {/* Section — Scenario Modelling */}
+        {currentDoc.scenarios && currentDoc.scenarios.length > 0 && (
+          <Section number={nextSection()} title="Scenario Modelling" delay={0.52}>
+            <ScenarioModelling scenarios={currentDoc.scenarios} />
+          </Section>
+        )}
 
         {/* Section — Success Metrics */}
         {currentDoc.successMetrics && currentDoc.successMetrics.length > 0 && (

@@ -65,6 +65,21 @@ export interface SuccessMetric {
 
 export type DecisionRecommendation = "proceed" | "proceed-with-conditions" | "defer";
 
+export interface Scenario {
+  id: string;
+  name: string;
+  description: string;
+  cost: number;
+  weeks: number;
+  risk: "low" | "medium" | "high";
+  scopePercent: number;
+  teamSize: number;
+  recommended?: boolean;
+  included: string[];
+  deferred: string[];
+  tradeOffNarrative: string;
+}
+
 
 export interface BriefingSummary {
   id: string;
@@ -92,6 +107,7 @@ export interface BriefingDocument {
   risks?: RiskRow[];
   successMetrics?: SuccessMetric[];
   recommendation?: DecisionRecommendation;
+  scenarios?: Scenario[];
 }
 
 export const BRIEFING_SUMMARIES: BriefingSummary[] = [
@@ -216,6 +232,73 @@ export const BRIEFING_DOCUMENTS: Record<string, BriefingDocument> = {
       { metric: "Blocked product teams", baseline: "3 teams", target: "0 teams", measurement: "Sprint retrospective survey, measured end of Phase 3" },
     ],
     recommendation: "proceed",
+    scenarios: [
+      {
+        id: "s1-full",
+        name: "Full Scope",
+        description: "Complete platform modernisation — API gateway, frontend migration, and observability stack.",
+        cost: 186000,
+        weeks: 16,
+        risk: "medium",
+        scopePercent: 100,
+        teamSize: 6,
+        recommended: true,
+        included: [
+          "API gateway consolidation",
+          "Frontend component migration",
+          "Unified observability stack",
+          "Zero-downtime deployment pipeline",
+          "Security hardening & zero-trust",
+          "Full performance validation",
+        ],
+        deferred: [],
+        tradeOffNarrative: "Delivers the complete vision with no compromises. The 16-week timeline allows phased rollout with overlap between workstreams, reducing integration risk. This is the recommended option because the technical debt is compounding — every quarter of delay increases incident rates and blocks product delivery.",
+      },
+      {
+        id: "s1-compressed",
+        name: "Compressed",
+        description: "Same scope, tighter timeline. Parallel workstreams with higher coordination overhead.",
+        cost: 210000,
+        weeks: 11,
+        risk: "high",
+        scopePercent: 100,
+        teamSize: 8,
+        recommended: false,
+        included: [
+          "API gateway consolidation",
+          "Frontend component migration",
+          "Unified observability stack",
+          "Zero-downtime deployment pipeline",
+          "Security hardening & zero-trust",
+          "Full performance validation",
+        ],
+        deferred: [],
+        tradeOffNarrative: "Achieves full scope 5 weeks faster by running all three phases in parallel and adding two contractors. Cost increases by £24k due to additional headcount and coordination overhead. Risk rises to high because parallel workstreams on shared infrastructure create integration conflicts — the auth service cutover and frontend migration will overlap, requiring daily cross-team sync.",
+      },
+      {
+        id: "s1-mvp",
+        name: "MVP",
+        description: "API gateway and observability only. Frontend migration deferred to a follow-up initiative.",
+        cost: 112000,
+        weeks: 10,
+        risk: "low",
+        scopePercent: 60,
+        teamSize: 4,
+        recommended: false,
+        included: [
+          "API gateway consolidation",
+          "Unified observability stack",
+          "Zero-downtime deployment pipeline",
+          "Security hardening & zero-trust",
+        ],
+        deferred: [
+          "Frontend component migration",
+          "Full performance validation",
+          "Lighthouse score improvement",
+        ],
+        tradeOffNarrative: "Addresses the most critical infrastructure debt (API gateway and observability) at 60% of the cost and timeline. However, the frontend technical debt continues to compound — Lighthouse scores will remain low and the product team stays partially blocked. A follow-up initiative would be needed within 2 quarters, and re-mobilisation costs ~£20k.",
+      },
+    ],
   },
   "brief-002": {
     id: "brief-002",
@@ -329,6 +412,75 @@ export const BRIEFING_DOCUMENTS: Record<string, BriefingDocument> = {
       { metric: "Time to generate board report", baseline: "3 weeks manual", target: "< 1 day automated", measurement: "Timed end-to-end from data refresh to PDF output" },
     ],
     recommendation: "proceed-with-conditions",
+    scenarios: [
+      {
+        id: "s2-full",
+        name: "Full Scope",
+        description: "Complete data intelligence layer — unified pipeline, ML models, and executive dashboard.",
+        cost: 210000,
+        weeks: 20,
+        risk: "medium",
+        scopePercent: 100,
+        teamSize: 5,
+        recommended: false,
+        included: [
+          "Unified ETL pipeline",
+          "Churn prediction model",
+          "Revenue forecasting model",
+          "Executive dashboard",
+          "CRM integration",
+          "Data dictionary & documentation",
+        ],
+        deferred: [],
+        tradeOffNarrative: "Delivers everything but carries medium risk due to the legacy data warehouse dependency. If the warehouse migration slips, Phase 1 data unification could be blocked for 4–6 weeks. The 20-week timeline assumes no external delays.",
+      },
+      {
+        id: "s2-phased",
+        name: "Phased Delivery",
+        description: "Pipeline and one ML model first. Dashboard and second model in a follow-up phase.",
+        cost: 148000,
+        weeks: 14,
+        risk: "low",
+        scopePercent: 70,
+        teamSize: 4,
+        recommended: true,
+        included: [
+          "Unified ETL pipeline",
+          "Churn prediction model",
+          "Data dictionary & documentation",
+          "Adapter layer for legacy warehouse",
+        ],
+        deferred: [
+          "Revenue forecasting model",
+          "Executive dashboard",
+          "CRM integration",
+        ],
+        tradeOffNarrative: "Reduces risk by building the adapter layer first, isolating the team from warehouse migration delays. Delivers the highest-impact ML model (churn prediction) within 14 weeks. The deferred dashboard and revenue model can follow in a 6-week Phase 2 once the pipeline is stable. Recommended because it de-risks the warehouse dependency while still delivering measurable business value.",
+      },
+      {
+        id: "s2-mvp",
+        name: "Pipeline Only",
+        description: "Data unification only. No ML models, no dashboard. Foundation for future work.",
+        cost: 84000,
+        weeks: 9,
+        risk: "low",
+        scopePercent: 35,
+        teamSize: 3,
+        recommended: false,
+        included: [
+          "Unified ETL pipeline",
+          "Data dictionary & documentation",
+          "Adapter layer for legacy warehouse",
+        ],
+        deferred: [
+          "Churn prediction model",
+          "Revenue forecasting model",
+          "Executive dashboard",
+          "CRM integration",
+        ],
+        tradeOffNarrative: "Solves the infrastructure problem (3 duplicate pipelines → 1) but delivers no business-facing intelligence. The board's Q2 retention mandate won't be addressed until ML models are built in a follow-up. Cost-effective as a foundation but doesn't move the needle on customer churn.",
+      },
+    ],
   },
 };
 
