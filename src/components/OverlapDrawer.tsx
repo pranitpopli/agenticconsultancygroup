@@ -75,8 +75,8 @@ const OverlapDrawer = ({ overlaps, onClose, onProceed, preSelectedPeople, onTogg
                     <span>{project.department}</span>
                     <span>·</span>
                     <span className={
-                      project.outcome === "completed" ? "text-green-600" :
-                      project.outcome === "stalled" ? "text-warm-accent" : "text-destructive"
+                      project.outcome === "completed" ? "text-[hsl(var(--status-positive))]" :
+                      project.outcome === "stalled" ? "text-[hsl(var(--status-warning))]" : "text-destructive"
                     }>
                       {project.outcome}
                     </span>
