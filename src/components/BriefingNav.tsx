@@ -38,6 +38,14 @@ const BriefingNav = ({ activeTab, onTabChange }: BriefingNavProps) => {
       navigate("/oqr");
       return;
     }
+    if (tab.id === "portfolio") {
+      navigate("/portfolio");
+      return;
+    }
+    if (tab.id === "insights") {
+      navigate("/insights");
+      return;
+    }
     onTabChange?.(tab.id);
   };
 
