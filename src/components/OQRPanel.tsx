@@ -93,7 +93,7 @@ const OQRPanel = ({ isOpen, onToggle }: OQRPanelProps) => {
                   onMouseLeave={() => setHoveredMetric(null)}>
                   
                     <div className="flex items-baseline gap-2">
-                      <span className="font-serif text-3xl text-foreground">
+                      <span className="font-sans text-3xl text-foreground tabular-nums">
                         £{data.totalSavings.toLocaleString()}
                       </span>
                       <TrendingUp className="w-4 h-4 text-foreground/40" strokeWidth={1.5} />
@@ -171,7 +171,7 @@ const OQRPanel = ({ isOpen, onToggle }: OQRPanelProps) => {
               
                 <div className="pb-5 space-y-4">
                   <p className="text-xs text-muted-foreground">
-                    <span className="font-serif text-base text-foreground">{data.aiProjects.length}</span>
+                    <span className="font-sans text-base text-foreground tabular-nums">{data.aiProjects.length}</span>
                     {" "}active across{" "}
                     <span className="text-foreground">{uniqueDepts} departments</span>
                   </p>
@@ -239,7 +239,7 @@ const OQRPanel = ({ isOpen, onToggle }: OQRPanelProps) => {
                       
                       </svg>
                       <div className="absolute inset-0 flex items-center justify-center">
-                        <span className="font-serif text-lg text-foreground">{data.orgMaturity}%</span>
+                        <span className="font-sans text-lg text-foreground tabular-nums">{data.orgMaturity}%</span>
                       </div>
                     </div>
                     <div>

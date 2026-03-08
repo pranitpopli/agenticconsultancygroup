@@ -110,7 +110,7 @@ const BriefingTableOfContents = ({ sections }: Props) => {
   // Desktop: fixed side rail
   return (
     <nav
-      className="fixed top-28 right-8 w-48 z-20 print:hidden"
+      className="fixed top-28 left-8 w-48 z-20 print:hidden"
       aria-label="Table of contents"
     >
       <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground mb-3">Contents</p>
