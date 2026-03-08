@@ -21,7 +21,7 @@ function getGreeting(): string {
   return "Good evening";
 }
 
-const STATUS_FILTERS = ["All", "Analysis Complete", "Approved", "Deferred", "In Delivery", "Draft"] as const;
+const STATUS_FILTERS = ["All", "Analysis Complete", "Approved", "Deferred", "Completed", "In Delivery", "Draft"] as const;
 
 const OverviewDashboard = ({ briefs, onReadBriefing, onSubmitBrief }: OverviewDashboardProps) => {
   const { toast } = useToast();
