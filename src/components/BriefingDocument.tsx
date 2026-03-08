@@ -22,6 +22,7 @@ const BriefingDocumentView = ({ doc, onBack }: BriefingDocumentProps) => {
   const [showExport, setShowExport] = useState(false);
   const [pendingInput, setPendingInput] = useState<string | null>(null);
   const [oqrOpen, setOqrOpen] = useState(false);
+  const { toast } = useToast();
 
   const handleConversationUpdate = (updates: Partial<BriefingDocType>) => {
     setCurrentDoc((prev) => ({ ...prev, ...updates }));
