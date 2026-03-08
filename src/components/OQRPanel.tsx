@@ -239,7 +239,7 @@ const OQRPanel = ({ isOpen, onToggle }: OQRPanelProps) => {
                       
                       </svg>
                       <div className="absolute inset-0 flex items-center justify-center">
-                        <span className="font-serif text-lg text-foreground">{data.orgMaturity}%</span>
+                        <span className="font-sans text-lg text-foreground tabular-nums">{data.orgMaturity}%</span>
                       </div>
                     </div>
                     <div>

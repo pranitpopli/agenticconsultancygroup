@@ -74,7 +74,7 @@ const BriefingOQRPanel = ({ open, onToggle }: BriefingOQRPanelProps) => {
               className="overflow-hidden"
             >
               <div className="pb-5 space-y-3">
-                <p className="font-serif text-3xl text-foreground">
+                <p className="font-sans text-3xl text-foreground tabular-nums">
                   £{(oqr.totalSavings / 1000).toFixed(0)}k
                   <span className="text-sm text-[hsl(var(--status-positive))] ml-2 font-sans">↑</span>
                 </p>
