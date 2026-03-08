@@ -10,6 +10,7 @@ import {
   PolarRadiusAxis,
   Radar,
   ResponsiveContainer,
+  Tooltip,
 } from "recharts";
 
 const capabilityData = [
