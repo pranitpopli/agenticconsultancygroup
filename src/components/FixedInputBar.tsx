@@ -27,7 +27,6 @@ const FixedInputBar = ({ onSend, onExportPDF, onExportPPT, onExportDocx, oqrOpen
     <div
       className={`fixed bottom-0 left-0 z-30 border-t border-border bg-background transition-all duration-300 ${oqrOpen ? "right-[360px]" : "right-0"}`}
     >
-    >
       {/* Suggestion chips — hidden once conversation starts */}
       {suggestions && suggestions.length > 0 && (
         <div className="max-w-[780px] mx-auto px-8 pt-3 pb-1 flex flex-wrap gap-2">
