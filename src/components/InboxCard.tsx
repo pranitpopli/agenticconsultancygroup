@@ -105,8 +105,8 @@ const InboxCard = ({ brief, index, onRead }: InboxCardProps) => {
                 {deptCount} dept{deptCount !== 1 ? "s" : ""}
               </span>
               <span className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
-                <TrendingDown className="w-3 h-3" strokeWidth={1.5} />
-                £{(saving / 1000).toFixed(0)}k projected saving
+              <TrendingDown className="w-3 h-3" strokeWidth={1.5} />
+                {brief.status === "completed" ? `£${(saving / 1000).toFixed(0)}k saved` : `£${(saving / 1000).toFixed(0)}k projected saving`}
               </span>
             </div>
           )}
