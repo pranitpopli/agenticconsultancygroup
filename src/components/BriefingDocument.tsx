@@ -13,6 +13,8 @@ import ExecutiveDecisionSummary from "./ExecutiveDecisionSummary";
 import RiskRegister from "./RiskRegister";
 import SuccessMetrics from "./SuccessMetrics";
 import ScenarioModelling from "./ScenarioModelling";
+import RACIMatrix from "./RACIMatrix";
+import DeliveryTracker from "./DeliveryTracker";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -229,6 +231,12 @@ const BriefingDocumentView = ({ doc, onBack, readOnly = false }: BriefingDocumen
           <ProposedSystemView system={currentDoc.system} />
         </Section>
 
+        {/* Section — RACI Matrix */}
+        {currentDoc.raciMatrix && currentDoc.raciMatrix.length > 0 && (
+          <Section number={nextSection()} title="Governance (RACI)" delay={0.42}>
+            <RACIMatrix entries={currentDoc.raciMatrix} phases={currentDoc.phases} />
+          </Section>
+        )}
         {/* Section — Recommended Approach */}
         <Section number={nextSection()} title="Recommended Approach" delay={0.5}>
           <div className="space-y-6 mb-10">
@@ -258,6 +266,13 @@ const BriefingDocumentView = ({ doc, onBack, readOnly = false }: BriefingDocumen
         {currentDoc.successMetrics && currentDoc.successMetrics.length > 0 && (
           <Section number={nextSection()} title="Success Criteria" delay={0.55}>
             <SuccessMetrics metrics={currentDoc.successMetrics} />
+          </Section>
+        )}
+
+        {/* Section — Delivery Status */}
+        {currentDoc.deliveryStatus && (
+          <Section number={nextSection()} title="Delivery Status" delay={0.58}>
+            <DeliveryTracker status={currentDoc.deliveryStatus} />
           </Section>
         )}
 
