@@ -65,6 +65,21 @@ export interface SuccessMetric {
 
 export type DecisionRecommendation = "proceed" | "proceed-with-conditions" | "defer";
 
+export interface Scenario {
+  id: string;
+  name: string;
+  description: string;
+  cost: number;
+  weeks: number;
+  risk: "low" | "medium" | "high";
+  scopePercent: number;
+  teamSize: number;
+  recommended?: boolean;
+  included: string[];
+  deferred: string[];
+  tradeOffNarrative: string;
+}
+
 
 export interface BriefingSummary {
   id: string;
