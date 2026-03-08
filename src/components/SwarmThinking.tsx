@@ -30,9 +30,9 @@ const SwarmThinking = ({ lines, onComplete }: SwarmThinkingProps) => {
         i++;
       } else {
         clearInterval(interval);
-        setTimeout(onComplete, 500);
+        setTimeout(onComplete, 200);
       }
-    }, 120);
+    }, 60);
 
     return () => clearInterval(interval);
   }, [lines, onComplete, skipped]);
