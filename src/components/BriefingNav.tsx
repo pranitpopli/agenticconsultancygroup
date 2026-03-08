@@ -11,7 +11,7 @@ const BriefingNav = ({ activeTab, onTabChange }: BriefingNavProps) => {
 
   const tabs = [
     { id: "briefings" as const, label: "Briefings" },
-    { id: "oqr" as const, label: "OQR" },
+    { id: "oqr" as const, label: "Overview" },
     { id: "archive" as const, label: "Archive" },
   ];
 
