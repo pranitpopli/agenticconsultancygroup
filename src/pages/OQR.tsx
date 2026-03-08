@@ -109,7 +109,7 @@ const OQR = () => {
           {kpis.map((kpi) => (
             <div
               key={kpi.label}
-              className="border border-border bg-card p-5 space-y-3"
+              className="border border-border bg-card rounded-lg shadow-sm p-5 space-y-3"
             >
               <div className="flex items-center gap-2 text-muted-foreground">
                 <kpi.icon className="w-3.5 h-3.5" strokeWidth={1.5} />
