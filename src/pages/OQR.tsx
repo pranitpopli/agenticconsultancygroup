@@ -210,9 +210,6 @@ const OQR = () => {
                 
               </RadarChart>
             </ResponsiveContainer>
-                
-              </RadarChart>
-            </ResponsiveContainer>
           </div>
 
           {/* Capability Coverage */}
