@@ -25,7 +25,7 @@ const PersonProfile = () => {
   if (!employee) {
     return (
       <div className="min-h-screen bg-background">
-        <BriefingNav activeTab="people" onTabChange={(tab) => { if (tab === "briefings") navigate("/"); }} />
+        <BriefingNav />
         <main className="max-w-[800px] mx-auto px-4 sm:px-8 pt-28 pb-24 text-center">
           <p className="text-sm text-muted-foreground">Person not found.</p>
           <button onClick={() => navigate("/people")} className="mt-4 text-xs text-foreground underline underline-offset-4">
