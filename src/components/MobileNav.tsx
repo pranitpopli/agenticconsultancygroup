@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Moon, Sun, LogOut } from "lucide-react";
+import { Menu, X, Moon, Sun, LogOut, Bell } from "lucide-react";
 import { Settings as SettingsIcon } from "lucide-react";
+import NotificationCentre from "./NotificationCentre";
 import { useTheme } from "@/hooks/use-theme";
 import { useAuth } from "@/contexts/AuthContext";
 
