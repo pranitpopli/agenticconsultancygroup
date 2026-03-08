@@ -97,6 +97,18 @@ const ConversationLayer = ({ doc, onUpdate, onFinalize, active, onActivate, exte
       response = AI_RESPONSES["replace sarah"];
     } else if (textLower.includes("10 week") || textLower.includes("shorter") || textLower.includes("faster")) {
       response = AI_RESPONSES["10 weeks"];
+    } else if (textLower.includes("reduce") && textLower.includes("budget") || textLower.includes("cut cost") || textLower.includes("cheaper")) {
+      response = AI_RESPONSES["reduce budget"];
+    } else if (textLower.includes("increase") && textLower.includes("budget") || textLower.includes("more budget") || textLower.includes("invest more")) {
+      response = AI_RESPONSES["increase budget"];
+    } else if (textLower.includes("smaller team") || textLower.includes("fewer people") || textLower.includes("reduce team")) {
+      response = AI_RESPONSES["smaller team"];
+    } else if (textLower.includes("add someone") || textLower.includes("add a") || textLower.includes("extra person") || textLower.includes("more people")) {
+      response = AI_RESPONSES["add someone"];
+    } else if (textLower.includes("remove phase") || textLower.includes("simplify") || textLower.includes("skip phase")) {
+      response = AI_RESPONSES["remove phase"];
+    } else if (textLower.includes("risk") || textLower.includes("what could go wrong") || textLower.includes("concern")) {
+      response = AI_RESPONSES["risk"];
     }
 
     setTimeout(() => {
