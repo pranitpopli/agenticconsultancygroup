@@ -87,6 +87,14 @@ const OQR = () => {
     sub: `+${maturityDelta} pts this quarter`
   }];
 
+  const gridColor = theme === "dark" ? "hsl(220 10% 20%)" : "hsl(35 15% 88%)";
+  const tickColor = theme === "dark" ? "hsl(220 8% 55%)" : "hsl(0 0% 45%)";
+  const tickLightColor = theme === "dark" ? "hsl(220 8% 45%)" : "hsl(0 0% 60%)";
+  const primaryStroke = theme === "dark" ? "hsl(40 20% 90%)" : "hsl(0 0% 10%)";
+  const primaryFill = primaryStroke;
+  const accentStroke = theme === "dark" ? "hsl(38 65% 50%)" : "hsl(38 55% 50%)";
+  const accentFill = accentStroke;
+  const projectedStroke = theme === "dark" ? "hsl(38 40% 50%)" : "hsl(38 35% 58%)";
 
   return (
     <div className="min-h-screen bg-background" role="main">
