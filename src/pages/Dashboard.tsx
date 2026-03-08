@@ -59,6 +59,7 @@ const Dashboard = () => {
       <BriefingNav />
 
       <motion.main
+        id="main-content"
         className="max-w-[900px] mx-auto px-4 sm:px-8 pt-28 pb-24"
         variants={containerVariants}
         initial="hidden"
