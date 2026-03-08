@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
-import { ArrowRight, Zap, Users, Building2, TrendingDown, CheckCircle2, Pause } from "lucide-react";
+import { ArrowRight, Zap, Users, Building2, TrendingDown, CheckCircle2, Pause, Rocket, AlertTriangle, Archive } from "lucide-react";
 import type { BriefingSummary } from "@/lib/briefingData";
-import { BRIEFING_DOCUMENTS } from "@/lib/briefingData";
+import { BRIEFING_DOCUMENTS, ARCHIVE_DOCUMENTS } from "@/lib/briefingData";
 import { useBriefingStore } from "@/lib/briefingStore";
 
 interface InboxCardProps {
