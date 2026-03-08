@@ -1,39 +1,34 @@
 import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import BriefingNav from "@/components/BriefingNav";
-import InboxView from "@/components/InboxView";
+import OverviewDashboard from "@/components/OverviewDashboard";
 import BriefingDocumentView from "@/components/BriefingDocument";
 import OQRPanel from "@/components/OQRPanel";
-import OverviewDashboard from "@/components/OverviewDashboard";
 import { BRIEFING_DOCUMENTS } from "@/lib/briefingData";
 
-type View = "overview" | "inbox" | "briefing";
-
 const Index = () => {
-  const [view, setView] = useState<View>("overview");
+  const [view, setView] = useState<"briefings" | "briefing-doc">("briefings");
   const [activeBriefId, setActiveBriefId] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<"overview" | "briefings" | "oqr" | "archive">("overview");
+  const [activeTab, setActiveTab] = useState<"briefings" | "oqr" | "archive">("briefings");
   const [oqrOpen, setOqrOpen] = useState(false);
 
   const handleReadBriefing = (id: string) => {
     setActiveBriefId(id);
-    setView("briefing");
-    setActiveTab("briefings");
+    setView("briefing-doc");
   };
 
   const handleBack = () => {
-    setView("inbox");
+    setView("briefings");
     setActiveBriefId(null);
   };
 
-  const handleTabChange = (tab: "overview" | "briefings" | "oqr" | "archive") => {
+  const handleTabChange = (tab: "briefings" | "oqr" | "archive") => {
     setActiveTab(tab);
-    if (tab === "overview") {
-      setView("overview");
+    if (tab === "briefings") {
+      setView("briefings");
       setActiveBriefId(null);
-    } else if (tab === "briefings") {
-      if (view === "briefing") return;
-      setView("inbox");
+    } else if (tab === "oqr") {
+      setOqrOpen(true);
     }
   };
 
@@ -48,15 +43,11 @@ const Index = () => {
       />
 
       <AnimatePresence mode="wait">
-        {view === "overview" && (
-          <OverviewDashboard key="overview" />
+        {view === "briefings" && (
+          <OverviewDashboard key="briefings" onReadBriefing={handleReadBriefing} />
         )}
 
-        {view === "inbox" && (
-          <InboxView key="inbox" onReadBriefing={handleReadBriefing} />
-        )}
-
-        {view === "briefing" && activeDoc && (
+        {view === "briefing-doc" && activeDoc && (
           <BriefingDocumentView
             key={activeBriefId}
             doc={activeDoc}
