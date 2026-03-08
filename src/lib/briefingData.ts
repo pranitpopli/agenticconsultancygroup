@@ -107,6 +107,7 @@ export interface BriefingDocument {
   risks?: RiskRow[];
   successMetrics?: SuccessMetric[];
   recommendation?: DecisionRecommendation;
+  scenarios?: Scenario[];
 }
 
 export const BRIEFING_SUMMARIES: BriefingSummary[] = [
