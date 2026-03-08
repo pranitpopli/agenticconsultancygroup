@@ -226,15 +226,15 @@ const OQR = () => {
             </p>
             <ResponsiveContainer width="100%" height={300}>
               <RadarChart data={capabilityData} cx="50%" cy="50%" outerRadius="70%">
-                <PolarGrid stroke="hsl(35 15% 88%)" />
+                <PolarGrid stroke={gridColor} />
                 <PolarAngleAxis
                   dataKey="domain"
-                  tick={{ fontSize: 10, fill: "hsl(0 0% 45%)" }} />
+                  tick={{ fontSize: 10, fill: tickColor }} />
                 
                 <PolarRadiusAxis
                   angle={90}
                   domain={[0, 100]}
-                  tick={{ fontSize: 8, fill: "hsl(0 0% 60%)" }}
+                  tick={{ fontSize: 8, fill: tickLightColor }}
                   axisLine={false} />
                 
                 <Tooltip
@@ -255,12 +255,15 @@ const OQR = () => {
                 <Radar
                   name="Coverage"
                   dataKey="coverage"
-                  stroke="hsl(38 55% 50%)"
-                  fill="hsl(38 55% 50%)"
+                  stroke={accentStroke}
+                  fill={accentFill}
                   fillOpacity={0.1}
                   strokeWidth={1.5}
                   isAnimationActive
                   animationDuration={1200} />
+                
+              </RadarChart>
+            </ResponsiveContainer>
                 
               </RadarChart>
             </ResponsiveContainer>
