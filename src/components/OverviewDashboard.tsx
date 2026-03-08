@@ -87,7 +87,7 @@ const OverviewDashboard = ({ onReadBriefing }: OverviewDashboardProps) => {
           </p>
           <div className="grid grid-cols-3 gap-8">
             <div>
-              <p className="font-serif text-2xl text-foreground">
+              <p className="text-2xl font-sans tabular-nums text-foreground">
                 £{(totalSavings / 1000).toFixed(0)}k
               </p>
               <p className="text-[11px] text-muted-foreground mt-1">
@@ -95,9 +95,9 @@ const OverviewDashboard = ({ onReadBriefing }: OverviewDashboardProps) => {
               </p>
             </div>
             <div>
-              <p className="font-serif text-2xl text-foreground">
+              <p className="text-2xl font-sans tabular-nums text-foreground">
                 {liveProjects}
-                <span className="text-base text-muted-foreground font-sans ml-1">
+                <span className="text-base text-muted-foreground ml-1">
                   +{inBuild}
                 </span>
               </p>
@@ -106,9 +106,9 @@ const OverviewDashboard = ({ onReadBriefing }: OverviewDashboardProps) => {
               </p>
             </div>
             <div>
-              <p className="font-serif text-2xl text-foreground">
+              <p className="text-2xl font-sans tabular-nums text-foreground">
                 {orgMaturity}%
-                <span className="text-base text-[hsl(var(--status-positive))] font-sans ml-1">
+                <span className="text-base text-[hsl(var(--status-positive))] ml-1">
                   +{maturityDelta}
                 </span>
               </p>
