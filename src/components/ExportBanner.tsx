@@ -36,7 +36,7 @@ const ExportBanner = ({ doc }: ExportBannerProps) => {
         <p className="text-sm text-muted-foreground mb-6">
           Download the feasibility brief or generate a board-ready presentation from this analysis.
         </p>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 flex-wrap">
           <button className="flex items-center gap-2 text-xs tracking-[0.1em] uppercase text-foreground border border-foreground px-5 py-2.5 hover:bg-foreground hover:text-primary-foreground transition-colors">
             <FileDown className="w-3.5 h-3.5" strokeWidth={1.5} />
             Download Feasibility Brief (PDF)
@@ -48,6 +48,10 @@ const ExportBanner = ({ doc }: ExportBannerProps) => {
             <Presentation className="w-3.5 h-3.5" strokeWidth={1.5} />
             Create Board Presentation (PPT)
             <ArrowRight className="w-3 h-3" strokeWidth={1.5} />
+          </button>
+          <button className="flex items-center gap-2 text-xs tracking-[0.1em] uppercase text-foreground border border-foreground px-5 py-2.5 hover:bg-foreground hover:text-primary-foreground transition-colors">
+            <ExternalLink className="w-3.5 h-3.5" strokeWidth={1.5} />
+            Push to Jira
           </button>
         </div>
       </div>
