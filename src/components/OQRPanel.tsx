@@ -54,8 +54,8 @@ const OQRPanel = ({ isOpen, onToggle }: OQRPanelProps) => {
         animate={{ x: 0 }}
         exit={{ x: "100%" }}
         transition={{ duration: 0.3, ease: "easeOut" }}
-        className="fixed right-0 top-[65px] bottom-0 z-40 w-[360px] border-l border-border overflow-y-auto"
-        style={{ backgroundColor: "#FAF8F4" }}>
+        className="fixed right-0 top-[65px] bottom-0 z-40 w-[360px] border-l border-border overflow-y-auto bg-background"
+        >
         
         {/* Header */}
         <div className="sticky top-0 z-10 border-b border-border px-5 py-4" style={{ backgroundColor: "#FAF8F4" }}>
