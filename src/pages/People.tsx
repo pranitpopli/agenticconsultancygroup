@@ -61,25 +61,28 @@ const People = () => {
         </motion.div>
 
         {/* Search + filters */}
-        <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-3 mb-8">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
+        <motion.div variants={itemVariants} className="space-y-3 mb-8">
+          <div className="relative">
+            <label htmlFor="people-search" className="sr-only">Search people</label>
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" strokeWidth={1.5} />
             <input
+              id="people-search"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search by name, role, or skill…"
-              className="w-full text-sm bg-background border border-border pl-10 pr-4 py-2.5 outline-none focus:border-foreground/30 transition-colors placeholder:text-muted-foreground/50"
+              className="w-full text-sm bg-background border border-border pl-10 pr-4 py-2.5 outline-none focus:border-foreground/30 focus:ring-1 focus:ring-ring transition-colors placeholder:text-muted-foreground/50"
             />
           </div>
-          <div className="flex items-center gap-2 overflow-x-auto">
-            <Filter className="w-3.5 h-3.5 text-muted-foreground shrink-0" strokeWidth={1.5} />
+          <div role="radiogroup" aria-label="Filter by department" className="flex items-center gap-2 flex-wrap">
             {departmentFilters.map((dept) => (
               <button
                 key={dept}
+                role="radio"
+                aria-checked={deptFilter === dept}
                 onClick={() => setDeptFilter(dept)}
-                className={`text-[11px] tracking-[0.08em] whitespace-nowrap px-3 py-1.5 border transition-colors ${
+                className={`text-xs px-3.5 py-1.5 border rounded-sm transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 ${
                   deptFilter === dept
-                    ? "border-foreground/30 text-foreground bg-muted"
+                    ? "border-foreground text-foreground bg-foreground/5 font-medium"
                     : "border-border text-muted-foreground hover:border-foreground/20 hover:text-foreground"
                 }`}
               >
