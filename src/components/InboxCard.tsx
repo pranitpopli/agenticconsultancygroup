@@ -126,4 +126,8 @@ const InboxCard = memo(({ brief, index, onRead }: InboxCardProps) => {
   );
 };
 
+});
+
+InboxCard.displayName = "InboxCard";
+
 export default InboxCard;

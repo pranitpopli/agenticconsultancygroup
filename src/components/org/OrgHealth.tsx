@@ -59,16 +59,23 @@ const OrgHealth = () => {
     <motion.div variants={containerVariants} initial="hidden" animate="visible">
       {/* KPI Cards */}
       <motion.div variants={itemVariants} className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
-        {kpis.map((kpi) => (
-          <div key={kpi.label} className="border border-border bg-card rounded-lg shadow-sm p-5 space-y-3">
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <kpi.icon className="w-3.5 h-3.5" strokeWidth={1.5} />
-              <span className="text-[11px] text-muted-foreground">{kpi.label}</span>
-            </div>
-            <p className="text-3xl font-sans tabular-nums text-foreground leading-none">{kpi.value}</p>
-            <p className="text-[11px] text-muted-foreground">{kpi.sub}</p>
-          </div>
-        ))}
+        {kpis.map((kpi) => {
+          const Wrapper = kpi.onClick ? "button" : "div";
+          return (
+            <Wrapper
+              key={kpi.label}
+              onClick={kpi.onClick}
+              className={`border border-border bg-card rounded-lg shadow-sm p-5 space-y-3 text-left ${kpi.onClick ? "hover:border-foreground/20 transition-colors cursor-pointer" : ""}`}
+            >
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <kpi.icon className="w-3.5 h-3.5" strokeWidth={1.5} />
+                <span className="text-[11px] text-muted-foreground">{kpi.label}</span>
+              </div>
+              <p className="text-3xl font-sans tabular-nums text-foreground leading-none">{kpi.value}</p>
+              <p className="text-[11px] text-muted-foreground">{kpi.sub}</p>
+            </Wrapper>
+          );
+        })}
       </motion.div>
 
       {/* Spider Charts */}

@@ -98,6 +98,9 @@ const BriefingNav = () => {
               )}
             </button>
 
+            {/* Notification Centre */}
+            {user && <NotificationCentre />}
+
             {/* User menu */}
             {user && (
               <div className="relative">

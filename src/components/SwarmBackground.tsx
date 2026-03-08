@@ -345,6 +345,7 @@ const SwarmBackground = forwardRef<SwarmHandle>((_, ref) => {
 
     return () => {
       cancelAnimationFrame(raf.current);
+      document.removeEventListener("visibilitychange", handleVisibility);
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("mousemove", handleMouse);
       window.removeEventListener("mouseleave", handleLeave);

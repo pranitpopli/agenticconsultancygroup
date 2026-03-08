@@ -178,7 +178,7 @@ const Dashboard = () => {
                   }`}>
                     {proj.status.replace("-", " ")}
                   </span>
-                </div>
+                </button>
               ))}
             </div>
           </motion.section>

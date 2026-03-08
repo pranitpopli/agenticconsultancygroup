@@ -34,17 +34,19 @@ const App = () => (
             >
               Skip to content
             </a>
-            <Routes>
-              <Route path="/login" element={<Login />} />
-              <Route path="/" element={<AuthGuard><Dashboard /></AuthGuard>} />
-              <Route path="/briefings" element={<AuthGuard><Index /></AuthGuard>} />
-              <Route path="/organisation" element={<AuthGuard><Organisation /></AuthGuard>} />
-              <Route path="/people" element={<AuthGuard><People /></AuthGuard>} />
-              <Route path="/people/:id" element={<AuthGuard><PersonProfile /></AuthGuard>} />
-              <Route path="/settings" element={<AuthGuard><Settings /></AuthGuard>} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+            <Suspense fallback={<div className="min-h-screen bg-background" />}>
+              <Routes>
+                <Route path="/login" element={<Login />} />
+                <Route path="/" element={<AuthGuard><Dashboard /></AuthGuard>} />
+                <Route path="/briefings" element={<AuthGuard><Index /></AuthGuard>} />
+                <Route path="/organisation" element={<AuthGuard><Organisation /></AuthGuard>} />
+                <Route path="/people" element={<AuthGuard><People /></AuthGuard>} />
+                <Route path="/people/:id" element={<AuthGuard><PersonProfile /></AuthGuard>} />
+                <Route path="/settings" element={<AuthGuard><Settings /></AuthGuard>} />
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
           </BrowserRouter>
         </TooltipProvider>
       </ThemeProvider>

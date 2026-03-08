@@ -51,8 +51,9 @@ const MobileNav = () => {
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
           >
-            {open ? <X className="w-5 h-5" strokeWidth={1.5} /> : <Menu className="w-5 h-5" strokeWidth={1.5} />}
-          </button>
+              {open ? <X className="w-5 h-5" strokeWidth={1.5} /> : <Menu className="w-5 h-5" strokeWidth={1.5} />}
+            </button>
+          </div>
         </div>
       </nav>
 

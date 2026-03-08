@@ -145,7 +145,12 @@ const OrgPortfolio = () => {
           {RESOURCE_CONFLICTS.map((conflict, i) => (
             <div key={conflict.employeeId} className={`grid grid-cols-[200px_1fr_100px] min-w-[600px] ${i > 0 ? "border-t border-border" : ""}`}>
               <div className="p-3">
-                <p className="text-xs text-foreground font-medium">{conflict.employee.name}</p>
+                <button
+                  onClick={() => navigate(`/people/${conflict.employeeId}`)}
+                  className="text-xs text-foreground font-medium hover:underline underline-offset-2 transition-colors"
+                >
+                  {conflict.employee.name}
+                </button>
                 <p className="text-[10px] text-muted-foreground">{conflict.employee.role}</p>
               </div>
               <div className="p-3 border-l border-border">

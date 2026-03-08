@@ -126,6 +126,9 @@ const BriefingDocumentView = ({ doc, onBack, readOnly = false }: BriefingDocumen
 
   return (
     <main className="transition-all duration-300 relative" aria-label="Briefing document">
+      {/* Sticky Decision Bar */}
+      <StickyDecisionBar doc={currentDoc} readOnly={readOnly} />
+
       {/* Table of Contents */}
       <BriefingTableOfContents sections={sections} />
 
