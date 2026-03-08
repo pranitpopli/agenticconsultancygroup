@@ -40,7 +40,7 @@ const People = () => {
   return (
     <div className="min-h-screen bg-background">
       <BriefingNav
-        activeTab="briefings"
+        activeTab="people"
         onTabChange={(tab) => {
           if (tab === "briefings") navigate("/");
           if (tab === "archive") navigate("/?tab=archive");
@@ -100,7 +100,8 @@ const People = () => {
               <motion.div
                 key={emp.id}
                 variants={itemVariants}
-                className="border border-border bg-card p-5 space-y-3 hover:border-foreground/20 transition-colors"
+                onClick={() => navigate(`/people/${emp.id}`)}
+                className="border border-border bg-card p-5 space-y-3 hover:border-foreground/20 transition-colors cursor-pointer"
               >
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-3">

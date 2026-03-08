@@ -32,7 +32,7 @@ const Settings = () => {
   return (
     <div className="min-h-screen bg-background">
       <BriefingNav
-        activeTab="briefings"
+        activeTab="settings"
         onTabChange={(tab) => {
           if (tab === "briefings") navigate("/");
           if (tab === "archive") navigate("/?tab=archive");

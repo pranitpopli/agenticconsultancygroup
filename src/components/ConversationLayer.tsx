@@ -37,6 +37,31 @@ const AI_RESPONSES: Record<string, { content: string; update?: Partial<BriefingD
       ],
     },
   },
+  "reduce budget": {
+    content: "I've modelled a 15% budget reduction. The main lever is replacing the external security audit with an in-house review led by Omar Hassan — this saves £28,000 but extends the security sign-off by one week. I've also reduced the contingency buffer from 12% to 8%. Total revised estimate: £158,000.",
+    update: {
+      internalCost: 158000,
+      saving: 312000,
+    },
+  },
+  "increase budget": {
+    content: "With additional budget I'd recommend three investments: (1) dedicated QA resource from week 1 rather than week 6, (2) an external accessibility audit in parallel with Phase 2, and (3) a 15% contingency buffer instead of 8%. This raises the estimate to £215,000 but significantly de-risks delivery.",
+    update: {
+      internalCost: 215000,
+    },
+  },
+  "smaller team": {
+    content: "A leaner team of 4 instead of 6 is feasible if we extend the timeline to 18 weeks. I'd keep the two senior engineers and the QA lead, dropping the junior frontend role and consolidating design into a part-time allocation. The trade-off is slower iteration on the frontend migration phase.",
+  },
+  "add someone": {
+    content: "Based on the current brief, the biggest gap is frontend performance expertise. I'd recommend adding Yuki Tanaka — she led the Performance Optimization Sprint and has direct experience with the component library the frontend migration will touch. Her partial availability from week 3 aligns well with Phase 2.",
+  },
+  "remove phase": {
+    content: "If we remove the stabilisation phase entirely, we save 2 weeks but lose the safety net for load testing and documentation. A middle ground: merge stabilisation into the final week of Phase 2 as a parallel workstream. This compresses the timeline by one week while retaining critical validation steps.",
+  },
+  "risk": {
+    content: "The top three risks are: (1) API dependency on the legacy auth service — if the auth team's timeline slips, Phase 1 is blocked. Mitigation: build an adapter layer. (2) Frontend team starting on assumptions — partially mitigated by the 12-week compromise timeline. (3) Key person dependency on Sarah Chen for institutional knowledge — mitigated by pairing her with Leo Martinelli in weeks 1–3.",
+  },
 };
 
 const ConversationLayer = ({ doc, onUpdate, onFinalize, active, onActivate, externalInput, onExternalInputHandled }: ConversationLayerProps) => {
@@ -72,6 +97,18 @@ const ConversationLayer = ({ doc, onUpdate, onFinalize, active, onActivate, exte
       response = AI_RESPONSES["replace sarah"];
     } else if (textLower.includes("10 week") || textLower.includes("shorter") || textLower.includes("faster")) {
       response = AI_RESPONSES["10 weeks"];
+    } else if (textLower.includes("reduce") && textLower.includes("budget") || textLower.includes("cut cost") || textLower.includes("cheaper")) {
+      response = AI_RESPONSES["reduce budget"];
+    } else if (textLower.includes("increase") && textLower.includes("budget") || textLower.includes("more budget") || textLower.includes("invest more")) {
+      response = AI_RESPONSES["increase budget"];
+    } else if (textLower.includes("smaller team") || textLower.includes("fewer people") || textLower.includes("reduce team")) {
+      response = AI_RESPONSES["smaller team"];
+    } else if (textLower.includes("add someone") || textLower.includes("add a") || textLower.includes("extra person") || textLower.includes("more people")) {
+      response = AI_RESPONSES["add someone"];
+    } else if (textLower.includes("remove phase") || textLower.includes("simplify") || textLower.includes("skip phase")) {
+      response = AI_RESPONSES["remove phase"];
+    } else if (textLower.includes("risk") || textLower.includes("what could go wrong") || textLower.includes("concern")) {
+      response = AI_RESPONSES["risk"];
     }
 
     setTimeout(() => {
