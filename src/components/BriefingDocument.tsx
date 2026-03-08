@@ -11,6 +11,24 @@ import BriefingIndex from "./BriefingIndex";
 import ProposedSystemView from "./ProposedSystem";
 import GanttChart from "./GanttChart";
 import BriefingOQRPanel from "./BriefingOQRPanel";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbSeparator,
+  BreadcrumbPage,
+} from "@/components/ui/breadcrumb";
 
 interface BriefingDocumentProps {
   doc: BriefingDocType;
