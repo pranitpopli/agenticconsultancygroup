@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Moon, Sun, LogOut, Settings, Users, ChevronDown, Globe } from "lucide-react";
+import { Moon, Sun, LogOut, Settings, ChevronDown, Globe } from "lucide-react";
 import { useTheme } from "@/hooks/use-theme";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -82,13 +82,12 @@ const BriefingNav = () => {
           {/* People — utility nav */}
           <button
             onClick={() => navigate("/people")}
-            className={`flex items-center gap-1.5 text-xs tracking-[0.15em] uppercase transition-colors pb-0.5 ${
+            className={`relative text-xs tracking-[0.15em] uppercase transition-colors pb-0.5 ${
               activeTab === "people"
                 ? "text-foreground"
                 : "text-muted-foreground hover:text-foreground"
             }`}
           >
-            <Users className="w-3.5 h-3.5" strokeWidth={1.5} />
             People
             {activeTab === "people" && (
               <motion.span
