@@ -35,7 +35,6 @@ const Settings = () => {
         activeTab="settings"
         onTabChange={(tab) => {
           if (tab === "briefings") navigate("/");
-          if (tab === "archive") navigate("/?tab=archive");
         }}
       />
 

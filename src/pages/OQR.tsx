@@ -100,7 +100,6 @@ const OQR = () => {
     <div className="min-h-screen bg-background" role="main">
       <BriefingNav activeTab="oqr" onTabChange={(tab) => {
         if (tab === "briefings") navigate("/");
-        if (tab === "archive") navigate("/?tab=archive");
       }} />
 
       <motion.div

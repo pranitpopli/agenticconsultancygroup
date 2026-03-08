@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
-import { ArrowRight, Zap, Users, Building2, TrendingDown, CheckCircle2, Pause } from "lucide-react";
+import { ArrowRight, Zap, Users, Building2, TrendingDown, CheckCircle2, Pause, Rocket, AlertTriangle, Archive } from "lucide-react";
 import type { BriefingSummary } from "@/lib/briefingData";
-import { BRIEFING_DOCUMENTS } from "@/lib/briefingData";
+import { BRIEFING_DOCUMENTS, ARCHIVE_DOCUMENTS } from "@/lib/briefingData";
 import { useBriefingStore } from "@/lib/briefingStore";
 
 interface InboxCardProps {
@@ -11,7 +11,7 @@ interface InboxCardProps {
 }
 
 const InboxCard = ({ brief, index, onRead }: InboxCardProps) => {
-  const doc = BRIEFING_DOCUMENTS[brief.id];
+  const doc = BRIEFING_DOCUMENTS[brief.id] || ARCHIVE_DOCUMENTS[brief.id];
   const teamCount = doc?.team?.length ?? 0;
   const deptCount = doc?.system?.departments?.length ?? 0;
   const saving = doc?.saving ?? 0;
@@ -23,18 +23,35 @@ const InboxCard = ({ brief, index, onRead }: InboxCardProps) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.3 + index * 0.15 }}
       className={`border p-8 hover:border-foreground/20 transition-colors group ${
-        decision === "approved"
-          ? "border-[hsl(var(--status-positive)/0.3)] bg-[hsl(var(--status-positive-bg))]"
-          : decision === "deferred"
-            ? "border-border bg-muted/30"
-            : "border-border"
+        brief.status === "completed"
+          ? "border-border bg-muted/20"
+          : decision === "approved"
+            ? "border-[hsl(var(--status-positive)/0.3)] bg-[hsl(var(--status-positive-bg))]"
+            : decision === "deferred"
+              ? "border-border bg-muted/30"
+              : "border-border"
       }`}
     >
       <div className="flex items-start justify-between gap-6">
         <div className="flex-1 space-y-3">
            <div className="flex items-center gap-3 flex-wrap">
               <h3 className="font-serif text-xl text-foreground">{brief.title}</h3>
-              {decision === "approved" ? (
+              {brief.status === "completed" && brief.outcome === "deployed" ? (
+                <span className="text-[10px] uppercase tracking-[0.12em] px-2.5 py-1 border border-[hsl(var(--status-positive)/0.3)] text-[hsl(var(--status-positive))] flex items-center gap-1">
+                  <Rocket className="w-3 h-3" strokeWidth={1.5} />
+                  Deployed
+                </span>
+              ) : brief.status === "completed" && brief.outcome === "partially-deployed" ? (
+                <span className="text-[10px] uppercase tracking-[0.12em] px-2.5 py-1 border border-[hsl(var(--status-warning)/0.3)] text-[hsl(var(--status-warning))] flex items-center gap-1">
+                  <AlertTriangle className="w-3 h-3" strokeWidth={1.5} />
+                  Partial
+                </span>
+              ) : brief.status === "completed" && brief.outcome === "shelved" ? (
+                <span className="text-[10px] uppercase tracking-[0.12em] px-2.5 py-1 border border-border text-muted-foreground flex items-center gap-1">
+                  <Archive className="w-3 h-3" strokeWidth={1.5} />
+                  Shelved
+                </span>
+              ) : decision === "approved" ? (
                 <span className="text-[10px] uppercase tracking-[0.12em] px-2.5 py-1 border border-[hsl(var(--status-positive)/0.3)] text-[hsl(var(--status-positive))] bg-[hsl(var(--status-positive-bg))] flex items-center gap-1">
                   <CheckCircle2 className="w-3 h-3" strokeWidth={1.5} />
                   Approved
@@ -88,8 +105,8 @@ const InboxCard = ({ brief, index, onRead }: InboxCardProps) => {
                 {deptCount} dept{deptCount !== 1 ? "s" : ""}
               </span>
               <span className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
-                <TrendingDown className="w-3 h-3" strokeWidth={1.5} />
-                £{(saving / 1000).toFixed(0)}k projected saving
+              <TrendingDown className="w-3 h-3" strokeWidth={1.5} />
+                {brief.status === "completed" ? `£${(saving / 1000).toFixed(0)}k saved` : `£${(saving / 1000).toFixed(0)}k projected saving`}
               </span>
             </div>
           )}
@@ -100,7 +117,7 @@ const InboxCard = ({ brief, index, onRead }: InboxCardProps) => {
           disabled={brief.status === "swarm-searching"}
           className="flex items-center gap-2 text-xs tracking-[0.1em] uppercase text-foreground border border-foreground px-5 py-2.5 hover:bg-foreground hover:text-primary-foreground transition-colors mt-1 whitespace-nowrap disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-foreground"
         >
-          {brief.status === "swarm-searching" ? "Analysing…" : decision ? "View briefing" : "Read briefing"}
+          {brief.status === "swarm-searching" ? "Analysing…" : brief.status === "completed" ? "View briefing" : decision ? "View briefing" : "Read briefing"}
           {brief.status !== "swarm-searching" && <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.5} />}
         </button>
       </div>
