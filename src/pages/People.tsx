@@ -377,22 +377,25 @@ const People = () => {
                     <motion.div
                       initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 4 }}
                       transition={{ duration: 0.15 }}
-                      className="absolute right-0 top-full mt-1 w-48 bg-card border border-border shadow-lg z-50"
+                      className="absolute right-0 top-full mt-1 w-56 bg-card border border-border shadow-lg z-50 py-1"
                     >
                       {SORT_OPTIONS.map((opt) => (
                         <button
                           key={opt.key}
                           onClick={() => {
                             if (sortKey === opt.key) setSortAsc(!sortAsc);
-                            else { setSortKey(opt.key); setSortAsc(true); }
+                            else { setSortKey(opt.key); setSortAsc(opt.key === "experience" || opt.key === "rate" ? false : true); }
                             setSortOpen(false);
                           }}
-                          className={`w-full flex items-center justify-between px-4 py-2.5 text-xs transition-colors ${
-                            sortKey === opt.key ? "text-foreground font-medium bg-muted" : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                          className={`w-full flex flex-col items-start px-4 py-2.5 text-left transition-colors ${
+                            sortKey === opt.key ? "text-foreground bg-muted" : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
                           }`}
                         >
-                          {opt.label}
-                          {sortKey === opt.key && <span className="text-[10px] text-muted-foreground">{sortAsc ? "↑" : "↓"}</span>}
+                          <span className="flex items-center gap-2 w-full">
+                            <span className={`text-xs ${sortKey === opt.key ? "font-medium" : ""}`}>{opt.label}</span>
+                            {sortKey === opt.key && <span className="ml-auto text-[10px] text-muted-foreground">{sortAsc ? "↑" : "↓"}</span>}
+                          </span>
+                          <span className="text-[10px] text-muted-foreground/60 leading-tight mt-0.5">{opt.desc}</span>
                         </button>
                       ))}
                     </motion.div>
