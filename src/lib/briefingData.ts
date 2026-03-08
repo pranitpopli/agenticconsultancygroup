@@ -197,6 +197,11 @@ export const BRIEFING_DOCUMENTS: Record<string, BriefingDocument> = {
       { dimension: "Org knowledge retained", internal: "Full", external: "None" },
       { dimension: "Post-project value", internal: "Team stays in org", external: "Knowledge leaves" },
     ],
+    phases: [
+      { number: 1, title: "Foundation & API Gateway", weeks: "Weeks 1–6", description: "Consolidate API gateway, establish new authentication service, and set up observability baseline across all affected services." },
+      { number: 2, title: "Frontend Migration", weeks: "Weeks 5–12", description: "Migrate frontend to modern component architecture with parallel rendering pipeline. Phased rollout to reduce risk." },
+      { number: 3, title: "Stabilisation & Handover", weeks: "Weeks 12–16", description: "Performance validation, load testing at scale, documentation, and knowledge transfer to platform support team." },
+    ],
     risks: [
       { risk: "Legacy auth service coupling delays API gateway migration", likelihood: "medium", impact: "high", mitigation: "Parallel auth service rebuild in Phase 1; feature-flag cutover to limit blast radius" },
       { risk: "Frontend migration causes regression in critical user flows", likelihood: "medium", impact: "medium", mitigation: "Phased rollout with A/B traffic splitting; automated visual regression tests" },
