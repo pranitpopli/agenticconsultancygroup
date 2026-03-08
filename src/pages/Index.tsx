@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import { AnimatePresence } from "framer-motion";
 import { useSearchParams } from "react-router-dom";
 import BriefingNav from "@/components/BriefingNav";
@@ -94,6 +94,24 @@ const Index = () => {
 
   const currentOverlaps = activeBriefId ? (OVERLAPS_MAP[activeBriefId] || []) : [];
   const currentSwarmLines = activeBriefId ? (SWARM_LINES_MAP[activeBriefId] || DEFAULT_SWARM_LINES) : [];
+
+  // Scroll to top on view change
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [view]);
+
+  // Dynamic page title
+  useEffect(() => {
+    const activeDoc = activeBriefId ? allDocs[activeBriefId] : null;
+    const titles: Record<View, string> = {
+      briefings: "ACG — Briefings",
+      "swarm-thinking": activeDoc ? `ACG — Analysing ${activeDoc.title}` : "ACG — Analysing",
+      "silo-check": "ACG — Silo Check",
+      "briefing-doc": activeDoc ? `ACG — ${activeDoc.title}` : "ACG — Briefing",
+      archive: "ACG — Archive",
+    };
+    document.title = titles[view] || "ACG";
+  }, [view, activeBriefId, allDocs]);
 
   const handleReadBriefing = (id: string) => {
     setSearchParams({ view: "swarm-thinking", brief: id });

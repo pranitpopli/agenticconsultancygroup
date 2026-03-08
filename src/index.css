@@ -131,3 +131,22 @@
     border-left-color: hsl(var(--red));
   }
 }
+
+/* Print styles */
+@media print {
+  nav,
+  [aria-label="Briefing index"],
+  [aria-label="OQR panel"],
+  .fixed {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+  }
+
+  main {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+}

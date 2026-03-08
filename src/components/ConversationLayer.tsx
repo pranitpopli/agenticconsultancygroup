@@ -18,10 +18,6 @@ interface ConversationLayerProps {
   onExternalInputHandled?: () => void;
 }
 
-const SUGGESTIONS = [
-  "Can we replace Sarah Chen? She's on another project.",
-  "What if we run this in 10 weeks instead of 14?",
-];
 
 const AI_RESPONSES: Record<string, { content: string; update?: Partial<BriefingDocument> }> = {
   "replace sarah": {
