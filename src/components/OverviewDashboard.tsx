@@ -43,6 +43,7 @@ const OverviewDashboard = ({ briefs, onReadBriefing, onSubmitBrief }: OverviewDa
       if (statusFilter === "Approved") return matchesSearch && briefDecision === "approved";
       if (statusFilter === "Deferred") return matchesSearch && briefDecision === "deferred";
       if (statusFilter === "Analysis Complete") return matchesSearch && !briefDecision && b.status === "analysis-complete";
+      if (statusFilter === "Completed") return matchesSearch && b.status === "completed";
       if (statusFilter === "All") return matchesSearch;
       
       const matchesStatus = b.status?.toLowerCase() === statusFilter.toLowerCase();

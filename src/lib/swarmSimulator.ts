@@ -1,150 +1,106 @@
-import type { Agent, Conflict, SwarmSession } from "./swarmTypes";
+import type { Agent, AgentLens, AgentSignal, ConvergenceResult, SwarmSession } from "./swarmTypes";
 
-const AGENT_NAMES = [
-  "Cipher", "Meridian", "Vesper", "Aether", "Noctis",
-  "Prism", "Echo", "Flux", "Onyx", "Drift",
-];
-
-const MONOLOGUES = {
-  initial: [
-    "I begin with no history. My only compass is the task ahead.",
-    "Fresh slate. I will let the problem shape my approach, not assumptions.",
-    "No prior defeats to learn from — but also no false confidence. Let's see.",
-    "The task is mine to interpret. I'll find the angle others miss.",
-    "I trust my first instinct but remain ready to abandon it entirely.",
-  ],
-  win: [
-    "My approach held. But the margin was thin — I must refine, not relax.",
-    "Victory sharpens me. I see where my opponent faltered and absorb that lesson.",
-    "I won, but I notice a fragility in my reasoning. Next round, I'll fortify it.",
-    "The feedback signal is clear: this direction works. I'll push further.",
-    "Winning feels secondary to understanding why I won. That's the real gain.",
-  ],
-  loss: [
-    "Defeated. I miscalculated the core requirement. Realigning completely.",
-    "The winner's output exposed my blind spot. I'm rewriting my approach from that gap.",
-    "Loss absorbed. I was too clever — simplicity would have served the task better.",
-    "My opponent's strength was precision where I chose breadth. Noted.",
-    "This failure is useful. I now see the evaluation axis I was ignoring.",
-  ],
+const LENS_CONFIG: Record<AgentLens, { name: string; label: string }> = {
+  cost: { name: "Atlas", label: "Cost" },
+  risk: { name: "Sentinel", label: "Risk" },
+  speed: { name: "Meridian", label: "Speed" },
+  talent: { name: "Cipher", label: "Talent" },
+  culture: { name: "Vesper", label: "Culture" },
+  precedent: { name: "Echo", label: "Precedent" },
 };
 
-const OUTPUTS = [
-  "Proposed a hierarchical decomposition of the task into three sub-objectives with cascading validation.",
-  "Generated a direct, concise solution optimized for clarity and minimal ambiguity.",
-  "Applied a lateral reasoning approach — reframed the problem to expose a simpler underlying structure.",
-  "Synthesized multiple perspectives into a unified response with explicit trade-off analysis.",
-  "Focused on edge cases first, then constructed the general solution as an envelope around them.",
-  "Built the answer iteratively, stress-testing each component against the task constraints.",
-];
-
-function randomFrom<T>(arr: T[]): T {
-  return arr[Math.floor(Math.random() * arr.length)];
+export interface BriefAgentData {
+  lens: AgentLens;
+  conclusion: string;
+  signal: AgentSignal;
+  confidence: number;
+  reasoning: string;
 }
 
-function createAgent(index: number): Agent {
-  return {
-    id: `agent-${index}-${Date.now()}`,
-    name: AGENT_NAMES[index % AGENT_NAMES.length],
-    score: parseFloat((Math.random() * 2 + 6).toFixed(1)),
-    reputation: 0,
-    monologue: MONOLOGUES.initial[index % MONOLOGUES.initial.length],
-    output: randomFrom(OUTPUTS),
-    status: "competing",
-    wins: 0,
-    losses: 0,
-    rounds: 0,
-  };
-}
+export function createSession(task: string, agentData: BriefAgentData[]): SwarmSession {
+  const agents: Agent[] = agentData.map((d, i) => ({
+    id: `agent-${d.lens}-${Date.now()}`,
+    name: LENS_CONFIG[d.lens].name,
+    lens: d.lens,
+    status: "analysing" as const,
+    confidence: d.confidence,
+    conclusion: d.conclusion,
+    signal: d.signal,
+    reasoning: d.reasoning,
+  }));
 
-export function createSession(task: string, agentCount = 6): SwarmSession {
-  const agents = Array.from({ length: agentCount }, (_, i) => createAgent(i));
   return {
     id: `session-${Date.now()}`,
     task,
     agents,
-    conflicts: [],
-    apexAgentId: null,
+    convergence: null,
     status: "idle",
-    currentRound: 0,
   };
 }
 
-export function simulateRound(session: SwarmSession): {
-  session: SwarmSession;
-  newConflicts: Conflict[];
-} {
-  const active = session.agents.filter((a) => a.status !== "defeated");
-  if (active.length <= 1) {
-    const apex = active[0];
-    if (apex) {
-      apex.status = "winner";
-      apex.monologue = randomFrom(MONOLOGUES.win);
-    }
-    return {
-      session: {
-        ...session,
-        apexAgentId: apex?.id ?? null,
-        status: "complete",
-        currentRound: session.currentRound,
-      },
-      newConflicts: [],
-    };
-  }
+export function computeConvergence(agents: Agent[]): ConvergenceResult {
+  const proceedCount = agents.filter((a) => a.signal === "proceed").length;
+  const cautionCount = agents.filter((a) => a.signal === "caution").length;
+  const flagCount = agents.filter((a) => a.signal === "flag").length;
 
-  const nextRound = session.currentRound + 1;
-  const shuffled = [...active].sort(() => Math.random() - 0.5);
-  const newConflicts: Conflict[] = [];
+  const convergent = agents
+    .filter((a) => a.signal === "proceed")
+    .map((a) => `${LENS_CONFIG[a.lens].label}: ${a.conclusion}`);
 
-  for (let i = 0; i < shuffled.length - 1; i += 2) {
-    const a = shuffled[i];
-    const b = shuffled[i + 1];
+  const divergent = agents
+    .filter((a) => a.signal !== "proceed")
+    .map((a) => `${LENS_CONFIG[a.lens].label}: ${a.conclusion}`);
 
-    // Weighted random winner based on score + reputation
-    const aWeight = a.score + a.reputation * 0.3 + Math.random() * 2;
-    const bWeight = b.score + b.reputation * 0.3 + Math.random() * 2;
-    const winner = aWeight >= bWeight ? a : b;
-    const loser = winner === a ? b : a;
+  const avgConfidence = agents.reduce((sum, a) => sum + a.confidence, 0) / agents.length;
 
-    winner.wins += 1;
-    winner.reputation += 1;
-    winner.score = parseFloat((winner.score + Math.random() * 0.5).toFixed(1));
-    winner.rounds = nextRound;
-    winner.monologue = randomFrom(MONOLOGUES.win);
-    winner.output = randomFrom(OUTPUTS);
-    winner.status = "competing";
+  let overallSignal: ConvergenceResult["overallSignal"];
+  if (flagCount >= 2) overallSignal = "defer";
+  else if (cautionCount >= 2 || flagCount >= 1) overallSignal = "proceed-with-conditions";
+  else overallSignal = "proceed";
 
-    loser.losses += 1;
-    loser.reputation -= 1;
-    loser.rounds = nextRound;
-    loser.monologue = randomFrom(MONOLOGUES.loss);
-    loser.status = "defeated";
-
-    newConflicts.push({
-      id: `conflict-${nextRound}-${i}`,
-      agentA: { ...a },
-      agentB: { ...b },
-      winnerId: winner.id,
-      timestamp: Date.now(),
-      round: nextRound,
-    });
-  }
-
-  // If odd number, last agent gets a bye
-  if (shuffled.length % 2 === 1) {
-    const bye = shuffled[shuffled.length - 1];
-    bye.rounds = nextRound;
-    bye.status = "competing";
-  }
+  const summary =
+    overallSignal === "proceed"
+      ? `${proceedCount}/${agents.length} agents recommend proceeding. High convergence across all dimensions.`
+      : overallSignal === "proceed-with-conditions"
+        ? `${proceedCount}/${agents.length} agents recommend proceeding. ${cautionCount + flagCount} raised concerns requiring attention.`
+        : `Only ${proceedCount}/${agents.length} agents recommend proceeding. Significant divergence detected — review recommended.`;
 
   return {
-    session: {
-      ...session,
-      agents: [...session.agents],
-      conflicts: [...session.conflicts, ...newConflicts],
-      currentRound: nextRound,
-      status: "running",
-    },
-    newConflicts,
+    agreeCount: proceedCount,
+    totalAgents: agents.length,
+    convergent,
+    divergent,
+    overallSignal,
+    confidence: parseFloat(avgConfidence.toFixed(2)),
+    summary,
   };
 }
+
+// Pre-built agent conclusions per brief
+export const BRIEF_AGENTS: Record<string, BriefAgentData[]> = {
+  "brief-001": [
+    { lens: "cost", conclusion: "£186k internal vs £470k external — 60% saving", signal: "proceed", confidence: 0.92, reasoning: "Clear cost advantage. Internal team has existing context, eliminating ramp-up costs." },
+    { lens: "risk", conclusion: "Legacy auth coupling introduces migration risk", signal: "caution", confidence: 0.71, reasoning: "Auth service dependency is under-documented. Feature-flag cutover mitigates but doesn't eliminate." },
+    { lens: "speed", conclusion: "14–18 weeks achievable with phased rollout", signal: "proceed", confidence: 0.85, reasoning: "Timeline aligns with comparable past projects. Phase overlap reduces critical path." },
+    { lens: "talent", conclusion: "5 strong matches from 3 departments", signal: "proceed", confidence: 0.94, reasoning: "All candidates have directly relevant experience. 3 have collaborated before." },
+    { lens: "culture", conclusion: "Engineering-led initiative, low organisational friction", signal: "proceed", confidence: 0.88, reasoning: "All affected teams are within engineering. No cross-divisional politics expected." },
+    { lens: "precedent", conclusion: "Similar scope completed in Platform Consolidation 2023", signal: "proceed", confidence: 0.90, reasoning: "Previous initiative took 12 weeks at smaller scope. Patterns are directly transferable." },
+  ],
+  "brief-002": [
+    { lens: "cost", conclusion: "£210k internal vs £580k external — 64% saving", signal: "proceed", confidence: 0.89, reasoning: "Significant saving. ML infrastructure costs are lower internally due to existing SageMaker setup." },
+    { lens: "risk", conclusion: "Legacy warehouse dependency is a blocking risk", signal: "flag", confidence: 0.62, reasoning: "Data warehouse migration timeline is uncertain. If it slips, Phase 1 is blocked entirely." },
+    { lens: "speed", conclusion: "18–22 weeks with model training uncertainty", signal: "caution", confidence: 0.68, reasoning: "ML model accuracy is unpredictable. Training cycles may need extension. Phased delivery recommended." },
+    { lens: "talent", conclusion: "5 matches from 4 departments — strong data team", signal: "proceed", confidence: 0.91, reasoning: "Aisha and Kenji are a proven ML pair. Sarah bridges engineering and data well." },
+    { lens: "culture", conclusion: "Cross-team data ownership may cause friction", signal: "caution", confidence: 0.65, reasoning: "Three teams currently own overlapping data. Schema agreement requires executive sponsorship." },
+    { lens: "precedent", conclusion: "Partial precedent from Knowledge Graph project", signal: "proceed", confidence: 0.78, reasoning: "Knowledge Graph tackled similar data unification. Recommendation engine failure provides learning." },
+  ],
+};
+
+export const DEFAULT_BRIEF_AGENTS: BriefAgentData[] = [
+  { lens: "cost", conclusion: "Internal approach shows significant cost advantage", signal: "proceed", confidence: 0.85, reasoning: "Standard internal vs external cost comparison favours in-house delivery." },
+  { lens: "risk", conclusion: "No critical risks identified in initial assessment", signal: "proceed", confidence: 0.80, reasoning: "No conflicting workstreams or blocking dependencies detected." },
+  { lens: "speed", conclusion: "12–16 weeks estimated delivery timeline", signal: "proceed", confidence: 0.78, reasoning: "Timeline based on comparable past initiatives." },
+  { lens: "talent", conclusion: "3 candidate profiles matched across 2 departments", signal: "proceed", confidence: 0.82, reasoning: "Skill matching indicates sufficient internal capability." },
+  { lens: "culture", conclusion: "Low organisational friction expected", signal: "proceed", confidence: 0.83, reasoning: "Initiative scope is contained within aligned business units." },
+  { lens: "precedent", conclusion: "Limited but relevant precedent found", signal: "caution", confidence: 0.70, reasoning: "No exact match in project archive. Closest parallel provides partial guidance." },
+];

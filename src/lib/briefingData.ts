@@ -114,7 +114,8 @@ export interface BriefingSummary {
   submittedBy: { name: string; role: string };
   dateReceived: string;
   aiSummary: string;
-  status: "swarm-ready" | "analysis-complete" | "swarm-searching";
+  status: "swarm-ready" | "analysis-complete" | "swarm-searching" | "completed";
+  outcome?: "deployed" | "partially-deployed" | "shelved";
 }
 
 export interface BriefingDocument {
