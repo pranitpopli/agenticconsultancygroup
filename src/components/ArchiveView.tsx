@@ -232,15 +232,15 @@ const ArchiveView = () => {
                       <div className="grid grid-cols-3 gap-6">
                         <div>
                           <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground mb-1">Internal</p>
-                          <p className="text-xl text-foreground font-sans">£{doc.internalCost.toLocaleString()}</p>
+                          <p className="text-xl text-foreground font-sans tabular-nums">£{doc.internalCost.toLocaleString()}</p>
                         </div>
                         <div>
                           <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground mb-1">External</p>
-                          <p className="text-xl text-muted-foreground font-sans">£{doc.externalCost.toLocaleString()}</p>
+                          <p className="text-xl text-muted-foreground font-sans tabular-nums">£{doc.externalCost.toLocaleString()}</p>
                         </div>
                         <div>
                           <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground mb-1">Saving</p>
-                          <p className="text-xl text-foreground font-sans">£{doc.saving.toLocaleString()}</p>
+                          <p className="text-xl text-foreground font-sans tabular-nums">£{doc.saving.toLocaleString()}</p>
                         </div>
                       </div>
 
