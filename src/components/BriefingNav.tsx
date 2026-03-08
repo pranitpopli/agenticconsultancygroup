@@ -10,14 +10,15 @@ const BriefingNav = ({ activeTab, onTabChange }: BriefingNavProps) => {
   const navigate = useNavigate();
 
   const tabs = [
-    { id: "briefings" as const, label: "Briefings", route: "/" },
-    { id: "oqr" as const, label: "OQR", route: "/oqr" },
-    { id: "archive" as const, label: "Archive", route: null },
+    { id: "briefings" as const, label: "Briefings" },
+    { id: "oqr" as const, label: "OQR" },
+    { id: "archive" as const, label: "Archive" },
   ];
 
   const handleClick = (tab: typeof tabs[number]) => {
-    if (tab.route) {
-      navigate(tab.route);
+    if (tab.id === "oqr") {
+      navigate("/oqr");
+      return;
     }
     onTabChange?.(tab.id);
   };
