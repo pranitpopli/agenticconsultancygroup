@@ -31,7 +31,7 @@ const BriefingOQRPanel = ({ open, onToggle }: BriefingOQRPanelProps) => {
         className="fixed right-0 top-1/2 -translate-y-1/2 z-20 bg-background border border-r-0 border-border px-2 py-6 hover:bg-muted transition-colors"
         style={{ writingMode: "vertical-rl" }}
       >
-        <span className="text-[9px] uppercase tracking-[0.2em] text-muted-foreground">OQR</span>
+        <span className="text-[9px] uppercase tracking-[0.2em] text-muted-foreground">Overview</span>
       </button>
     );
   }
