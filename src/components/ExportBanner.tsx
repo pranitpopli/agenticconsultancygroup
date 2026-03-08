@@ -44,7 +44,7 @@ const ExportBanner = ({ doc }: ExportBannerProps) => {
           Download the feasibility brief or generate a board-ready presentation from this analysis.
         </p>
         <div className="flex items-center gap-3 flex-wrap">
-          <button className="flex items-center gap-2 text-xs tracking-[0.1em] uppercase text-foreground border border-foreground px-5 py-2.5 hover:bg-foreground hover:text-primary-foreground transition-colors">
+          <button onClick={() => handleExportAction("PDF export queued")} className="flex items-center gap-2 text-xs tracking-[0.1em] uppercase text-foreground border border-foreground px-5 py-2.5 hover:bg-foreground hover:text-primary-foreground transition-colors">
             <FileDown className="w-3.5 h-3.5" strokeWidth={1.5} />
             Download Feasibility Brief (PDF)
           </button>
