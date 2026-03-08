@@ -49,6 +49,23 @@ export interface Phase {
   description: string;
 }
 
+export interface RiskRow {
+  risk: string;
+  likelihood: "high" | "medium" | "low";
+  impact: "high" | "medium" | "low";
+  mitigation: string;
+}
+
+export interface SuccessMetric {
+  metric: string;
+  baseline: string;
+  target: string;
+  measurement: string;
+}
+
+export type DecisionRecommendation = "proceed" | "proceed-with-conditions" | "defer";
+
+
 export interface BriefingSummary {
   id: string;
   title: string;
