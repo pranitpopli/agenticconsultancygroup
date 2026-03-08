@@ -110,7 +110,7 @@ const OQR = () => {
         </motion.div>
 
         {/* ━━━ KPI CARDS ━━━ */}
-        <motion.div variants={itemVariants} className="grid grid-cols-4 gap-4 mb-10">
+        <motion.div variants={itemVariants} className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
           {kpis.map((kpi) =>
           <div
             key={kpi.label}
