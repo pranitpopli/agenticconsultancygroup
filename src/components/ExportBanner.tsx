@@ -108,10 +108,10 @@ const ExportBanner = ({ doc }: ExportBannerProps) => {
 
                 {/* Download buttons */}
                 <div className="flex items-center justify-end gap-3 mt-4">
-                  <button className="text-[10px] tracking-[0.1em] uppercase text-muted-foreground border border-border px-4 py-2 hover:text-foreground hover:border-foreground/30 transition-colors">
+                 <button onClick={() => handleExportAction("PPTX download started")} className="text-[10px] tracking-[0.1em] uppercase text-muted-foreground border border-border px-4 py-2 hover:text-foreground hover:border-foreground/30 transition-colors">
                     Download .pptx
                   </button>
-                  <button className="text-[10px] tracking-[0.1em] uppercase text-muted-foreground border border-border px-4 py-2 hover:text-foreground hover:border-foreground/30 transition-colors">
+                  <button onClick={() => handleExportAction("PDF download started")} className="text-[10px] tracking-[0.1em] uppercase text-muted-foreground border border-border px-4 py-2 hover:text-foreground hover:border-foreground/30 transition-colors">
                     Download .pdf
                   </button>
                 </div>
