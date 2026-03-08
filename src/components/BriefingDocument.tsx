@@ -217,7 +217,7 @@ const BriefingDocumentView = ({ doc, onBack }: BriefingDocumentProps) => {
           "Can we replace Sarah Chen? She's on another project.",
           "What if we run this in 10 weeks instead of 14?",
         ] : undefined} />
-    </div>
+    </main>
   );
 };
 
