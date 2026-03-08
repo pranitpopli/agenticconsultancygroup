@@ -1,6 +1,7 @@
 import { EMPLOYEES } from "./simulatedData";
 import type { Employee } from "./types";
 
+// Interfaces for data structures
 export interface FeasibilityRow {
   label: string;
   value: string;
@@ -283,3 +284,176 @@ export const BRIEFING_DOCUMENTS: Record<string, BriefingDocument> = {
     ],
   },
 };
+
+// ━━━ Archived briefs ━━━
+
+export interface ArchivedBrief {
+  id: string;
+  title: string;
+  completedDate: string;
+  submittedBy: { name: string; role: string };
+  outcome: "deployed" | "partially-deployed" | "shelved";
+  outcomeNote: string;
+  doc: BriefingDocument;
+}
+
+export const ARCHIVED_BRIEFS: ArchivedBrief[] = [
+  {
+    id: "arch-001",
+    title: "Cloud Migration Programme",
+    completedDate: "12 January 2025",
+    submittedBy: { name: "David Kim", role: "CTO" },
+    outcome: "deployed",
+    outcomeNote: "Fully deployed to production. Infrastructure costs reduced by 34% within first quarter. Team retained for ongoing optimisation.",
+    doc: {
+      ...BRIEFING_DOCUMENTS["brief-001"],
+      id: "arch-001",
+      title: "Cloud Migration Programme",
+      initiative: [
+        "Migration of 47 on-premise services to cloud infrastructure. Included containerisation, CI/CD pipeline redesign, and zero-downtime cutover strategy across three data centres.",
+      ],
+      internalCost: 142000,
+      externalCost: 390000,
+      saving: 248000,
+      costNarrative: "Internal team delivered 36% under budget. External quote from two consultancies averaged £390k for comparable scope.",
+      phases: [
+        { number: 1, title: "Assessment & Containerisation", weeks: "Weeks 1–4", description: "Service audit, dependency mapping, and Docker containerisation of 47 services." },
+        { number: 2, title: "Pipeline & Migration", weeks: "Weeks 4–10", description: "CI/CD redesign, staged migration with canary deployments." },
+        { number: 3, title: "Cutover & Validation", weeks: "Weeks 10–12", description: "Zero-downtime cutover, performance validation, cost monitoring." },
+      ],
+    },
+  },
+  {
+    id: "arch-002",
+    title: "Internal Knowledge Graph",
+    completedDate: "28 November 2024",
+    submittedBy: { name: "Elena Vasquez", role: "VP Knowledge Management" },
+    outcome: "partially-deployed",
+    outcomeNote: "Core graph deployed and indexed 12,000 documents. Recommendation engine deferred to Q2 2025 due to model accuracy thresholds not being met.",
+    doc: {
+      ...BRIEFING_DOCUMENTS["brief-002"],
+      id: "arch-002",
+      title: "Internal Knowledge Graph",
+      initiative: [
+        "Organisation-wide knowledge graph connecting documentation, Slack conversations, and project artefacts. Goal was to reduce time-to-find from an average of 23 minutes to under 2 minutes.",
+      ],
+      internalCost: 98000,
+      externalCost: 310000,
+      saving: 212000,
+      costNarrative: "Significant savings from internal assembly. The partially-deployed system still delivers 60% of projected value.",
+      phases: [
+        { number: 1, title: "Data Ingestion", weeks: "Weeks 1–6", description: "Connected 14 data sources including Confluence, Slack, and GitHub." },
+        { number: 2, title: "Graph Construction", weeks: "Weeks 5–12", description: "Entity extraction, relationship mapping, and search index." },
+        { number: 3, title: "Recommendation Engine", weeks: "Weeks 12–18", description: "ML-powered recommendations — deferred after accuracy review." },
+      ],
+    },
+  },
+  {
+    id: "arch-003",
+    title: "Automated Compliance Reporting",
+    completedDate: "15 September 2024",
+    submittedBy: { name: "Marcus Obi", role: "Head of Compliance" },
+    outcome: "shelved",
+    outcomeNote: "Shelved after regulatory framework changed in Q4 2024. Core data pipeline repurposed for the Customer Data Intelligence Layer (active brief).",
+    doc: {
+      ...BRIEFING_DOCUMENTS["brief-001"],
+      id: "arch-003",
+      title: "Automated Compliance Reporting",
+      initiative: [
+        "Automated generation of quarterly compliance reports by connecting transaction monitoring, audit logs, and regulatory requirement databases. Aimed to reduce manual reporting effort from 3 weeks to 2 days.",
+      ],
+      internalCost: 76000,
+      externalCost: 220000,
+      saving: 144000,
+      costNarrative: "Despite being shelved, the data pipeline work was repurposed — estimated £40k of effort carried forward to the active Customer Data Intelligence brief.",
+      phases: [
+        { number: 1, title: "Requirements & Data Mapping", weeks: "Weeks 1–3", description: "Regulatory requirement taxonomy and data source mapping." },
+        { number: 2, title: "Pipeline & Templates", weeks: "Weeks 3–8", description: "Automated data pipeline and report template engine." },
+        { number: 3, title: "Validation & Audit", weeks: "Weeks 8–10", description: "Parallel run with manual process for validation. Shelved during this phase." },
+      ],
+    },
+  },
+];
+
+// Build archive docs map for lookup
+export const ARCHIVE_DOCUMENTS: Record<string, BriefingDocument> = Object.fromEntries(
+  ARCHIVED_BRIEFS.map((b) => [b.id, b.doc])
+);
+
+// Generate a briefing document from user-submitted text
+export function createBriefDocument(id: string, text: string): { summary: BriefingSummary; doc: BriefingDocument } {
+  const title = text.length > 60 ? text.slice(0, 57) + "…" : text;
+  const today = new Date();
+  const dateStr = today.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+
+  const summary: BriefingSummary = {
+    id,
+    title,
+    submittedBy: { name: "James Whitfield", role: "Director" },
+    dateReceived: dateStr,
+    aiSummary: `Custom initiative analysed by swarm agents. ${EMPLOYEES.length} employee nodes scanned, cross-referencing skills and availability.`,
+    status: "analysis-complete",
+  };
+
+  const doc: BriefingDocument = {
+    id,
+    title,
+    initiative: [text],
+    feasibility: [
+      { label: "Complexity", value: "Medium", detail: "Initial assessment based on brief analysis", indicator: "amber" },
+      { label: "Timeline", value: "12–16 weeks estimated", detail: "Subject to team availability", indicator: "amber" },
+      { label: "Risk", value: "Low", detail: "No conflicting workstreams detected", indicator: "green" },
+    ],
+    team: [
+      { employee: EMPLOYEES[0], justification: "Strong technical leadership and cross-functional delivery experience." },
+      { employee: EMPLOYEES[2], justification: "Domain expertise aligned with initiative requirements." },
+      { employee: EMPLOYEES[4], justification: "Frontend and user experience capability." },
+    ],
+    teamContext: "This team was assembled based on skill matching and availability analysis.",
+    system: {
+      narrative: "Cross-functional system assembled to deliver this initiative.",
+      departments: [
+        {
+          name: "Engineering",
+          role: "Core development",
+          teams: [{
+            name: "Delivery Team",
+            focus: "Primary implementation",
+            members: [
+              { employee: EMPLOYEES[0], responsibility: "Technical lead" },
+              { employee: EMPLOYEES[4], responsibility: "Frontend development" },
+            ],
+          }],
+        },
+        {
+          name: "Data & Analytics",
+          role: "Data capability",
+          teams: [{
+            name: "Analytics",
+            focus: "Data and insights",
+            members: [
+              { employee: EMPLOYEES[2], responsibility: "Data lead" },
+            ],
+          }],
+        },
+      ],
+    },
+    internalCost: 156000,
+    externalCost: 420000,
+    saving: 264000,
+    costNarrative: "Internal assembly avoids external consultancy costs and retains institutional knowledge.",
+    comparison: [
+      { dimension: "Cost", internal: "£156,000", external: "£420,000" },
+      { dimension: "Time to assemble", internal: "35 seconds", external: "4–6 weeks" },
+      { dimension: "Org knowledge retained", internal: "Full", external: "None" },
+      { dimension: "Post-project value", internal: "Team stays in org", external: "Knowledge leaves" },
+    ],
+    phases: [
+      { number: 1, title: "Discovery & Setup", weeks: "Weeks 1–4", description: "Requirements validation, architecture design, and team onboarding." },
+      { number: 2, title: "Core Development", weeks: "Weeks 4–12", description: "Primary implementation phase with iterative delivery." },
+      { number: 3, title: "Validation & Launch", weeks: "Weeks 12–16", description: "Testing, performance validation, and phased rollout." },
+    ],
+  };
+
+  return { summary, doc };
+}

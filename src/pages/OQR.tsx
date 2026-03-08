@@ -110,7 +110,7 @@ const OQR = () => {
         </motion.div>
 
         {/* ━━━ KPI CARDS ━━━ */}
-        <motion.div variants={itemVariants} className="grid grid-cols-4 gap-4 mb-10">
+        <motion.div variants={itemVariants} className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
           {kpis.map((kpi) =>
           <div
             key={kpi.label}
@@ -129,7 +129,7 @@ const OQR = () => {
         </motion.div>
 
         {/* ━━━ TWO SPIDER CHARTS ━━━ */}
-        <motion.div variants={itemVariants} className="grid grid-cols-2 gap-4 mb-10">
+        <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
           {/* Department Maturity */}
           <div className="border border-border bg-card rounded-lg shadow-sm p-6">
             <div className="flex items-center justify-between mb-1">
@@ -299,7 +299,8 @@ const OQR = () => {
               <span>{completed} completed</span>
             </div>
           </div>
-          <div className="border border-border overflow-hidden">
+          <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+          <div className="border border-border overflow-hidden min-w-[530px]">
             {/* Table header */}
             <div className="grid grid-cols-[1fr_130px_150px_120px] border-b border-border">
               <div className="px-4 py-2.5 text-[10px] uppercase tracking-[0.12em] text-muted-foreground">Project</div>
@@ -330,6 +331,7 @@ const OQR = () => {
                 </div>
               </div>
             )}
+          </div>
           </div>
         </motion.div>
 

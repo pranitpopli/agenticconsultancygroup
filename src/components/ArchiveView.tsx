@@ -1,96 +1,11 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { CheckCircle2, Users, Building2, TrendingDown, ChevronDown, ChevronRight, Clock, Calendar } from "lucide-react";
-import { BRIEFING_DOCUMENTS } from "@/lib/briefingData";
-import type { BriefingDocument } from "@/lib/briefingData";
+import { CheckCircle2, Users, Building2, TrendingDown, ChevronDown, ChevronRight, Clock, Calendar, ArrowRight } from "lucide-react";
+import { ARCHIVED_BRIEFS } from "@/lib/briefingData";
 
-interface ArchivedBrief {
-  id: string;
-  title: string;
-  completedDate: string;
-  submittedBy: { name: string; role: string };
-  outcome: "deployed" | "partially-deployed" | "shelved";
-  outcomeNote: string;
-  doc: BriefingDocument;
+interface ArchiveViewProps {
+  onViewBrief?: (id: string) => void;
 }
-
-const ARCHIVED_BRIEFS: ArchivedBrief[] = [
-  {
-    id: "arch-001",
-    title: "Cloud Migration Programme",
-    completedDate: "12 January 2025",
-    submittedBy: { name: "David Kim", role: "CTO" },
-    outcome: "deployed",
-    outcomeNote: "Fully deployed to production. Infrastructure costs reduced by 34% within first quarter. Team retained for ongoing optimisation.",
-    doc: {
-      ...BRIEFING_DOCUMENTS["brief-001"],
-      id: "arch-001",
-      title: "Cloud Migration Programme",
-      initiative: [
-        "Migration of 47 on-premise services to cloud infrastructure. Included containerisation, CI/CD pipeline redesign, and zero-downtime cutover strategy across three data centres.",
-      ],
-      internalCost: 142000,
-      externalCost: 390000,
-      saving: 248000,
-      costNarrative: "Internal team delivered 36% under budget. External quote from two consultancies averaged £390k for comparable scope.",
-      phases: [
-        { number: 1, title: "Assessment & Containerisation", weeks: "Weeks 1–4", description: "Service audit, dependency mapping, and Docker containerisation of 47 services." },
-        { number: 2, title: "Pipeline & Migration", weeks: "Weeks 4–10", description: "CI/CD redesign, staged migration with canary deployments." },
-        { number: 3, title: "Cutover & Validation", weeks: "Weeks 10–12", description: "Zero-downtime cutover, performance validation, cost monitoring." },
-      ],
-    },
-  },
-  {
-    id: "arch-002",
-    title: "Internal Knowledge Graph",
-    completedDate: "28 November 2024",
-    submittedBy: { name: "Elena Vasquez", role: "VP Knowledge Management" },
-    outcome: "partially-deployed",
-    outcomeNote: "Core graph deployed and indexed 12,000 documents. Recommendation engine deferred to Q2 2025 due to model accuracy thresholds not being met.",
-    doc: {
-      ...BRIEFING_DOCUMENTS["brief-002"],
-      id: "arch-002",
-      title: "Internal Knowledge Graph",
-      initiative: [
-        "Organisation-wide knowledge graph connecting documentation, Slack conversations, and project artefacts. Goal was to reduce time-to-find from an average of 23 minutes to under 2 minutes.",
-      ],
-      internalCost: 98000,
-      externalCost: 310000,
-      saving: 212000,
-      costNarrative: "Significant savings from internal assembly. The partially-deployed system still delivers 60% of projected value.",
-      phases: [
-        { number: 1, title: "Data Ingestion", weeks: "Weeks 1–6", description: "Connected 14 data sources including Confluence, Slack, and GitHub." },
-        { number: 2, title: "Graph Construction", weeks: "Weeks 5–12", description: "Entity extraction, relationship mapping, and search index." },
-        { number: 3, title: "Recommendation Engine", weeks: "Weeks 12–18", description: "ML-powered recommendations — deferred after accuracy review." },
-      ],
-    },
-  },
-  {
-    id: "arch-003",
-    title: "Automated Compliance Reporting",
-    completedDate: "15 September 2024",
-    submittedBy: { name: "Marcus Obi", role: "Head of Compliance" },
-    outcome: "shelved",
-    outcomeNote: "Shelved after regulatory framework changed in Q4 2024. Core data pipeline repurposed for the Customer Data Intelligence Layer (active brief).",
-    doc: {
-      ...BRIEFING_DOCUMENTS["brief-001"],
-      id: "arch-003",
-      title: "Automated Compliance Reporting",
-      initiative: [
-        "Automated generation of quarterly compliance reports by connecting transaction monitoring, audit logs, and regulatory requirement databases. Aimed to reduce manual reporting effort from 3 weeks to 2 days.",
-      ],
-      internalCost: 76000,
-      externalCost: 220000,
-      saving: 144000,
-      costNarrative: "Despite being shelved, the data pipeline work was repurposed — estimated £40k of effort carried forward to the active Customer Data Intelligence brief.",
-      phases: [
-        { number: 1, title: "Requirements & Data Mapping", weeks: "Weeks 1–3", description: "Regulatory requirement taxonomy and data source mapping." },
-        { number: 2, title: "Pipeline & Templates", weeks: "Weeks 3–8", description: "Automated data pipeline and report template engine." },
-        { number: 3, title: "Validation & Audit", weeks: "Weeks 8–10", description: "Parallel run with manual process for validation. Shelved during this phase." },
-      ],
-    },
-  },
-];
 
 const outcomeStyles = {
   deployed: { label: "Deployed", className: "text-[hsl(var(--status-positive))] border-[hsl(var(--status-positive)/0.3)]" },
@@ -98,7 +13,7 @@ const outcomeStyles = {
   shelved: { label: "Shelved", className: "text-muted-foreground border-border" },
 };
 
-const ArchiveView = () => {
+const ArchiveView = ({ onViewBrief }: ArchiveViewProps) => {
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
   const totalSaved = ARCHIVED_BRIEFS.reduce((sum, b) => sum + b.doc.saving, 0);
@@ -110,7 +25,7 @@ const ArchiveView = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="max-w-[780px] mx-auto px-8 pt-28 pb-24"
+      className="max-w-[780px] mx-auto px-4 sm:px-8 pt-28 pb-24"
       aria-label="Archive view"
     >
       <div className="mb-10">
@@ -121,8 +36,8 @@ const ArchiveView = () => {
       </div>
 
       {/* Summary strip */}
-      <div className="border border-border p-8 mb-10">
-        <div className="grid grid-cols-3 gap-8">
+      <div className="border border-border p-6 sm:p-8 mb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
           <div>
             <p className="text-2xl font-sans tabular-nums text-foreground">{ARCHIVED_BRIEFS.length}</p>
             <p className="text-[11px] text-muted-foreground mt-1">Briefs completed</p>
@@ -165,14 +80,14 @@ const ArchiveView = () => {
               >
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1 space-y-2">
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3 flex-wrap">
                       <CheckCircle2 className="w-4 h-4 text-muted-foreground/40 flex-shrink-0" strokeWidth={1.5} />
                       <h3 className="font-serif text-lg text-foreground">{brief.title}</h3>
                       <span className={`text-[9px] uppercase tracking-[0.12em] px-2 py-0.5 border ${style.className}`}>
                         {style.label}
                       </span>
                     </div>
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground pl-7">
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground pl-7 flex-wrap">
                       <span>{brief.submittedBy.name}</span>
                       <span>·</span>
                       <span>{brief.submittedBy.role}</span>
@@ -180,7 +95,7 @@ const ArchiveView = () => {
                       <Calendar className="w-3 h-3" strokeWidth={1.5} />
                       <span>{brief.completedDate}</span>
                     </div>
-                    <div className="flex items-center gap-5 pl-7 pt-1">
+                    <div className="flex items-center gap-5 pl-7 pt-1 flex-wrap">
                       <span className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
                         <Users className="w-3 h-3" strokeWidth={1.5} />
                         {doc.team.length} assembled
@@ -231,7 +146,7 @@ const ArchiveView = () => {
                       </div>
 
                       {/* Financial */}
-                      <div className="grid grid-cols-3 gap-6">
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                         <div>
                           <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground mb-1">Internal</p>
                           <p className="text-xl text-foreground font-sans tabular-nums">£{doc.internalCost.toLocaleString()}</p>
@@ -261,7 +176,7 @@ const ArchiveView = () => {
                                   <span className="text-xs text-muted-foreground ml-2">{member.employee.role}</span>
                                 </div>
                               </div>
-                              <span className="text-[10px] text-muted-foreground">{member.employee.department}</span>
+                              <span className="text-[10px] text-muted-foreground hidden sm:block">{member.employee.department}</span>
                             </div>
                           ))}
                         </div>
@@ -285,6 +200,17 @@ const ArchiveView = () => {
                           ))}
                         </div>
                       </div>
+
+                      {/* View full briefing button */}
+                      {onViewBrief && (
+                        <button
+                          onClick={() => onViewBrief(brief.id)}
+                          className="flex items-center gap-2 text-xs tracking-[0.1em] uppercase text-foreground border border-foreground px-5 py-2.5 hover:bg-foreground hover:text-primary-foreground transition-colors"
+                        >
+                          View full briefing
+                          <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.5} />
+                        </button>
+                      )}
                     </div>
                   </motion.div>
                 )}
