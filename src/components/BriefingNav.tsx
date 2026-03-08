@@ -33,6 +33,11 @@ const BriefingNav = ({ activeTab, onTabChange }: BriefingNavProps) => {
   ];
 
   const handleClick = (tab: typeof tabs[number]) => {
+    if (tab.id === "briefings") {
+      navigate("/");
+      onTabChange?.(tab.id);
+      return;
+    }
     if (tab.id === "oqr") {
       navigate("/oqr");
       return;
