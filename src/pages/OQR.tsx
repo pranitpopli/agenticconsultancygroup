@@ -198,7 +198,7 @@ const OQR = () => {
           </div>
 
           {/* Capability Coverage */}
-          <div className="border border-border bg-card p-6">
+          <div className="border border-border bg-card rounded-lg shadow-sm p-6">
             <div className="flex items-center gap-2 mb-1">
               <Users className="w-3.5 h-3.5 text-muted-foreground" strokeWidth={1.5} />
               <span className="font-serif text-sm text-foreground">Capability Coverage</span>
