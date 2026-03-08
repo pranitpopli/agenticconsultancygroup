@@ -74,10 +74,18 @@ const OverviewDashboard = () => {
   }, {});
 
   // Spider chart data — department maturity
+  // Projected maturity: active AI projects boost their department's score
+  const projectBoost = aiProjects.reduce<Record<string, number>>((acc, proj) => {
+    const boost = proj.status === "in-build" ? 8 : proj.status === "live" ? 5 : 0;
+    acc[proj.department] = (acc[proj.department] || 0) + boost;
+    return acc;
+  }, {});
+
   const radarData = departments.map((d) => ({
     department: d.name.length > 12 ? d.name.slice(0, 10) + "…" : d.name,
     fullName: d.name,
     score: d.score,
+    projected: Math.min(100, d.score + (projectBoost[d.name] || 0)),
   }));
 
   // Spider chart data — capability coverage (skills across org)
@@ -168,12 +176,24 @@ const OverviewDashboard = () => {
       >
         {/* Dept Maturity Radar */}
         <div className="border border-border rounded-lg p-5 bg-card/60">
-          <h2 className="font-sans text-sm font-medium text-foreground mb-1 flex items-center gap-2">
-            <TrendingUp size={14} className="text-muted-foreground" />
-            Department Maturity
-          </h2>
+          <div className="flex items-start justify-between mb-1">
+            <h2 className="font-sans text-sm font-medium text-foreground flex items-center gap-2">
+              <TrendingUp size={14} className="text-muted-foreground" />
+              Department Maturity
+            </h2>
+            <div className="flex items-center gap-3">
+              <span className="flex items-center gap-1.5">
+                <span className="w-3 h-0.5 rounded-full bg-foreground/80 inline-block" />
+                <span className="font-sans text-[10px] text-muted-foreground">Current</span>
+              </span>
+              <span className="flex items-center gap-1.5">
+                <span className="w-3 h-0.5 rounded-full inline-block" style={{ backgroundColor: "hsl(38 80% 55%)" }} />
+                <span className="font-sans text-[10px] text-muted-foreground">Projected</span>
+              </span>
+            </div>
+          </div>
           <p className="font-sans text-[11px] text-muted-foreground mb-4">
-            AI adoption score by department (0–100)
+            Current vs projected maturity based on active initiatives
           </p>
           <div className="w-full h-[280px]">
             <ResponsiveContainer width="100%" height="100%">
@@ -190,12 +210,21 @@ const OverviewDashboard = () => {
                   tickCount={5}
                 />
                 <Radar
-                  name="Maturity"
+                  name="Current"
                   dataKey="score"
                   stroke="hsl(0 0% 10%)"
                   fill="hsl(0 0% 10%)"
-                  fillOpacity={0.12}
+                  fillOpacity={0.1}
                   strokeWidth={1.5}
+                />
+                <Radar
+                  name="Projected"
+                  dataKey="projected"
+                  stroke="hsl(38 80% 55%)"
+                  fill="hsl(38 80% 55%)"
+                  fillOpacity={0.08}
+                  strokeWidth={1.5}
+                  strokeDasharray="4 3"
                 />
                 <Tooltip
                   contentStyle={{
@@ -205,7 +234,10 @@ const OverviewDashboard = () => {
                     border: "1px solid hsl(35 15% 88%)",
                     backgroundColor: "#FAF8F4",
                   }}
-                  formatter={(value: number) => [`${value}`, "Score"]}
+                  formatter={(value: number, name: string) => [
+                    `${value}`,
+                    name === "score" ? "Current" : name === "projected" ? "Projected" : name,
+                  ]}
                 />
               </RadarChart>
             </ResponsiveContainer>
