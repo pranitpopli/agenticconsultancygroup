@@ -63,7 +63,7 @@ const BriefingDocumentView = ({ doc, onBack, readOnly = false }: BriefingDocumen
 
   return (
     <main className="transition-all duration-300 relative" aria-label="Briefing document">
-      <BriefingIndex />
+      
 
       {/* OQR Panel */}
       <AnimatePresence>
