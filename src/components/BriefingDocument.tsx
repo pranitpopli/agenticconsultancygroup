@@ -15,7 +15,13 @@ import SuccessMetrics from "./SuccessMetrics";
 import ScenarioModelling from "./ScenarioModelling";
 import RACIMatrix from "./RACIMatrix";
 import DeliveryTracker from "./DeliveryTracker";
+import ImpactLedger from "./ImpactLedger";
+import BenchmarkAnnotations from "./BenchmarkAnnotations";
+import ChangeReadiness from "./ChangeReadiness";
 import BriefingTableOfContents from "./BriefingTableOfContents";
+import { BENCHMARKS } from "@/lib/benchmarkData";
+import { CHANGE_READINESS } from "@/lib/changeReadinessData";
+import { IMPACT_LEDGER_DATA } from "@/lib/impactLedgerData";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -85,6 +91,11 @@ const BriefingDocumentView = ({ doc, onBack, readOnly = false }: BriefingDocumen
     window.print();
   };
 
+  // Retrieve benchmark/change/impact data for this doc
+  const benchmarks = BENCHMARKS[currentDoc.id] || [];
+  const changeReadiness = CHANGE_READINESS[currentDoc.id];
+  const impactLedger = IMPACT_LEDGER_DATA[currentDoc.id];
+
   // Build sections list for ToC
   const sections = useMemo(() => {
     const s: { number: string; title: string }[] = [];
@@ -101,10 +112,12 @@ const BriefingDocumentView = ({ doc, onBack, readOnly = false }: BriefingDocumen
     if (currentDoc.scenarios && currentDoc.scenarios.length > 0) s.push({ number: next(), title: "Scenario Modelling" });
     if (currentDoc.successMetrics && currentDoc.successMetrics.length > 0) s.push({ number: next(), title: "Success Criteria" });
     if (currentDoc.deliveryStatus) s.push({ number: next(), title: "Delivery Status" });
+    if (impactLedger) s.push({ number: next(), title: "Impact Ledger" });
+    if (changeReadiness) s.push({ number: next(), title: "Change Readiness" });
     s.push({ number: next(), title: "Org Key Results" });
 
     return s;
-  }, [currentDoc]);
+  }, [currentDoc, impactLedger, changeReadiness]);
 
   // Section counter for dynamic numbering (must match ToC logic)
   let sectionNum = 0;
@@ -234,6 +247,13 @@ const BriefingDocumentView = ({ doc, onBack, readOnly = false }: BriefingDocumen
             {currentDoc.costNarrative}
           </p>
 
+          {/* Benchmark annotations for cost section */}
+          {benchmarks.filter((b) => b.section === "cost").length > 0 && (
+            <div className="mb-6">
+              <BenchmarkAnnotations annotations={benchmarks.filter((b) => b.section === "cost")} />
+            </div>
+          )}
+
           {/* Comparison table */}
           <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
             <div className="border border-border overflow-hidden min-w-[480px]">
@@ -310,6 +330,12 @@ const BriefingDocumentView = ({ doc, onBack, readOnly = false }: BriefingDocumen
           <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
             <GanttChart phases={currentDoc.phases} />
           </div>
+          {/* Timeline benchmarks */}
+          {benchmarks.filter((b) => b.section === "timeline" || b.section === "risk").length > 0 && (
+            <div className="mt-6">
+              <BenchmarkAnnotations annotations={benchmarks.filter((b) => b.section === "timeline" || b.section === "risk")} />
+            </div>
+          )}
         </Section>
 
         {/* Section — Scenario Modelling */}
@@ -338,8 +364,22 @@ const BriefingDocumentView = ({ doc, onBack, readOnly = false }: BriefingDocumen
           </Section>
         )}
 
+        {/* Section — Impact Ledger */}
+        {impactLedger && (
+          <Section number={nextSection()} title="Impact Ledger" delay={0.6}>
+            <ImpactLedger data={impactLedger} />
+          </Section>
+        )}
+
+        {/* Section — Change Readiness */}
+        {changeReadiness && (
+          <Section number={nextSection()} title="Change Readiness" delay={0.62}>
+            <ChangeReadiness data={changeReadiness} />
+          </Section>
+        )}
+
         {/* Section — Org Key Results */}
-        <Section number={nextSection()} title="Org Key Results" delay={0.6}>
+        <Section number={nextSection()} title="Org Key Results" delay={0.65}>
           <InlineOQR doc={currentDoc} />
         </Section>
 

@@ -12,6 +12,8 @@ import Login from "./pages/Login";
 import People from "./pages/People";
 import PersonProfile from "./pages/PersonProfile";
 import Settings from "./pages/Settings";
+import Portfolio from "./pages/Portfolio";
+import Insights from "./pages/Insights";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,6 +32,8 @@ const App = () => (
               <Route path="/oqr" element={<AuthGuard><OQR /></AuthGuard>} />
               <Route path="/people" element={<AuthGuard><People /></AuthGuard>} />
               <Route path="/people/:id" element={<AuthGuard><PersonProfile /></AuthGuard>} />
+              <Route path="/portfolio" element={<AuthGuard><Portfolio /></AuthGuard>} />
+              <Route path="/insights" element={<AuthGuard><Insights /></AuthGuard>} />
               <Route path="/settings" element={<AuthGuard><Settings /></AuthGuard>} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />

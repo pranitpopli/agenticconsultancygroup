@@ -6,7 +6,7 @@ import { useTheme } from "@/hooks/use-theme";
 import { useAuth } from "@/contexts/AuthContext";
 
 interface BriefingNavProps {
-  activeTab: "briefings" | "oqr" | "archive" | "people" | "settings";
+  activeTab: "briefings" | "oqr" | "archive" | "people" | "settings" | "portfolio" | "insights";
   onTabChange?: (tab: "briefings" | "oqr" | "archive") => void;
 }
 
@@ -29,11 +29,21 @@ const BriefingNav = ({ activeTab, onTabChange }: BriefingNavProps) => {
     { id: "oqr" as const, label: "Overview" },
     { id: "briefings" as const, label: "Briefings" },
     { id: "archive" as const, label: "Archive" },
+    { id: "portfolio" as const, label: "Portfolio" },
+    { id: "insights" as const, label: "Insights" },
   ];
 
   const handleClick = (tab: typeof tabs[number]) => {
     if (tab.id === "oqr") {
       navigate("/oqr");
+      return;
+    }
+    if (tab.id === "portfolio") {
+      navigate("/portfolio");
+      return;
+    }
+    if (tab.id === "insights") {
+      navigate("/insights");
       return;
     }
     onTabChange?.(tab.id);
