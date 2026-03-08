@@ -231,6 +231,12 @@ const BriefingDocumentView = ({ doc, onBack, readOnly = false }: BriefingDocumen
           <ProposedSystemView system={currentDoc.system} />
         </Section>
 
+        {/* Section — RACI Matrix */}
+        {currentDoc.raciMatrix && currentDoc.raciMatrix.length > 0 && (
+          <Section number={nextSection()} title="Governance (RACI)" delay={0.42}>
+            <RACIMatrix entries={currentDoc.raciMatrix} phases={currentDoc.phases} />
+          </Section>
+        )}
         {/* Section — Recommended Approach */}
         <Section number={nextSection()} title="Recommended Approach" delay={0.5}>
           <div className="space-y-6 mb-10">
