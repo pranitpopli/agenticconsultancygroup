@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Zap, Users, Building2, TrendingDown, CheckCircle2, Pause, Rocket, AlertTriangle, Archive } from "lucide-react";
 import type { BriefingSummary } from "@/lib/briefingData";
@@ -10,7 +11,7 @@ interface InboxCardProps {
   onRead: (id: string) => void;
 }
 
-const InboxCard = ({ brief, index, onRead }: InboxCardProps) => {
+const InboxCard = memo(({ brief, index, onRead }: InboxCardProps) => {
   const doc = BRIEFING_DOCUMENTS[brief.id] || ARCHIVE_DOCUMENTS[brief.id];
   const teamCount = doc?.team?.length ?? 0;
   const deptCount = doc?.system?.departments?.length ?? 0;
@@ -123,6 +124,8 @@ const InboxCard = ({ brief, index, onRead }: InboxCardProps) => {
       </div>
     </motion.div>
   );
-};
+});
+
+InboxCard.displayName = "InboxCard";
 
 export default InboxCard;

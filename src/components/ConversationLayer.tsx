@@ -88,28 +88,36 @@ const ConversationLayer = ({ doc, onUpdate, onFinalize, active, onActivate, exte
     onActivate();
 
     const textLower = text.toLowerCase();
-    let response: { content: string; update?: Partial<BriefingDocument> } = {
-      content: "Noted. I've updated the briefing to reflect your feedback — you can see the changes in the document above.",
-      update: undefined as Partial<BriefingDocument> | undefined,
+    
+    // Fuzzy matching: score each response key by keyword overlap
+    const MATCH_KEYWORDS: Record<string, string[]> = {
+      "replace sarah": ["replace", "swap", "switch", "sarah", "chen", "substitute", "different person", "someone else", "another engineer"],
+      "10 weeks": ["10 week", "shorter", "faster", "compress", "speed up", "accelerate", "quicker", "tight", "rush", "timeline"],
+      "reduce budget": ["reduce", "budget", "cut cost", "cheaper", "less money", "save money", "lower cost", "economise", "trim"],
+      "increase budget": ["increase", "budget", "more budget", "invest more", "spend more", "extra budget", "higher budget"],
+      "smaller team": ["smaller team", "fewer people", "reduce team", "less people", "lean team", "cut team", "downsize"],
+      "add someone": ["add someone", "add a", "extra person", "more people", "hire", "bring in", "another member", "need help"],
+      "remove phase": ["remove phase", "simplify", "skip phase", "cut phase", "merge phase", "fewer phases", "streamline"],
+      "risk": ["risk", "what could go wrong", "concern", "danger", "threat", "worry", "problem", "issue", "blocker"],
     };
 
-    if (textLower.includes("replace") && textLower.includes("sarah")) {
-      response = AI_RESPONSES["replace sarah"];
-    } else if (textLower.includes("10 week") || textLower.includes("shorter") || textLower.includes("faster")) {
-      response = AI_RESPONSES["10 weeks"];
-    } else if (textLower.includes("reduce") && textLower.includes("budget") || textLower.includes("cut cost") || textLower.includes("cheaper")) {
-      response = AI_RESPONSES["reduce budget"];
-    } else if (textLower.includes("increase") && textLower.includes("budget") || textLower.includes("more budget") || textLower.includes("invest more")) {
-      response = AI_RESPONSES["increase budget"];
-    } else if (textLower.includes("smaller team") || textLower.includes("fewer people") || textLower.includes("reduce team")) {
-      response = AI_RESPONSES["smaller team"];
-    } else if (textLower.includes("add someone") || textLower.includes("add a") || textLower.includes("extra person") || textLower.includes("more people")) {
-      response = AI_RESPONSES["add someone"];
-    } else if (textLower.includes("remove phase") || textLower.includes("simplify") || textLower.includes("skip phase")) {
-      response = AI_RESPONSES["remove phase"];
-    } else if (textLower.includes("risk") || textLower.includes("what could go wrong") || textLower.includes("concern")) {
-      response = AI_RESPONSES["risk"];
+    let bestKey: string | null = null;
+    let bestScore = 0;
+
+    for (const [key, keywords] of Object.entries(MATCH_KEYWORDS)) {
+      const score = keywords.filter((kw) => textLower.includes(kw)).length;
+      if (score > bestScore) {
+        bestScore = score;
+        bestKey = key;
+      }
     }
+
+    let response: { content: string; update?: Partial<BriefingDocument> } = bestKey && bestScore > 0
+      ? AI_RESPONSES[bestKey]
+      : {
+          content: "Noted. I've updated the briefing to reflect your feedback — you can see the changes in the document above.",
+          update: undefined as Partial<BriefingDocument> | undefined,
+        };
 
     setTimeout(() => {
       const aiMsg: Message = { id: `ai-${Date.now()}`, role: "ai", content: response.content };

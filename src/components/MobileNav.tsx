@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Moon, Sun, LogOut } from "lucide-react";
+import { Menu, X, Moon, Sun, LogOut, Bell } from "lucide-react";
 import { Settings as SettingsIcon } from "lucide-react";
+import NotificationCentre from "./NotificationCentre";
 import { useTheme } from "@/hooks/use-theme";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -42,14 +43,17 @@ const MobileNav = () => {
           <button onClick={() => navigate("/")} className="font-serif text-xl tracking-wide text-foreground">
             ACG
           </button>
-          <button
-            onClick={() => setOpen(!open)}
+          <div className="flex items-center gap-2">
+            {user && <NotificationCentre />}
+            <button
+              onClick={() => setOpen(!open)}
             className="w-8 h-8 flex items-center justify-center text-foreground"
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
           >
-            {open ? <X className="w-5 h-5" strokeWidth={1.5} /> : <Menu className="w-5 h-5" strokeWidth={1.5} />}
-          </button>
+              {open ? <X className="w-5 h-5" strokeWidth={1.5} /> : <Menu className="w-5 h-5" strokeWidth={1.5} />}
+            </button>
+          </div>
         </div>
       </nav>
 

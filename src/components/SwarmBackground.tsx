@@ -105,6 +105,11 @@ const SwarmBackground = forwardRef<SwarmHandle>((_, ref) => {
       initialized.current = true;
     }
 
+    // Pause when tab is hidden
+    let paused = false;
+    const handleVisibility = () => { paused = document.hidden; };
+    document.addEventListener("visibilitychange", handleVisibility);
+
     const handleResize = () => resize();
     const handleMouse = (e: MouseEvent) => {
       const rect = canvasRef.current?.getBoundingClientRect();
@@ -122,6 +127,10 @@ const SwarmBackground = forwardRef<SwarmHandle>((_, ref) => {
     const lineColor = isDark ? "rgba(180,195,210," : "rgba(26,26,26,";
 
     const animate = () => {
+      if (paused) {
+        raf.current = requestAnimationFrame(animate);
+        return;
+      }
       const canvas = canvasRef.current;
       if (!canvas) return;
       const ctx = canvas.getContext("2d");
@@ -336,6 +345,7 @@ const SwarmBackground = forwardRef<SwarmHandle>((_, ref) => {
 
     return () => {
       cancelAnimationFrame(raf.current);
+      document.removeEventListener("visibilitychange", handleVisibility);
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("mousemove", handleMouse);
       window.removeEventListener("mouseleave", handleLeave);

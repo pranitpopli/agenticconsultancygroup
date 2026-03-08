@@ -10,6 +10,7 @@ import ProposedSystemView from "./ProposedSystem";
 import GanttChart from "./GanttChart";
 import BriefingOQRPanel from "./BriefingOQRPanel";
 import ExecutiveDecisionSummary from "./ExecutiveDecisionSummary";
+import StickyDecisionBar from "./StickyDecisionBar";
 import RiskRegister from "./RiskRegister";
 import SuccessMetrics from "./SuccessMetrics";
 import ScenarioModelling from "./ScenarioModelling";
@@ -125,6 +126,9 @@ const BriefingDocumentView = ({ doc, onBack, readOnly = false }: BriefingDocumen
 
   return (
     <main className="transition-all duration-300 relative" aria-label="Briefing document">
+      {/* Sticky Decision Bar */}
+      <StickyDecisionBar doc={currentDoc} readOnly={readOnly} />
+
       {/* Table of Contents */}
       <BriefingTableOfContents sections={sections} />
 
