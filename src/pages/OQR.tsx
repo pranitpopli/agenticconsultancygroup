@@ -301,7 +301,7 @@ const OQR = () => {
           </div>
           <div className="border border-border overflow-hidden">
             {/* Table header */}
-            <div className="grid grid-cols-[1fr_140px_160px_90px] border-b border-border">
+            <div className="grid grid-cols-[1fr_140px_160px_110px] border-b border-border">
               <div className="px-4 py-3 text-[10px] uppercase tracking-[0.12em] text-muted-foreground">Project</div>
               <div className="px-4 py-3 text-[10px] uppercase tracking-[0.12em] text-muted-foreground border-l border-border">Department</div>
               <div className="px-4 py-3 text-[10px] uppercase tracking-[0.12em] text-muted-foreground border-l border-border">Capability</div>
@@ -310,7 +310,7 @@ const OQR = () => {
             {aiProjects.map((proj, i) => (
               <div
                 key={proj.id}
-                className={`grid grid-cols-[1fr_140px_160px_90px] ${i > 0 ? "border-t border-border" : ""}`}
+                className={`grid grid-cols-[1fr_140px_160px_110px] ${i > 0 ? "border-t border-border" : ""}`}
               >
                 <div className="px-4 py-3 text-xs text-foreground">{proj.name}</div>
                 <div className="px-4 py-3 text-xs text-muted-foreground border-l border-border">{proj.department}</div>
