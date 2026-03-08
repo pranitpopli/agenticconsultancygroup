@@ -8,20 +8,41 @@ import SiloCheck from "@/components/SiloCheck";
 import OverlapDrawer from "@/components/OverlapDrawer";
 import { BRIEFING_DOCUMENTS } from "@/lib/briefingData";
 import { OVERLAPPING_PROJECTS } from "@/lib/simulatedData";
+import type { OverlappingProject } from "@/lib/types";
 
-type View = "briefings" | "swarm-thinking" | "silo-check" | "briefing-doc";
+type View = "briefings" | "swarm-thinking" | "silo-check" | "briefing-doc" | "archive";
 
-const SWARM_LINES = [
-  "parsing brief...",
-  "identifying domain: platform · infrastructure · data",
-  "scanning 847 employee nodes...",
-  "cross-referencing project archive...",
-  "checking active workstreams...",
-  "2 overlapping projects detected",
-  "14 candidate profiles matched",
-  "assembling org structure...",
-  "generating value model...",
-];
+const SWARM_LINES_MAP: Record<string, string[]> = {
+  "brief-001": [
+    "parsing brief...",
+    "identifying domain: platform · infrastructure · engineering",
+    "scanning 847 employee nodes...",
+    "cross-referencing project archive...",
+    "checking active workstreams...",
+    "2 overlapping projects detected",
+    "5 candidate profiles matched across 3 departments",
+    "assembling org structure...",
+    "generating value model...",
+    "projected saving: £284,000 vs external hire",
+  ],
+  "brief-002": [
+    "parsing brief...",
+    "identifying domain: data · analytics · machine learning",
+    "scanning 847 employee nodes...",
+    "cross-referencing project archive...",
+    "checking active workstreams...",
+    "0 overlapping projects detected",
+    "5 candidate profiles matched across 4 departments",
+    "assembling org structure...",
+    "generating value model...",
+    "projected saving: £370,000 vs external hire",
+  ],
+};
+
+const OVERLAPS_MAP: Record<string, OverlappingProject[]> = {
+  "brief-001": OVERLAPPING_PROJECTS,
+  "brief-002": [], // No overlaps for the data intelligence brief
+};
 
 const Index = () => {
   const [view, setView] = useState<View>("briefings");
@@ -29,6 +50,9 @@ const Index = () => {
   const [activeTab, setActiveTab] = useState<"briefings" | "oqr" | "archive">("briefings");
   const [showOverlapDrawer, setShowOverlapDrawer] = useState(false);
   const [preSelectedPeople, setPreSelectedPeople] = useState<Set<string>>(new Set());
+
+  const currentOverlaps = activeBriefId ? (OVERLAPS_MAP[activeBriefId] || []) : [];
+  const currentSwarmLines = activeBriefId ? (SWARM_LINES_MAP[activeBriefId] || SWARM_LINES_MAP["brief-001"]) : [];
 
   const handleReadBriefing = (id: string) => {
     setActiveBriefId(id);
@@ -71,6 +95,9 @@ const Index = () => {
     if (tab === "briefings") {
       handleBack();
     }
+    if (tab === "archive") {
+      setView("archive");
+    }
   };
 
   const activeDoc = activeBriefId ? BRIEFING_DOCUMENTS[activeBriefId] : null;
@@ -89,16 +116,16 @@ const Index = () => {
 
         {view === "swarm-thinking" && (
           <SwarmThinking
-            key="swarm-thinking"
-            lines={SWARM_LINES}
+            key={`swarm-${activeBriefId}`}
+            lines={currentSwarmLines}
             onComplete={handleSwarmComplete}
           />
         )}
 
         {view === "silo-check" && (
           <SiloCheck
-            key="silo-check"
-            overlaps={OVERLAPPING_PROJECTS}
+            key={`silo-${activeBriefId}`}
+            overlaps={currentOverlaps}
             onReviewOverlaps={handleReviewOverlaps}
             onSkipToTeam={handleSkipToDoc}
           />
@@ -111,12 +138,26 @@ const Index = () => {
             onBack={handleBack}
           />
         )}
+
+        {view === "archive" && (
+          <div key="archive" className="max-w-[780px] mx-auto px-8 pt-28 pb-24">
+            <h1 className="font-serif text-3xl text-foreground mb-2">Archive</h1>
+            <p className="text-sm text-muted-foreground mb-10">
+              Previously completed briefings and their outcomes.
+            </p>
+            <div className="border border-border p-8 text-center">
+              <p className="text-sm text-muted-foreground font-serif italic">
+                No archived briefings yet. Completed briefings will appear here after deployment.
+              </p>
+            </div>
+          </div>
+        )}
       </AnimatePresence>
 
       {/* Overlap Drawer */}
       {showOverlapDrawer && (
         <OverlapDrawer
-          overlaps={OVERLAPPING_PROJECTS}
+          overlaps={currentOverlaps}
           onClose={() => setShowOverlapDrawer(false)}
           onProceed={handleOverlapProceed}
           preSelectedPeople={preSelectedPeople}
