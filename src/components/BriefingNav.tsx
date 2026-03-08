@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 
 interface BriefingNavProps {
-  activeTab: "briefings" | "archive";
-  onTabChange: (tab: "briefings" | "archive") => void;
+  activeTab: "briefings" | "oqr" | "archive";
+  onTabChange: (tab: "briefings" | "oqr" | "archive") => void;
 }
 
 const BriefingNav = ({ activeTab, onTabChange }: BriefingNavProps) => {

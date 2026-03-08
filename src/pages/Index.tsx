@@ -20,7 +20,11 @@ const Index = () => {
     setActiveBriefId(null);
   };
 
-  const handleTabChange = (tab: "briefings" | "archive") => {
+  const handleTabChange = (tab: "briefings" | "oqr" | "archive") => {
+    if (tab === "oqr") {
+      window.location.href = "/oqr";
+      return;
+    }
     setActiveTab(tab);
     if (tab === "briefings") {
       setView("briefings");
