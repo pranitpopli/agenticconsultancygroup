@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Zap, Users, Building2, TrendingDown, CheckCircle2, Pause, Rocket, AlertTriangle, Archive } from "lucide-react";
 import type { BriefingSummary } from "@/lib/briefingData";
