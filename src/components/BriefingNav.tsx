@@ -81,9 +81,20 @@ const BriefingNav = ({ activeTab, onTabChange }: BriefingNavProps) => {
 
           <button
             onClick={() => navigate("/people")}
-            className="text-xs tracking-[0.15em] uppercase text-muted-foreground hover:text-foreground transition-colors"
+            className={`relative text-xs tracking-[0.15em] uppercase transition-colors pb-0.5 ${
+              activeTab === "people"
+                ? "text-foreground"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
           >
             People
+            {activeTab === "people" && (
+              <motion.span
+                layoutId="nav-underline"
+                className="absolute left-0 right-0 -bottom-[21px] h-[1px] bg-foreground"
+                transition={{ duration: 0.3 }}
+              />
+            )}
           </button>
 
           {/* User menu — contains theme, language, settings, logout */}
