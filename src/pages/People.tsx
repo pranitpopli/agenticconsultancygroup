@@ -367,7 +367,7 @@ const People = () => {
                 }`}
               >
                 <ArrowUpDown className="w-3.5 h-3.5" strokeWidth={1.5} />
-                Sort
+                {SORT_OPTIONS.find(o => o.key === sortKey)?.label ?? "Sort"} {sortAsc ? "↑" : "↓"}
               </button>
 
               <AnimatePresence>
