@@ -330,6 +330,12 @@ const BriefingDocumentView = ({ doc, onBack, readOnly = false }: BriefingDocumen
           <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
             <GanttChart phases={currentDoc.phases} />
           </div>
+          {/* Timeline benchmarks */}
+          {benchmarks.filter((b) => b.section === "timeline" || b.section === "risk").length > 0 && (
+            <div className="mt-6">
+              <BenchmarkAnnotations annotations={benchmarks.filter((b) => b.section === "timeline" || b.section === "risk")} />
+            </div>
+          )}
         </Section>
 
         {/* Section — Scenario Modelling */}
