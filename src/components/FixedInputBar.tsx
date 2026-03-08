@@ -56,6 +56,7 @@ const FixedInputBar = ({ onSend, onExportPDF, onExportPPT, onExportDocx, oqrOpen
             type="submit"
             disabled={!input.trim()}
             className="p-2.5 text-muted-foreground hover:text-foreground disabled:opacity-30 transition-colors"
+            aria-label="Send message"
           >
             <Send className="w-4 h-4" strokeWidth={1.5} />
           </button>
