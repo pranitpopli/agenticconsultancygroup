@@ -17,8 +17,11 @@ const ArchiveView = ({ onViewBrief }: ArchiveViewProps) => {
   const [search, setSearch] = useState("");
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
-  const totalSaved = ARCHIVED_BRIEFS.reduce((sum, b) => sum + b.doc.saving, 0);
-  const deployedCount = ARCHIVED_BRIEFS.filter(b => b.outcome === "deployed").length;
+  const filtered = ARCHIVED_BRIEFS.filter((b) =>
+    !search || b.title.toLowerCase().includes(search.toLowerCase()) || b.submittedBy.name.toLowerCase().includes(search.toLowerCase())
+  );
+  const totalSaved = filtered.reduce((sum, b) => sum + b.doc.saving, 0);
+  const deployedCount = filtered.filter(b => b.outcome === "deployed").length;
 
   return (
     <motion.main
