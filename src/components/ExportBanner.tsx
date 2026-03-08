@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FileDown, Presentation, ArrowRight } from "lucide-react";
+import { FileDown, Presentation, ArrowRight, ExternalLink } from "lucide-react";
 import type { BriefingDocument } from "@/lib/briefingData";
 
 interface ExportBannerProps {
