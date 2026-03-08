@@ -71,7 +71,7 @@ function deriveState(searchParams: URLSearchParams): { view: View; briefId: stri
   }
 
   if (v && briefId && ["swarm-thinking", "silo-check", "briefing-doc"].includes(v)) {
-    return { view: v as View, briefId, activeTab: "briefings", readOnly };
+    return { view: v as View, briefId, activeTab: readOnly ? "archive" : "briefings", readOnly };
   }
 
   return { view: "briefings", briefId: null, activeTab: "briefings", readOnly: false };

@@ -374,13 +374,6 @@ const OQR = () => {
           </p>
         </motion.div>
 
-        {/* ━━━ FOOTER ━━━ */}
-        <motion.p
-          variants={itemVariants}
-          className="text-xs text-muted-foreground/50 italic text-center font-serif">
-          
-          Swarm last scanned {EMPLOYEES.length} nodes across Meridian Group — 4 minutes ago.
-        </motion.p>
       </motion.div>
     </div>);
 

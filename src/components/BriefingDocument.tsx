@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, FileText } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import type { BriefingDocument as BriefingDocType } from "@/lib/briefingData";
 import ConversationLayer from "./ConversationLayer";
 import ExportBanner from "./ExportBanner";
@@ -114,32 +114,18 @@ const BriefingDocumentView = ({ doc, onBack, readOnly = false }: BriefingDocumen
           </Breadcrumb>
         </motion.div>
 
-        {/* Navigation row */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
-          className="flex items-center gap-6 mb-10 flex-wrap">
-          <motion.button
-            onClick={handleBack}
-            className="flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground transition-colors">
-            <ArrowLeft className="w-3.5 h-3.5" strokeWidth={1.5} />
-            <span className="tracking-[0.1em] uppercase">Back to briefings</span>
-          </motion.button>
-
-          {readOnly && (
+        {/* Status row */}
+        {readOnly && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+            className="mb-10">
             <span className="text-[10px] uppercase tracking-[0.12em] px-2.5 py-1 border border-border text-muted-foreground">
               Read-only · Archived
             </span>
-          )}
-
-          <motion.button
-            onClick={() => toast({ title: "Original brief", description: "The source document will open in a new tab when connected to your document store." })}
-            className="ml-auto gap-2 text-[10px] uppercase tracking-[0.15em] text-muted-foreground border border-border px-4 py-2.5 hover:border-foreground/30 hover:text-foreground transition-colors flex items-center">
-            <FileText className="w-3.5 h-3.5" strokeWidth={1.5} />
-            View original
-          </motion.button>
-        </motion.div>
+          </motion.div>
+        )}
 
         {/* Title */}
         <motion.div
@@ -147,7 +133,6 @@ const BriefingDocumentView = ({ doc, onBack, readOnly = false }: BriefingDocumen
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           className="mb-14">
-          <p className="text-xs text-muted-foreground tracking-[0.05em] mb-3 flex items-center gap-1.5"><span className="text-[hsl(var(--status-positive))]" aria-hidden="true">✓</span> 847 projects scanned — no similar or discarded initiatives found</p>
           <h1 className="font-serif text-3xl sm:text-4xl text-foreground leading-tight mb-3">
             {currentDoc.title}
           </h1>
