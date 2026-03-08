@@ -55,6 +55,7 @@ const BriefingIndex = () => {
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.5, delay: 0.3 }}
       className="fixed left-6 top-28 z-30 hidden xl:flex flex-col gap-1"
+      aria-label="Document sections"
     >
       {SECTIONS.map((section) => {
         const isActive = activeSection === section.id;

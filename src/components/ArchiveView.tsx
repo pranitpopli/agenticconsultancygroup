@@ -105,12 +105,13 @@ const ArchiveView = () => {
   const deployedCount = ARCHIVED_BRIEFS.filter(b => b.outcome === "deployed").length;
 
   return (
-    <motion.div
+    <motion.main
       key="archive"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       className="max-w-[780px] mx-auto px-8 pt-28 pb-24"
+      aria-label="Archive view"
     >
       <div className="mb-10">
         <h1 className="font-serif text-3xl text-foreground mb-2">Archive</h1>
@@ -120,20 +121,20 @@ const ArchiveView = () => {
       </div>
 
       {/* Summary strip */}
-      <div className="border-t border-b border-border py-5 mb-10">
+      <div className="border border-border p-8 mb-10">
         <div className="grid grid-cols-3 gap-8">
           <div>
-            <p className="font-serif text-2xl text-foreground">{ARCHIVED_BRIEFS.length}</p>
+            <p className="text-2xl font-sans tabular-nums text-foreground">{ARCHIVED_BRIEFS.length}</p>
             <p className="text-[11px] text-muted-foreground mt-1">Briefs completed</p>
           </div>
           <div>
-            <p className="font-serif text-2xl text-foreground">£{(totalSaved / 1000).toFixed(0)}k</p>
+            <p className="text-2xl font-sans tabular-nums text-foreground">£{(totalSaved / 1000).toFixed(0)}k</p>
             <p className="text-[11px] text-muted-foreground mt-1">Total cost avoided</p>
           </div>
           <div>
-            <p className="font-serif text-2xl text-foreground">
+            <p className="text-2xl font-sans tabular-nums text-foreground">
               {deployedCount}
-              <span className="text-base text-muted-foreground font-sans ml-1">
+              <span className="text-base text-muted-foreground ml-1">
                 / {ARCHIVED_BRIEFS.length}
               </span>
             </p>
@@ -156,9 +157,11 @@ const ArchiveView = () => {
               className="border border-border hover:border-foreground/20 transition-colors"
             >
               {/* Header */}
-              <button
-                onClick={() => setExpandedId(isExpanded ? null : brief.id)}
-                className="w-full p-6 text-left"
+               <button
+                 onClick={() => setExpandedId(isExpanded ? null : brief.id)}
+                 className="w-full p-6 text-left"
+                 aria-expanded={isExpanded}
+                 aria-controls={`archive-detail-${brief.id}`}
               >
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1 space-y-2">
@@ -231,15 +234,15 @@ const ArchiveView = () => {
                       <div className="grid grid-cols-3 gap-6">
                         <div>
                           <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground mb-1">Internal</p>
-                          <p className="text-xl text-foreground font-sans">£{doc.internalCost.toLocaleString()}</p>
+                          <p className="text-xl text-foreground font-sans tabular-nums">£{doc.internalCost.toLocaleString()}</p>
                         </div>
                         <div>
                           <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground mb-1">External</p>
-                          <p className="text-xl text-muted-foreground font-sans">£{doc.externalCost.toLocaleString()}</p>
+                          <p className="text-xl text-muted-foreground font-sans tabular-nums">£{doc.externalCost.toLocaleString()}</p>
                         </div>
                         <div>
                           <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground mb-1">Saving</p>
-                          <p className="text-xl text-foreground font-sans">£{doc.saving.toLocaleString()}</p>
+                          <p className="text-xl text-foreground font-sans tabular-nums">£{doc.saving.toLocaleString()}</p>
                         </div>
                       </div>
 
@@ -295,7 +298,7 @@ const ArchiveView = () => {
       <p className="text-xs text-muted-foreground/50 italic text-center font-serif mt-14">
         Archive reflects all briefs processed through ACG since September 2024.
       </p>
-    </motion.div>
+    </motion.main>
   );
 };
 

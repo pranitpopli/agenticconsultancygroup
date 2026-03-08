@@ -50,11 +50,12 @@ const OverviewDashboard = ({ onReadBriefing }: OverviewDashboardProps) => {
   };
 
   return (
-    <motion.div
+    <motion.main
       className="max-w-[780px] mx-auto px-8 pt-28 pb-24"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
+      aria-label="Dashboard overview"
     >
       {/* ━━━ GREETING ━━━ */}
       <motion.div variants={itemVariants} className="mb-12">
@@ -86,7 +87,7 @@ const OverviewDashboard = ({ onReadBriefing }: OverviewDashboardProps) => {
           </p>
           <div className="grid grid-cols-3 gap-8">
             <div>
-              <p className="font-serif text-2xl text-foreground">
+              <p className="text-2xl font-sans tabular-nums text-foreground">
                 £{(totalSavings / 1000).toFixed(0)}k
               </p>
               <p className="text-[11px] text-muted-foreground mt-1">
@@ -94,9 +95,9 @@ const OverviewDashboard = ({ onReadBriefing }: OverviewDashboardProps) => {
               </p>
             </div>
             <div>
-              <p className="font-serif text-2xl text-foreground">
+              <p className="text-2xl font-sans tabular-nums text-foreground">
                 {liveProjects}
-                <span className="text-base text-muted-foreground font-sans ml-1">
+                <span className="text-base text-muted-foreground ml-1">
                   +{inBuild}
                 </span>
               </p>
@@ -105,9 +106,9 @@ const OverviewDashboard = ({ onReadBriefing }: OverviewDashboardProps) => {
               </p>
             </div>
             <div>
-              <p className="font-serif text-2xl text-foreground">
+              <p className="text-2xl font-sans tabular-nums text-foreground">
                 {orgMaturity}%
-                <span className="text-base text-[hsl(var(--status-positive))] font-sans ml-1">
+                <span className="text-base text-[hsl(var(--status-positive))] ml-1">
                   +{maturityDelta}
                 </span>
               </p>
@@ -198,10 +199,10 @@ const OverviewDashboard = ({ onReadBriefing }: OverviewDashboardProps) => {
                   className="flex items-center gap-1.5 text-xs text-foreground bg-muted px-3 py-1.5 border border-border"
                 >
                   <FileText className="w-3 h-3 text-muted-foreground" strokeWidth={1.5} />
-                  {fileName}
-                  <button onClick={() => setFileName(null)} className="ml-1 hover:text-muted-foreground">
-                    <X className="w-3 h-3" strokeWidth={1.5} />
-                  </button>
+                   {fileName}
+                   <button onClick={() => setFileName(null)} className="ml-1 hover:text-muted-foreground" aria-label="Remove file">
+                     <X className="w-3 h-3" strokeWidth={1.5} />
+                   </button>
                 </motion.span>
               )}
             </div>
@@ -231,7 +232,7 @@ const OverviewDashboard = ({ onReadBriefing }: OverviewDashboardProps) => {
       >
         Swarm last scanned {EMPLOYEES.length} nodes across Meridian Group — 4 minutes ago.
       </motion.p>
-    </motion.div>
+    </motion.main>
   );
 };
 

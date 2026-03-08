@@ -34,7 +34,7 @@ const BriefingDocumentView = ({ doc, onBack }: BriefingDocumentProps) => {
   };
 
   return (
-    <div className="transition-all duration-300 relative">
+    <main className="transition-all duration-300 relative" aria-label="Briefing document">
       <BriefingIndex />
 
       {/* OQR Panel */}
@@ -74,7 +74,7 @@ const BriefingDocumentView = ({ doc, onBack }: BriefingDocumentProps) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           className="mb-14">
-          <p className="text-xs text-muted-foreground tracking-[0.05em] mb-3 flex items-center gap-1.5"><span className="text-green-600">✓</span> 847 projects scanned — no similar or discarded initiatives found</p>
+          <p className="text-xs text-muted-foreground tracking-[0.05em] mb-3 flex items-center gap-1.5"><span className="text-[hsl(var(--status-positive))]" aria-hidden="true">✓</span> 847 projects scanned — no similar or discarded initiatives found</p>
           <h1 className="font-serif text-4xl text-foreground leading-tight mb-3">
             {currentDoc.title}
           </h1>
@@ -95,15 +95,15 @@ const BriefingDocumentView = ({ doc, onBack }: BriefingDocumentProps) => {
           <div className="grid grid-cols-3 gap-8 mb-6">
             <div>
               <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground mb-1">Internal cost</p>
-              <p className="text-2xl text-foreground font-sans">£{currentDoc.internalCost.toLocaleString()}</p>
+              <p className="text-2xl text-foreground font-sans tabular-nums">£{currentDoc.internalCost.toLocaleString()}</p>
             </div>
             <div>
               <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground mb-1">External equivalent</p>
-              <p className="text-2xl text-muted-foreground font-sans">£{currentDoc.externalCost.toLocaleString()}</p>
+              <p className="text-2xl text-muted-foreground font-sans tabular-nums">£{currentDoc.externalCost.toLocaleString()}</p>
             </div>
             <div>
               <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground mb-1">Projected saving</p>
-              <p className="text-2xl text-foreground font-sans">£{currentDoc.saving.toLocaleString()}</p>
+              <p className="text-2xl text-foreground font-sans tabular-nums">£{currentDoc.saving.toLocaleString()}</p>
             </div>
           </div>
 
@@ -217,7 +217,7 @@ const BriefingDocumentView = ({ doc, onBack }: BriefingDocumentProps) => {
           "Can we replace Sarah Chen? She's on another project.",
           "What if we run this in 10 weeks instead of 14?",
         ] : undefined} />
-    </div>
+    </main>
   );
 };
 
@@ -232,7 +232,7 @@ function Section({ number, title, delay, children
       className="mb-14 scroll-mt-28">
       
       <div className="flex items-baseline gap-3 mb-5">
-        <span className="text-foreground/40 tracking-[0.1em] font-serif text-2xl">{number}</span>
+        <span className="text-muted-foreground tracking-[0.1em] font-sans text-sm tabular-nums">{number}</span>
         <h2 className="font-serif text-2xl text-foreground">{title}</h2>
       </div>
       {children}

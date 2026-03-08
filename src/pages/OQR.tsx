@@ -87,7 +87,7 @@ const OQR = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background" role="main">
       <BriefingNav activeTab="oqr" onTabChange={(tab) => {
         if (tab === "briefings") navigate("/");
         if (tab === "archive") navigate("/?tab=archive");
@@ -120,7 +120,7 @@ const OQR = () => {
                 <kpi.icon className="w-3.5 h-3.5" strokeWidth={1.5} />
                 <span className="text-[11px] text-muted-foreground">{kpi.label}</span>
               </div>
-              <p className="font-serif text-3xl text-foreground leading-none">
+              <p className="text-3xl font-sans tabular-nums text-foreground leading-none">
                 {kpi.value}
               </p>
               <p className="text-[11px] text-muted-foreground">{kpi.sub}</p>

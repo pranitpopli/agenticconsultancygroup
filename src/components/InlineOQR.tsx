@@ -34,7 +34,7 @@ const InlineOQR = ({ doc }: InlineOQRProps) => {
             <p className="text-[11px] uppercase tracking-[0.15em] text-foreground/60 mb-1">
               This project's saving
             </p>
-            <p className="text-3xl text-foreground font-sans">
+            <p className="text-3xl text-foreground font-sans tabular-nums">
               £{doc.saving.toLocaleString()}
             </p>
             <div className="flex items-center gap-1.5 text-foreground/60">
@@ -49,7 +49,7 @@ const InlineOQR = ({ doc }: InlineOQRProps) => {
             <p className="text-[11px] uppercase tracking-[0.15em] text-foreground/60 mb-1">
               Org quarterly savings
             </p>
-            <p className="text-3xl text-foreground/40 font-sans">
+            <p className="text-3xl text-muted-foreground font-sans tabular-nums">
               £{data.totalSavings.toLocaleString()}
             </p>
             <div className="flex items-center gap-1.5 text-foreground/60">
@@ -122,7 +122,7 @@ const InlineOQR = ({ doc }: InlineOQRProps) => {
                   />
                 </svg>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-lg text-foreground/50 font-sans">{maturityBefore}%</span>
+                  <span className="text-lg text-muted-foreground font-sans tabular-nums">{maturityBefore}%</span>
                 </div>
               </div>
               <div>
@@ -153,7 +153,7 @@ const InlineOQR = ({ doc }: InlineOQRProps) => {
                   />
                 </svg>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-lg text-foreground font-sans">{maturityAfter}%</span>
+                  <span className="text-lg text-foreground font-sans tabular-nums">{maturityAfter}%</span>
                 </div>
               </div>
               <div>

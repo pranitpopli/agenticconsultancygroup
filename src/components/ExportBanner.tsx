@@ -151,7 +151,7 @@ function SlideContent({ slide, doc }: { slide: typeof SLIDES[0]; doc: BriefingDo
       <div className="flex-1 flex flex-col justify-center">
         <h3 className="font-serif text-2xl text-foreground mb-6">The Organisational Shift</h3>
         <div className="flex items-baseline gap-3 mb-6">
-          <span className="font-serif text-5xl text-foreground">{oqr.orgMaturity}%</span>
+          <span className="font-sans text-5xl tabular-nums text-foreground">{oqr.orgMaturity}%</span>
           <span className="text-sm text-muted-foreground">AI Maturity Index</span>
           <span className="text-sm text-[hsl(var(--status-positive))]">+{oqr.maturityDelta} pts this quarter</span>
         </div>
@@ -242,15 +242,15 @@ function SlideContent({ slide, doc }: { slide: typeof SLIDES[0]; doc: BriefingDo
         <div className="grid grid-cols-3 gap-6 mb-6">
           <div>
             <p className="text-[10px] uppercase tracking-[0.12em] text-muted-foreground mb-1">Internal</p>
-            <p className="font-serif text-3xl text-foreground">£{doc.internalCost.toLocaleString()}</p>
+            <p className="text-3xl font-sans tabular-nums text-foreground">£{doc.internalCost.toLocaleString()}</p>
           </div>
           <div>
             <p className="text-[10px] uppercase tracking-[0.12em] text-muted-foreground mb-1">External</p>
-            <p className="font-serif text-3xl text-muted-foreground">£{doc.externalCost.toLocaleString()}</p>
+            <p className="text-3xl font-sans tabular-nums text-muted-foreground">£{doc.externalCost.toLocaleString()}</p>
           </div>
           <div>
             <p className="text-[10px] uppercase tracking-[0.12em] text-muted-foreground mb-1">Saving</p>
-            <p className="font-serif text-3xl text-foreground">£{doc.saving.toLocaleString()}</p>
+            <p className="text-3xl font-sans tabular-nums text-foreground">£{doc.saving.toLocaleString()}</p>
           </div>
         </div>
         <p className="text-xs text-muted-foreground font-serif italic">{doc.costNarrative}</p>

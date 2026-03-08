@@ -56,6 +56,7 @@ const FixedInputBar = ({ onSend, onExportPDF, onExportPPT, onExportDocx, oqrOpen
             type="submit"
             disabled={!input.trim()}
             className="p-2.5 text-muted-foreground hover:text-foreground disabled:opacity-30 transition-colors"
+            aria-label="Send message"
           >
             <Send className="w-4 h-4" strokeWidth={1.5} />
           </button>
@@ -66,6 +67,8 @@ const FixedInputBar = ({ onSend, onExportPDF, onExportPPT, onExportDocx, oqrOpen
           <button
             onClick={() => setExportOpen(prev => !prev)}
             className="flex items-center gap-2 text-xs tracking-[0.1em] uppercase bg-foreground text-primary-foreground px-4 py-2.5 hover:bg-foreground/90 transition-colors"
+            aria-expanded={exportOpen}
+            aria-label="Export options"
           >
             <FileDown className="w-3.5 h-3.5" strokeWidth={1.5} />
             Export
