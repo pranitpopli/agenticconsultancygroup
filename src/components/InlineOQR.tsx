@@ -34,7 +34,7 @@ const InlineOQR = ({ doc }: InlineOQRProps) => {
             <p className="text-[11px] uppercase tracking-[0.15em] text-foreground/60 mb-1">
               This project's saving
             </p>
-            <p className="text-3xl text-foreground font-sans">
+            <p className="text-3xl text-foreground font-sans tabular-nums">
               £{doc.saving.toLocaleString()}
             </p>
             <div className="flex items-center gap-1.5 text-foreground/60">
