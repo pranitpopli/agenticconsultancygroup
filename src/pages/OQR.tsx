@@ -9,7 +9,6 @@ import {
   Radar,
   ResponsiveContainer,
 } from "recharts";
-import BriefingNav from "@/components/BriefingNav";
 
 const OQR = () => {
   const {
