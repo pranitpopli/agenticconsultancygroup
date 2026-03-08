@@ -40,10 +40,10 @@ const OrgHealth = () => {
   }));
 
   const kpis = [
-    { icon: TrendingUp, label: "Quarterly Savings", value: `£${(totalSavings / 1000).toFixed(0)}k`, sub: `+${savingsDelta}% vs last quarter` },
-    { icon: Building2, label: "Active Projects", value: `${liveProjects}`, sub: `${inBuild} in build` },
-    { icon: Users, label: "Headcount", value: `${liveProjects + inBuild + completed}`, sub: `${activeDepartmentCount} departments` },
-    { icon: Zap, label: "AI Maturity", value: `${orgMaturity}%`, sub: `+${maturityDelta} pts this quarter` },
+    { icon: TrendingUp, label: "Quarterly Savings", value: `£${(totalSavings / 1000).toFixed(0)}k`, sub: `+${savingsDelta}% vs last quarter`, onClick: undefined as (() => void) | undefined },
+    { icon: Building2, label: "Active Projects", value: `${liveProjects}`, sub: `${inBuild} in build`, onClick: () => navigate("/organisation?tab=portfolio") },
+    { icon: Users, label: "Headcount", value: `${liveProjects + inBuild + completed}`, sub: `${activeDepartmentCount} departments`, onClick: () => navigate("/people") },
+    { icon: Zap, label: "AI Maturity", value: `${orgMaturity}%`, sub: `+${maturityDelta} pts this quarter`, onClick: undefined as (() => void) | undefined },
   ];
 
   const gridColor = theme === "dark" ? "hsl(220 10% 20%)" : "hsl(35 15% 88%)";
