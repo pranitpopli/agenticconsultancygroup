@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FileDown, Presentation, ArrowRight, ExternalLink } from "lucide-react";
 import type { BriefingDocument } from "@/lib/briefingData";
+import { OQR_DATA } from "@/lib/oqrData";
 
 interface ExportBannerProps {
   doc: BriefingDocument;
@@ -19,7 +20,7 @@ const SLIDES = [
 
 const ExportBanner = ({ doc }: ExportBannerProps) => {
   const [showDeck, setShowDeck] = useState(false);
-  const [activeSlide, setActiveSlide] = useState(5); // "What AI Made Possible"
+  const [activeSlide, setActiveSlide] = useState(5);
 
   return (
     <motion.div
@@ -118,40 +119,7 @@ const ExportBanner = ({ doc }: ExportBannerProps) => {
 };
 
 function SlideContent({ slide, doc }: { slide: typeof SLIDES[0]; doc: BriefingDocument }) {
-  if (slide.preview === "comparison") {
-    return (
-      <div className="flex-1 flex flex-col justify-center">
-        <h3 className="font-serif text-2xl text-foreground mb-8">What AI Made Possible</h3>
-        <div className="grid grid-cols-2 gap-0 border border-border">
-          <div className="p-4 border-b border-r border-border">
-            <span className="text-[10px] uppercase tracking-[0.12em] text-muted-foreground">Without ACG</span>
-          </div>
-          <div className="p-4 border-b border-border">
-            <span className="text-[10px] uppercase tracking-[0.12em] text-foreground">With ACG</span>
-          </div>
-          {[
-            { label: "Team assembly time", without: "4–6 weeks", withAI: "38 seconds" },
-            { label: "Org coverage", without: "Single department", withAI: "Cross-functional, 847 employees" },
-            { label: "Cost", without: `£${doc.externalCost.toLocaleString()}`, withAI: `£${doc.internalCost.toLocaleString()}` },
-            { label: "Bias", without: "Manager's network only", withAI: "Skill-matched, org-wide" },
-            { label: "Knowledge retained", without: "Walks out the door", withAI: "Stays in the organisation" },
-            { label: "Time to board output", without: "2–3 weeks", withAI: "< 1 minute" },
-          ].map((row, i) => (
-            <div key={i} className="contents">
-              <div className={`p-3 text-xs text-muted-foreground ${i > 0 ? "border-t" : ""} border-r border-border`}>
-                <span className="text-[10px] text-muted-foreground/60 block mb-0.5">{row.label}</span>
-                {row.without}
-              </div>
-              <div className={`p-3 text-xs text-foreground ${i > 0 ? "border-t border-border" : ""}`}>
-                <span className="text-[10px] text-muted-foreground/60 block mb-0.5">{row.label}</span>
-                {row.withAI}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
+  const oqr = OQR_DATA;
 
   if (slide.preview === "exec") {
     return (
@@ -162,10 +130,101 @@ function SlideContent({ slide, doc }: { slide: typeof SLIDES[0]; doc: BriefingDo
           — a team assembled in 38 seconds that would have taken 4–6 weeks through traditional channels.
         </p>
         <div className="space-y-2 mt-4">
-          <p className="text-xs text-muted-foreground">• {doc.team.length}-person cross-functional team identified across the organisation</p>
+          <p className="text-xs text-muted-foreground">• {doc.team.length}-person cross-functional team identified across {doc.system.departments.length} departments</p>
           <p className="text-xs text-muted-foreground">• {doc.phases.length} delivery phases spanning {doc.phases[doc.phases.length - 1].weeks.split("–")[1]}</p>
           <p className="text-xs text-muted-foreground">• Internal cost £{doc.internalCost.toLocaleString()} vs external £{doc.externalCost.toLocaleString()}</p>
         </div>
+      </div>
+    );
+  }
+
+  if (slide.preview === "shift") {
+    const augmented = oqr.departments.filter(d => d.stage === "ai-augmented").length;
+    const traditional = oqr.departments.filter(d => d.stage === "traditional").length;
+    return (
+      <div className="flex-1 flex flex-col justify-center">
+        <h3 className="font-serif text-2xl text-foreground mb-6">The Organisational Shift</h3>
+        <div className="flex items-baseline gap-3 mb-6">
+          <span className="font-serif text-5xl text-foreground">{oqr.orgMaturity}%</span>
+          <span className="text-sm text-muted-foreground">AI Maturity Index</span>
+          <span className="text-sm text-[hsl(var(--status-positive))]">+{oqr.maturityDelta} pts this quarter</span>
+        </div>
+        <div className="space-y-2 mb-6">
+          {oqr.departments.slice(0, 6).map(dept => (
+            <div key={dept.name} className="flex items-center gap-3">
+              <span className="text-[10px] text-muted-foreground w-24 shrink-0">{dept.name}</span>
+              <div className="flex-1 h-[3px] bg-border rounded-full overflow-hidden">
+                <div className="h-full bg-foreground/25 rounded-full" style={{ width: `${dept.score}%` }} />
+              </div>
+              <span className="text-[9px] text-muted-foreground w-20 text-right capitalize">{dept.stage.replace("-", " ")}</span>
+            </div>
+          ))}
+        </div>
+        <p className="text-xs text-muted-foreground font-serif italic">
+          {augmented} departments AI-augmented · {traditional} in transition · {oqr.departmentsCrossed} crossed threshold this quarter
+        </p>
+      </div>
+    );
+  }
+
+  if (slide.preview === "projects") {
+    const liveProjects = oqr.aiProjects.filter(p => p.status === "live");
+    const depts = new Set(oqr.aiProjects.map(p => p.department));
+    return (
+      <div className="flex-1 flex flex-col justify-center">
+        <h3 className="font-serif text-2xl text-foreground mb-2">AI Projects in Flight</h3>
+        <p className="text-xs text-muted-foreground mb-6">
+          {depts.size} of 9 departments now running at least one AI-augmented workflow.
+        </p>
+        <div className="border border-border overflow-hidden">
+          <div className="grid grid-cols-4 border-b border-border">
+            <div className="p-2 text-[9px] uppercase tracking-[0.1em] text-muted-foreground">Project</div>
+            <div className="p-2 text-[9px] uppercase tracking-[0.1em] text-muted-foreground border-l border-border">Department</div>
+            <div className="p-2 text-[9px] uppercase tracking-[0.1em] text-muted-foreground border-l border-border">Capability</div>
+            <div className="p-2 text-[9px] uppercase tracking-[0.1em] text-muted-foreground border-l border-border">Status</div>
+          </div>
+          {oqr.aiProjects.slice(0, 8).map((proj, i) => (
+            <div key={proj.id} className={`grid grid-cols-4 ${i > 0 ? "border-t border-border" : ""}`}>
+              <div className="p-2 text-[10px] text-foreground">{proj.name}</div>
+              <div className="p-2 text-[10px] text-muted-foreground border-l border-border">{proj.department}</div>
+              <div className="p-2 text-[10px] text-muted-foreground border-l border-border">{proj.capability}</div>
+              <div className="p-2 text-[10px] border-l border-border">
+                <span className={`capitalize ${proj.status === "live" ? "text-[hsl(var(--status-positive))]" : proj.status === "in-build" ? "text-[hsl(var(--status-warning))]" : "text-muted-foreground"}`}>
+                  {proj.status}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (slide.preview === "talent") {
+    return (
+      <div className="flex-1 flex flex-col justify-center">
+        <h3 className="font-serif text-2xl text-foreground mb-6">Talent Intelligence</h3>
+        <p className="text-sm text-foreground/80 leading-[1.8] mb-6">
+          The swarm assembled a {doc.team.length}-person team for "{doc.title}" in 38 seconds, bridging {doc.system.departments.length} departments
+          that would not have been connected through traditional resourcing channels.
+        </p>
+        <div className="border border-border p-4 mb-4">
+          <p className="text-[10px] uppercase tracking-[0.12em] text-muted-foreground mb-3">Case: {doc.title}</p>
+          <div className="space-y-2">
+            {doc.team.slice(0, 4).map(m => (
+              <div key={m.employee.id} className="flex items-center justify-between">
+                <div>
+                  <span className="text-[11px] text-foreground">{m.employee.name}</span>
+                  <span className="text-[10px] text-muted-foreground ml-2">{m.employee.department}</span>
+                </div>
+                <span className={`text-[9px] uppercase px-1.5 py-0.5 border ${
+                  m.employee.availability === "available" ? "text-[hsl(var(--status-positive))] border-[hsl(var(--status-positive)/0.3)]" : "text-muted-foreground border-border"
+                }`}>{m.employee.availability}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <p className="text-xs text-muted-foreground font-serif italic">{doc.teamContext}</p>
       </div>
     );
   }
@@ -193,7 +252,76 @@ function SlideContent({ slide, doc }: { slide: typeof SLIDES[0]; doc: BriefingDo
     );
   }
 
-  // Generic slide
+  if (slide.preview === "comparison") {
+    return (
+      <div className="flex-1 flex flex-col justify-center">
+        <h3 className="font-serif text-2xl text-foreground mb-8">What AI Made Possible</h3>
+        <div className="grid grid-cols-2 gap-0 border border-border">
+          <div className="p-4 border-b border-r border-border">
+            <span className="text-[10px] uppercase tracking-[0.12em] text-muted-foreground">Without ACG</span>
+          </div>
+          <div className="p-4 border-b border-border">
+            <span className="text-[10px] uppercase tracking-[0.12em] text-foreground">With ACG</span>
+          </div>
+          {[
+            { label: "Team assembly time", without: "4–6 weeks", withAI: "38 seconds" },
+            { label: "Org coverage", without: "Single department", withAI: `Cross-functional, ${doc.system.departments.length} departments` },
+            { label: "Cost", without: `£${doc.externalCost.toLocaleString()}`, withAI: `£${doc.internalCost.toLocaleString()}` },
+            { label: "Bias", without: "Manager's network only", withAI: "Skill-matched, org-wide" },
+            { label: "Knowledge retained", without: "Walks out the door", withAI: "Stays in the organisation" },
+            { label: "Time to board output", without: "2–3 weeks", withAI: "< 1 minute" },
+          ].map((row, i) => (
+            <div key={i} className="contents">
+              <div className={`p-3 text-xs text-muted-foreground ${i > 0 ? "border-t" : ""} border-r border-border`}>
+                <span className="text-[10px] text-muted-foreground/60 block mb-0.5">{row.label}</span>
+                {row.without}
+              </div>
+              <div className={`p-3 text-xs text-foreground ${i > 0 ? "border-t border-border" : ""}`}>
+                <span className="text-[10px] text-muted-foreground/60 block mb-0.5">{row.label}</span>
+                {row.withAI}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (slide.preview === "next") {
+    const lagging = oqr.departments
+      .filter(d => d.stage === "traditional")
+      .sort((a, b) => a.score - b.score)
+      .slice(0, 3);
+    return (
+      <div className="flex-1 flex flex-col justify-center">
+        <h3 className="font-serif text-2xl text-foreground mb-6">Recommended Next Steps</h3>
+        <div className="space-y-5">
+          <div className="border-l-2 border-foreground pl-4">
+            <div className="flex items-baseline justify-between mb-1">
+              <span className="text-sm text-foreground font-medium">Accelerate lagging departments</span>
+              <span className="text-[9px] uppercase text-muted-foreground border border-border px-2 py-0.5">High impact · Low effort</span>
+            </div>
+            <p className="text-xs text-muted-foreground">{lagging.map(d => d.name).join(", ")} are below 45% maturity. Deploying swarm assembly in these teams would bring 3 more departments into AI-augmented territory.</p>
+          </div>
+          <div className="border-l-2 border-foreground/40 pl-4">
+            <div className="flex items-baseline justify-between mb-1">
+              <span className="text-sm text-foreground font-medium">Expand predictive matching coverage</span>
+              <span className="text-[9px] uppercase text-muted-foreground border border-border px-2 py-0.5">High impact · Medium effort</span>
+            </div>
+            <p className="text-xs text-muted-foreground">Currently active in {oqr.aiProjects.filter(p => p.capability === "Predictive Matching").length} projects. Extending to procurement and HR would close the skills visibility gap across the full org.</p>
+          </div>
+          <div className="border-l-2 border-foreground/20 pl-4">
+            <div className="flex items-baseline justify-between mb-1">
+              <span className="text-sm text-foreground font-medium">Establish quarterly AI review cadence</span>
+              <span className="text-[9px] uppercase text-muted-foreground border border-border px-2 py-0.5">Medium impact · Low effort</span>
+            </div>
+            <p className="text-xs text-muted-foreground">Formalise the OQR export as a standing board item. Current data shows a {Math.round(((oqr.totalSavings - oqr.previousQuarterSavings) / oqr.previousQuarterSavings) * 100)}% quarter-on-quarter savings improvement — this trajectory needs visibility at the highest level.</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex-1 flex flex-col justify-center">
       <h3 className="font-serif text-2xl text-foreground mb-4">{slide.title}</h3>

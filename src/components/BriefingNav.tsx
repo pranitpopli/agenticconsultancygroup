@@ -12,7 +12,7 @@ const BriefingNav = ({ activeTab, onTabChange }: BriefingNavProps) => {
   const tabs = [
     { id: "briefings" as const, label: "Briefings", route: "/" },
     { id: "oqr" as const, label: "OQR", route: "/oqr" },
-    { id: "archive" as const, label: "Archive", route: undefined },
+    { id: "archive" as const, label: "Archive", route: "/" },
   ];
 
   const handleClick = (tab: typeof tabs[number]) => {

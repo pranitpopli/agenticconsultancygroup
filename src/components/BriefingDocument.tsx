@@ -9,6 +9,7 @@ import InlineOQR from "./InlineOQR";
 import BriefingIndex from "./BriefingIndex";
 import ProposedSystemView from "./ProposedSystem";
 import GanttChart from "./GanttChart";
+import BriefingOQRPanel from "./BriefingOQRPanel";
 
 interface BriefingDocumentProps {
   doc: BriefingDocType;
@@ -20,6 +21,7 @@ const BriefingDocumentView = ({ doc, onBack }: BriefingDocumentProps) => {
   const [currentDoc, setCurrentDoc] = useState(doc);
   const [showExport, setShowExport] = useState(false);
   const [pendingInput, setPendingInput] = useState<string | null>(null);
+  const [oqrOpen, setOqrOpen] = useState(false);
 
   const handleConversationUpdate = (updates: Partial<BriefingDocType>) => {
     setCurrentDoc((prev) => ({ ...prev, ...updates }));
@@ -33,7 +35,17 @@ const BriefingDocumentView = ({ doc, onBack }: BriefingDocumentProps) => {
     <div className="transition-all duration-300 relative">
       <BriefingIndex />
 
-      <div className="max-w-[780px] mx-auto px-8 pt-28 pb-28">
+      {/* OQR Panel */}
+      <AnimatePresence>
+        {oqrOpen && (
+          <BriefingOQRPanel open={oqrOpen} onToggle={() => setOqrOpen(false)} />
+        )}
+      </AnimatePresence>
+      {!oqrOpen && (
+        <BriefingOQRPanel open={false} onToggle={() => setOqrOpen(true)} />
+      )}
+
+      <div className={`max-w-[780px] mx-auto px-8 pt-28 pb-28 transition-all duration-300 ${oqrOpen ? "mr-[340px]" : ""}`}>
         {/* Navigation row */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -197,7 +209,7 @@ const BriefingDocumentView = ({ doc, onBack }: BriefingDocumentProps) => {
         onExportPDF={() => setShowExport(true)}
         onExportPPT={() => setShowExport(true)}
         onExportDocx={() => setShowExport(true)}
-        oqrOpen={false}
+        oqrOpen={oqrOpen}
         suggestions={!conversationActive ? [
           "Can we replace Sarah Chen? She's on another project.",
           "What if we run this in 10 weeks instead of 14?",
