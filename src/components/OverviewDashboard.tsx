@@ -4,14 +4,16 @@ import { motion } from "framer-motion";
 import { ArrowRight, Upload, Send, X, FileText, Zap, TrendingUp, Circle } from "lucide-react";
 import { OQR_DATA } from "@/lib/oqrData";
 import { EMPLOYEES } from "@/lib/simulatedData";
-import { BRIEFING_SUMMARIES } from "@/lib/briefingData";
+import type { BriefingSummary } from "@/lib/briefingData";
 import InboxCard from "./InboxCard";
 
 interface OverviewDashboardProps {
+  briefs: BriefingSummary[];
   onReadBriefing?: (id: string) => void;
+  onSubmitBrief?: (text: string) => void;
 }
 
-const OverviewDashboard = ({ onReadBriefing }: OverviewDashboardProps) => {
+const OverviewDashboard = ({ briefs, onReadBriefing, onSubmitBrief }: OverviewDashboardProps) => {
   const { toast } = useToast();
   const [briefText, setBriefText] = useState("");
   const [fileName, setFileName] = useState<string | null>(null);
@@ -31,6 +33,14 @@ const OverviewDashboard = ({ onReadBriefing }: OverviewDashboardProps) => {
 
   const handleSubmit = () => {
     if (!briefText.trim() && !fileName) return;
+
+    if (onSubmitBrief && briefText.trim()) {
+      onSubmitBrief(briefText.trim());
+      setBriefText("");
+      setFileName(null);
+      return;
+    }
+
     setSubmitting(true);
     setTimeout(() => {
       setSubmitting(false);
@@ -51,7 +61,7 @@ const OverviewDashboard = ({ onReadBriefing }: OverviewDashboardProps) => {
 
   return (
     <motion.main
-      className="max-w-[780px] mx-auto px-8 pt-28 pb-24"
+      className="max-w-[780px] mx-auto px-4 sm:px-8 pt-28 pb-24"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
@@ -63,13 +73,13 @@ const OverviewDashboard = ({ onReadBriefing }: OverviewDashboardProps) => {
           Good morning, James.
         </h1>
         <p className="text-sm text-muted-foreground">
-          {BRIEFING_SUMMARIES.length} {BRIEFING_SUMMARIES.length === 1 ? "brief" : "briefs"} ready for your review.
+          {briefs.length} {briefs.length === 1 ? "brief" : "briefs"} ready for your review.
         </p>
       </motion.div>
 
       {/* ━━━ BRIEF CARDS ━━━ */}
       <motion.div variants={itemVariants} className="space-y-4 mb-14">
-        {BRIEFING_SUMMARIES.map((brief, i) => (
+        {briefs.map((brief, i) => (
           <InboxCard
             key={brief.id}
             brief={brief}
@@ -81,11 +91,11 @@ const OverviewDashboard = ({ onReadBriefing }: OverviewDashboardProps) => {
 
       {/* ━━━ QUARTER PULSE ━━━ */}
       <motion.div variants={itemVariants} className="mb-14">
-        <div className="border border-border p-8">
+        <div className="border border-border p-6 sm:p-8">
           <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground mb-5">
             {currentQuarter} · Organisation pulse
           </p>
-          <div className="grid grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
             <div>
               <p className="text-2xl font-sans tabular-nums text-foreground">
                 £{(totalSavings / 1000).toFixed(0)}k

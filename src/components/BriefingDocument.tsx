@@ -15,9 +15,10 @@ import BriefingOQRPanel from "./BriefingOQRPanel";
 interface BriefingDocumentProps {
   doc: BriefingDocType;
   onBack: () => void;
+  readOnly?: boolean;
 }
 
-const BriefingDocumentView = ({ doc, onBack }: BriefingDocumentProps) => {
+const BriefingDocumentView = ({ doc, onBack, readOnly = false }: BriefingDocumentProps) => {
   const [conversationActive, setConversationActive] = useState(false);
   const [currentDoc, setCurrentDoc] = useState(doc);
   const [showExport, setShowExport] = useState(false);
@@ -47,19 +48,26 @@ const BriefingDocumentView = ({ doc, onBack }: BriefingDocumentProps) => {
         <BriefingOQRPanel open={false} onToggle={() => setOqrOpen(true)} />
       )}
 
-      <div className={`max-w-[780px] mx-auto px-8 pt-28 pb-28 transition-all duration-300 ${oqrOpen ? "mr-[340px]" : ""}`}>
+      <div className={`max-w-[780px] mx-auto px-4 sm:px-8 pt-28 pb-28 transition-all duration-300 ${oqrOpen ? "mr-[340px]" : ""}`}>
         {/* Navigation row */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
-          className="flex items-center gap-6 mb-10">
+          className="flex items-center gap-6 mb-10 flex-wrap">
           <motion.button
             onClick={onBack}
             className="flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground transition-colors">
             <ArrowLeft className="w-3.5 h-3.5" strokeWidth={1.5} />
             <span className="tracking-[0.1em] uppercase">Back to briefings</span>
           </motion.button>
+
+          {readOnly && (
+            <span className="text-[10px] uppercase tracking-[0.12em] px-2.5 py-1 border border-border text-muted-foreground">
+              Read-only · Archived
+            </span>
+          )}
+
           <motion.button
             onClick={() => toast({ title: "Original brief", description: "The source document will open in a new tab when connected to your document store." })}
             className="ml-auto gap-2 text-[10px] uppercase tracking-[0.15em] text-muted-foreground border border-border px-4 py-2.5 hover:border-foreground/30 hover:text-foreground transition-colors flex items-center">
@@ -75,7 +83,7 @@ const BriefingDocumentView = ({ doc, onBack }: BriefingDocumentProps) => {
           transition={{ duration: 0.6 }}
           className="mb-14">
           <p className="text-xs text-muted-foreground tracking-[0.05em] mb-3 flex items-center gap-1.5"><span className="text-[hsl(var(--status-positive))]" aria-hidden="true">✓</span> 847 projects scanned — no similar or discarded initiatives found</p>
-          <h1 className="font-serif text-4xl text-foreground leading-tight mb-3">
+          <h1 className="font-serif text-3xl sm:text-4xl text-foreground leading-tight mb-3">
             {currentDoc.title}
           </h1>
           <div className="w-12 h-px bg-foreground/20" />
@@ -92,7 +100,7 @@ const BriefingDocumentView = ({ doc, onBack }: BriefingDocumentProps) => {
 
         {/* Section 02 — Cost & Business Value */}
         <Section number="02" title="Cost & Business Value" delay={0.2}>
-          <div className="grid grid-cols-3 gap-8 mb-6">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 mb-6">
             <div>
               <p className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground mb-1">Internal cost</p>
               <p className="text-2xl text-foreground font-sans tabular-nums">£{currentDoc.internalCost.toLocaleString()}</p>
@@ -112,19 +120,21 @@ const BriefingDocumentView = ({ doc, onBack }: BriefingDocumentProps) => {
           </p>
 
           {/* Comparison table */}
-          <div className="border border-border overflow-hidden">
-            <div className="grid grid-cols-3 border-b border-border">
-              <div className="p-3 text-[10px] uppercase tracking-[0.12em] text-muted-foreground" />
-              <div className="p-3 text-[10px] uppercase tracking-[0.12em] text-foreground border-l border-border">Internal approach</div>
-              <div className="p-3 text-[10px] uppercase tracking-[0.12em] text-muted-foreground border-l border-border">External approach</div>
-            </div>
-            {currentDoc.comparison.map((row, i) =>
-            <div key={i} className={`grid grid-cols-3 ${i > 0 ? "border-t border-border" : ""}`}>
-                <div className="p-3 text-xs text-muted-foreground">{row.dimension}</div>
-                <div className="p-3 text-xs text-foreground border-l border-border">{row.internal}</div>
-                <div className="p-3 text-xs text-muted-foreground border-l border-border">{row.external}</div>
+          <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+            <div className="border border-border overflow-hidden min-w-[480px]">
+              <div className="grid grid-cols-3 border-b border-border">
+                <div className="p-3 text-[10px] uppercase tracking-[0.12em] text-muted-foreground" />
+                <div className="p-3 text-[10px] uppercase tracking-[0.12em] text-foreground border-l border-border">Internal approach</div>
+                <div className="p-3 text-[10px] uppercase tracking-[0.12em] text-muted-foreground border-l border-border">External approach</div>
               </div>
-            )}
+              {currentDoc.comparison.map((row, i) =>
+              <div key={i} className={`grid grid-cols-3 ${i > 0 ? "border-t border-border" : ""}`}>
+                  <div className="p-3 text-xs text-muted-foreground">{row.dimension}</div>
+                  <div className="p-3 text-xs text-foreground border-l border-border">{row.internal}</div>
+                  <div className="p-3 text-xs text-muted-foreground border-l border-border">{row.external}</div>
+                </div>
+              )}
+            </div>
           </div>
         </Section>
 
@@ -144,7 +154,7 @@ const BriefingDocumentView = ({ doc, onBack }: BriefingDocumentProps) => {
                   <span className="text-xs text-muted-foreground">·</span>
                   <span className="text-sm text-foreground">{row.value}</span>
                 </div>
-                <span className="text-xs text-muted-foreground">{row.detail}</span>
+                <span className="text-xs text-muted-foreground hidden sm:block">{row.detail}</span>
               </div>
             )}
           </div>
@@ -161,7 +171,7 @@ const BriefingDocumentView = ({ doc, onBack }: BriefingDocumentProps) => {
           <div className="space-y-6 mb-10">
             {currentDoc.phases.map((phase) =>
             <div key={phase.number} className="border-l border-border pl-5">
-                <div className="flex items-baseline gap-3 mb-1.5">
+                <div className="flex items-baseline gap-3 mb-1.5 flex-wrap">
                   <span className="text-sm font-medium text-foreground">Phase {phase.number}: {phase.title}</span>
                   <span className="text-xs text-muted-foreground">{phase.weeks}</span>
                 </div>
@@ -171,7 +181,9 @@ const BriefingDocumentView = ({ doc, onBack }: BriefingDocumentProps) => {
           </div>
 
           {/* Gantt chart */}
-          <GanttChart phases={currentDoc.phases} />
+          <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+            <GanttChart phases={currentDoc.phases} />
+          </div>
         </Section>
 
         {/* Section 06 — Org Key Results */}
@@ -179,44 +191,51 @@ const BriefingDocumentView = ({ doc, onBack }: BriefingDocumentProps) => {
           <InlineOQR doc={currentDoc} />
         </Section>
 
-        {/* Divider into conversation */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8 }}
-          className="my-16">
-          <div className="w-full h-px bg-border" />
-        </motion.div>
+        {/* Conversation & Export — hidden in read-only mode */}
+        {!readOnly && (
+          <>
+            {/* Divider into conversation */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.8 }}
+              className="my-16">
+              <div className="w-full h-px bg-border" />
+            </motion.div>
 
-        {/* Conversation Layer */}
-        <ConversationLayer
-          doc={currentDoc}
-          onUpdate={handleConversationUpdate}
-          onFinalize={handleFinalize}
-          active={conversationActive}
-          onActivate={() => setConversationActive(true)}
-          externalInput={pendingInput}
-          onExternalInputHandled={() => setPendingInput(null)} />
+            {/* Conversation Layer */}
+            <ConversationLayer
+              doc={currentDoc}
+              onUpdate={handleConversationUpdate}
+              onFinalize={handleFinalize}
+              active={conversationActive}
+              onActivate={() => setConversationActive(true)}
+              externalInput={pendingInput}
+              onExternalInputHandled={() => setPendingInput(null)} />
 
-        {/* Export Banner */}
-        <AnimatePresence>
-          {showExport &&
-          <ExportBanner doc={currentDoc} />
-          }
-        </AnimatePresence>
+            {/* Export Banner */}
+            <AnimatePresence>
+              {showExport &&
+              <ExportBanner doc={currentDoc} />
+              }
+            </AnimatePresence>
+          </>
+        )}
       </div>
 
-      {/* Fixed bottom input bar */}
-      <FixedInputBar
-        onSend={(text) => setPendingInput(text)}
-        onExportPDF={() => setShowExport(true)}
-        onExportPPT={() => setShowExport(true)}
-        onExportDocx={() => setShowExport(true)}
-        oqrOpen={oqrOpen}
-        suggestions={!conversationActive ? [
-          "Can we replace Sarah Chen? She's on another project.",
-          "What if we run this in 10 weeks instead of 14?",
-        ] : undefined} />
+      {/* Fixed bottom input bar — hidden in read-only mode */}
+      {!readOnly && (
+        <FixedInputBar
+          onSend={(text) => setPendingInput(text)}
+          onExportPDF={() => setShowExport(true)}
+          onExportPPT={() => setShowExport(true)}
+          onExportDocx={() => setShowExport(true)}
+          oqrOpen={oqrOpen}
+          suggestions={!conversationActive ? [
+            "Can we replace Sarah Chen? She's on another project.",
+            "What if we run this in 10 weeks instead of 14?",
+          ] : undefined} />
+      )}
     </main>
   );
 };

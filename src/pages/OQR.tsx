@@ -332,6 +332,7 @@ const OQR = () => {
               </div>
             )}
           </div>
+          </div>
         </motion.div>
 
         {/* ━━━ DEPARTMENT MATURITY BARS ━━━ */}
