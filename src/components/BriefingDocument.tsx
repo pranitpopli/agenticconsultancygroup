@@ -13,13 +13,9 @@ import GanttChart from "./GanttChart";
 interface BriefingDocumentProps {
   doc: BriefingDocType;
   onBack: () => void;
-  oqrOpen: boolean;
-  onOQRToggle: () => void;
 }
 
-
-const BriefingDocumentView = ({ doc, onBack, oqrOpen, onOQRToggle }: BriefingDocumentProps) => {
-
+const BriefingDocumentView = ({ doc, onBack }: BriefingDocumentProps) => {
   const [conversationActive, setConversationActive] = useState(false);
   const [currentDoc, setCurrentDoc] = useState(doc);
   const [showExport, setShowExport] = useState(false);
@@ -206,11 +202,12 @@ const BriefingDocumentView = ({ doc, onBack, oqrOpen, onOQRToggle }: BriefingDoc
           "Can we replace Sarah Chen? She's on another project.",
           "What if we run this in 10 weeks instead of 14?",
         ] : undefined} />
-    </div>);
+    </div>
+  );
 };
 
 function Section({ number, title, delay, children
-}: {number: string;title: string;delay: number;children: React.ReactNode;}) {
+}: {number: string; title: string; delay: number; children: React.ReactNode;}) {
   return (
     <motion.section
       id={`section-${number}`}
@@ -224,8 +221,8 @@ function Section({ number, title, delay, children
         <h2 className="font-serif text-2xl text-foreground">{title}</h2>
       </div>
       {children}
-    </motion.section>);
-
+    </motion.section>
+  );
 }
 
 export default BriefingDocumentView;

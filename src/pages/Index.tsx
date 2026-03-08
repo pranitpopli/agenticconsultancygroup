@@ -3,14 +3,12 @@ import { AnimatePresence } from "framer-motion";
 import BriefingNav from "@/components/BriefingNav";
 import OverviewDashboard from "@/components/OverviewDashboard";
 import BriefingDocumentView from "@/components/BriefingDocument";
-import OQRPanel from "@/components/OQRPanel";
 import { BRIEFING_DOCUMENTS } from "@/lib/briefingData";
 
 const Index = () => {
   const [view, setView] = useState<"briefings" | "briefing-doc">("briefings");
   const [activeBriefId, setActiveBriefId] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<"briefings" | "oqr" | "archive">("briefings");
-  const [oqrOpen, setOqrOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<"briefings" | "archive">("briefings");
 
   const handleReadBriefing = (id: string) => {
     setActiveBriefId(id);
@@ -22,13 +20,11 @@ const Index = () => {
     setActiveBriefId(null);
   };
 
-  const handleTabChange = (tab: "briefings" | "oqr" | "archive") => {
+  const handleTabChange = (tab: "briefings" | "archive") => {
     setActiveTab(tab);
     if (tab === "briefings") {
       setView("briefings");
       setActiveBriefId(null);
-    } else if (tab === "oqr") {
-      setOqrOpen(true);
     }
   };
 
@@ -39,7 +35,6 @@ const Index = () => {
       <BriefingNav
         activeTab={activeTab}
         onTabChange={handleTabChange}
-        onOQRToggle={() => setOqrOpen(prev => !prev)}
       />
 
       <AnimatePresence mode="wait">
@@ -52,16 +47,9 @@ const Index = () => {
             key={activeBriefId}
             doc={activeDoc}
             onBack={handleBack}
-            oqrOpen={oqrOpen}
-            onOQRToggle={() => setOqrOpen(prev => !prev)}
           />
         )}
       </AnimatePresence>
-
-      <OQRPanel
-        isOpen={oqrOpen}
-        onToggle={() => setOqrOpen(prev => !prev)}
-      />
     </div>
   );
 };
