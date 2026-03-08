@@ -12,8 +12,8 @@ interface OverlapDrawerProps {
 }
 
 const outcomeIcon = {
-  completed: <CheckCircle2 className="w-3.5 h-3.5 text-green-600" strokeWidth={1.5} />,
-  stalled: <PauseCircle className="w-3.5 h-3.5 text-warm-accent" strokeWidth={1.5} />,
+  completed: <CheckCircle2 className="w-3.5 h-3.5 text-[hsl(var(--status-positive))]" strokeWidth={1.5} />,
+  stalled: <PauseCircle className="w-3.5 h-3.5 text-[hsl(var(--status-warning))]" strokeWidth={1.5} />,
   cancelled: <XCircle className="w-3.5 h-3.5 text-destructive" strokeWidth={1.5} />,
 };
 
@@ -75,8 +75,8 @@ const OverlapDrawer = ({ overlaps, onClose, onProceed, preSelectedPeople, onTogg
                     <span>{project.department}</span>
                     <span>·</span>
                     <span className={
-                      project.outcome === "completed" ? "text-green-600" :
-                      project.outcome === "stalled" ? "text-warm-accent" : "text-destructive"
+                      project.outcome === "completed" ? "text-[hsl(var(--status-positive))]" :
+                      project.outcome === "stalled" ? "text-[hsl(var(--status-warning))]" : "text-destructive"
                     }>
                       {project.outcome}
                     </span>
@@ -117,7 +117,7 @@ const OverlapDrawer = ({ overlaps, onClose, onProceed, preSelectedPeople, onTogg
                             {emp.avatarInitials}
                           </span>
                           {emp.name}
-                          {isSelected && <span className="text-[8px] text-warm-accent">✓</span>}
+                          {isSelected && <span className="text-[8px] text-[hsl(var(--status-warning))]">✓</span>}
                         </button>
                       );
                     })}

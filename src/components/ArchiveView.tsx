@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { CheckCircle2, Users, Building2, TrendingDown, ChevronDown, ChevronRight, Clock, Calendar, ArrowRight } from "lucide-react";
+import { CheckCircle2, Users, Building2, TrendingDown, ChevronDown, ChevronRight, Clock, Calendar, ArrowRight, Search } from "lucide-react";
 import { ARCHIVED_BRIEFS } from "@/lib/briefingData";
 
 interface ArchiveViewProps {
@@ -14,10 +14,14 @@ const outcomeStyles = {
 };
 
 const ArchiveView = ({ onViewBrief }: ArchiveViewProps) => {
+  const [search, setSearch] = useState("");
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
-  const totalSaved = ARCHIVED_BRIEFS.reduce((sum, b) => sum + b.doc.saving, 0);
-  const deployedCount = ARCHIVED_BRIEFS.filter(b => b.outcome === "deployed").length;
+  const filtered = ARCHIVED_BRIEFS.filter((b) =>
+    !search || b.title.toLowerCase().includes(search.toLowerCase()) || b.submittedBy.name.toLowerCase().includes(search.toLowerCase())
+  );
+  const totalSaved = filtered.reduce((sum, b) => sum + b.doc.saving, 0);
+  const deployedCount = filtered.filter(b => b.outcome === "deployed").length;
 
   return (
     <motion.main
@@ -33,13 +37,24 @@ const ArchiveView = ({ onViewBrief }: ArchiveViewProps) => {
         <p className="text-sm text-muted-foreground">
           Previously completed briefings and their outcomes.
         </p>
+
+        {/* Search */}
+        <div className="relative mt-4">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
+          <input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search archived briefs…"
+            className="w-full text-sm bg-background border border-border pl-10 pr-4 py-2.5 outline-none focus:border-foreground/30 transition-colors placeholder:text-muted-foreground/50"
+          />
+        </div>
       </div>
 
       {/* Summary strip */}
       <div className="border border-border p-6 sm:p-8 mb-10">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
           <div>
-            <p className="text-2xl font-sans tabular-nums text-foreground">{ARCHIVED_BRIEFS.length}</p>
+            <p className="text-2xl font-sans tabular-nums text-foreground">{filtered.length}</p>
             <p className="text-[11px] text-muted-foreground mt-1">Briefs completed</p>
           </div>
           <div>
@@ -50,7 +65,7 @@ const ArchiveView = ({ onViewBrief }: ArchiveViewProps) => {
             <p className="text-2xl font-sans tabular-nums text-foreground">
               {deployedCount}
               <span className="text-base text-muted-foreground ml-1">
-                / {ARCHIVED_BRIEFS.length}
+                / {filtered.length}
               </span>
             </p>
             <p className="text-[11px] text-muted-foreground mt-1">Successfully deployed</p>
@@ -60,12 +75,14 @@ const ArchiveView = ({ onViewBrief }: ArchiveViewProps) => {
 
       {/* Brief cards */}
       <div className="space-y-4">
-        {ARCHIVED_BRIEFS.length === 0 && (
+        {filtered.length === 0 && (
           <div className="border border-border p-10 text-center">
-            <p className="text-sm text-muted-foreground">No archived briefs yet. Completed briefings will appear here.</p>
+            <p className="text-sm text-muted-foreground">
+              {search ? "No archived briefs match your search." : "No archived briefs yet. Completed briefings will appear here."}
+            </p>
           </div>
         )}
-        {ARCHIVED_BRIEFS.map((brief) => {
+        {filtered.map((brief) => {
           const isExpanded = expandedId === brief.id;
           const style = outcomeStyles[brief.outcome];
           const doc = brief.doc;

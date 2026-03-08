@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { TrendingUp, Building2, Users, Zap } from "lucide-react";
+import { useTheme } from "@/hooks/use-theme";
 import { OQR_DATA } from "@/lib/oqrData";
 import { EMPLOYEES } from "@/lib/simulatedData";
 import BriefingNav from "@/components/BriefingNav";
@@ -24,6 +25,7 @@ const capabilityData = [
 
 
 const OQR = () => {
+  const { theme } = useTheme();
   const navigate = useNavigate();
   const {
     totalSavings,
@@ -85,6 +87,14 @@ const OQR = () => {
     sub: `+${maturityDelta} pts this quarter`
   }];
 
+  const gridColor = theme === "dark" ? "hsl(220 10% 20%)" : "hsl(35 15% 88%)";
+  const tickColor = theme === "dark" ? "hsl(220 8% 55%)" : "hsl(0 0% 45%)";
+  const tickLightColor = theme === "dark" ? "hsl(220 8% 45%)" : "hsl(0 0% 60%)";
+  const primaryStroke = theme === "dark" ? "hsl(40 20% 90%)" : "hsl(0 0% 10%)";
+  const primaryFill = primaryStroke;
+  const accentStroke = theme === "dark" ? "hsl(38 65% 50%)" : "hsl(38 55% 50%)";
+  const accentFill = accentStroke;
+  const projectedStroke = theme === "dark" ? "hsl(38 40% 50%)" : "hsl(38 35% 58%)";
 
   return (
     <div className="min-h-screen bg-background" role="main">
@@ -151,15 +161,15 @@ const OQR = () => {
             </p>
             <ResponsiveContainer width="100%" height={300}>
               <RadarChart data={maturityChartData} cx="50%" cy="50%" outerRadius="70%">
-                <PolarGrid stroke="hsl(35 15% 88%)" />
+                <PolarGrid stroke={gridColor} />
                 <PolarAngleAxis
                   dataKey="dept"
-                  tick={{ fontSize: 10, fill: "hsl(0 0% 45%)" }} />
+                  tick={{ fontSize: 10, fill: tickColor }} />
                 
                 <PolarRadiusAxis
                   angle={90}
                   domain={[0, 100]}
-                  tick={{ fontSize: 8, fill: "hsl(0 0% 60%)" }}
+                  tick={{ fontSize: 8, fill: tickLightColor }}
                   axisLine={false} />
                 
                 <Tooltip
@@ -180,8 +190,8 @@ const OQR = () => {
                 <Radar
                   name="Projected"
                   dataKey="projected"
-                  stroke="hsl(38 35% 58%)"
-                  fill="hsl(38 35% 58%)"
+                  stroke={projectedStroke}
+                  fill={projectedStroke}
                   fillOpacity={0.06}
                   strokeDasharray="5 5"
                   strokeWidth={1.5}
@@ -191,8 +201,8 @@ const OQR = () => {
                 <Radar
                   name="Current"
                   dataKey="score"
-                  stroke="hsl(0 0% 10%)"
-                  fill="hsl(0 0% 10%)"
+                  stroke={primaryStroke}
+                  fill={primaryFill}
                   fillOpacity={0.08}
                   strokeWidth={1.5}
                   isAnimationActive
@@ -213,15 +223,15 @@ const OQR = () => {
             </p>
             <ResponsiveContainer width="100%" height={300}>
               <RadarChart data={capabilityData} cx="50%" cy="50%" outerRadius="70%">
-                <PolarGrid stroke="hsl(35 15% 88%)" />
+                <PolarGrid stroke={gridColor} />
                 <PolarAngleAxis
                   dataKey="domain"
-                  tick={{ fontSize: 10, fill: "hsl(0 0% 45%)" }} />
+                  tick={{ fontSize: 10, fill: tickColor }} />
                 
                 <PolarRadiusAxis
                   angle={90}
                   domain={[0, 100]}
-                  tick={{ fontSize: 8, fill: "hsl(0 0% 60%)" }}
+                  tick={{ fontSize: 8, fill: tickLightColor }}
                   axisLine={false} />
                 
                 <Tooltip
@@ -242,8 +252,8 @@ const OQR = () => {
                 <Radar
                   name="Coverage"
                   dataKey="coverage"
-                  stroke="hsl(38 55% 50%)"
-                  fill="hsl(38 55% 50%)"
+                  stroke={accentStroke}
+                  fill={accentFill}
                   fillOpacity={0.1}
                   strokeWidth={1.5}
                   isAnimationActive

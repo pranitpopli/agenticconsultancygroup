@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -9,20 +9,18 @@ const Login = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { toast } = useToast();
+  const { login } = useAuth();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) return;
     setLoading(true);
 
-    // Simulated auth
     setTimeout(() => {
       setLoading(false);
-      localStorage.setItem("acg-auth", JSON.stringify({ email, name: email.split("@")[0] }));
-      toast({ title: isSignUp ? "Account created" : "Welcome back", description: "Redirecting to dashboard…" });
+      login(email);
       navigate("/");
-    }, 800);
+    }, 600);
   };
 
   return (
@@ -46,7 +44,7 @@ const Login = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@company.com"
-              className="w-full text-sm bg-background border border-border px-4 py-2.5 outline-none focus:border-foreground transition-colors placeholder:text-muted-foreground/50"
+              className="w-full text-sm bg-background border border-border px-4 py-2.5 outline-none focus:border-foreground transition-colors placeholder:text-muted-foreground/50 text-foreground"
               required
             />
           </div>
@@ -57,7 +55,7 @@ const Login = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="w-full text-sm bg-background border border-border px-4 py-2.5 outline-none focus:border-foreground transition-colors placeholder:text-muted-foreground/50"
+              className="w-full text-sm bg-background border border-border px-4 py-2.5 outline-none focus:border-foreground transition-colors placeholder:text-muted-foreground/50 text-foreground"
               required
             />
           </div>

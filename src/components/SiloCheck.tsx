@@ -80,9 +80,9 @@ const SiloCheck = ({ overlaps, onReviewOverlaps, onSkipToTeam }: SiloCheckProps)
             </div>
           </div>
         ) : (
-          <div className="border border-green-500/30 p-8 md:p-10 space-y-3">
+          <div className="border border-[hsl(var(--status-positive)/0.3)] p-8 md:p-10 space-y-3">
             <div className="flex items-start gap-4">
-              <CheckCircle2 className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" strokeWidth={1.5} />
+              <CheckCircle2 className="w-5 h-5 text-[hsl(var(--status-positive))] mt-0.5 flex-shrink-0" strokeWidth={1.5} />
               <div>
                 <h2 className="font-serif text-2xl text-foreground">
                   No prior projects found.
