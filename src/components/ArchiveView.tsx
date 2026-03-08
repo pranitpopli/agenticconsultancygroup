@@ -157,9 +157,11 @@ const ArchiveView = () => {
               className="border border-border hover:border-foreground/20 transition-colors"
             >
               {/* Header */}
-              <button
-                onClick={() => setExpandedId(isExpanded ? null : brief.id)}
-                className="w-full p-6 text-left"
+               <button
+                 onClick={() => setExpandedId(isExpanded ? null : brief.id)}
+                 className="w-full p-6 text-left"
+                 aria-expanded={isExpanded}
+                 aria-controls={`archive-detail-${brief.id}`}
               >
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1 space-y-2">

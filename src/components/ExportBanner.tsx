@@ -151,7 +151,7 @@ function SlideContent({ slide, doc }: { slide: typeof SLIDES[0]; doc: BriefingDo
       <div className="flex-1 flex flex-col justify-center">
         <h3 className="font-serif text-2xl text-foreground mb-6">The Organisational Shift</h3>
         <div className="flex items-baseline gap-3 mb-6">
-          <span className="font-serif text-5xl text-foreground">{oqr.orgMaturity}%</span>
+          <span className="font-sans text-5xl tabular-nums text-foreground">{oqr.orgMaturity}%</span>
           <span className="text-sm text-muted-foreground">AI Maturity Index</span>
           <span className="text-sm text-[hsl(var(--status-positive))]">+{oqr.maturityDelta} pts this quarter</span>
         </div>

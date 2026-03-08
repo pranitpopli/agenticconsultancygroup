@@ -39,6 +39,8 @@ const SwarmThinking = ({ lines, onComplete }: SwarmThinkingProps) => {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.4 }}
       className="min-h-[80vh] flex items-center justify-center px-6"
+      role="status"
+      aria-label="Analysing brief"
     >
       <div className="w-full max-w-xl">
         <div className="space-y-0">

@@ -199,10 +199,10 @@ const OverviewDashboard = ({ onReadBriefing }: OverviewDashboardProps) => {
                   className="flex items-center gap-1.5 text-xs text-foreground bg-muted px-3 py-1.5 border border-border"
                 >
                   <FileText className="w-3 h-3 text-muted-foreground" strokeWidth={1.5} />
-                  {fileName}
-                  <button onClick={() => setFileName(null)} className="ml-1 hover:text-muted-foreground">
-                    <X className="w-3 h-3" strokeWidth={1.5} />
-                  </button>
+                   {fileName}
+                   <button onClick={() => setFileName(null)} className="ml-1 hover:text-muted-foreground" aria-label="Remove file">
+                     <X className="w-3 h-3" strokeWidth={1.5} />
+                   </button>
                 </motion.span>
               )}
             </div>
