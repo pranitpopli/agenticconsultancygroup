@@ -326,8 +326,8 @@ function Tooltip({ text }: {text: string;}) {
     <motion.div
       initial={{ opacity: 0, y: 4 }}
       animate={{ opacity: 1, y: 0 }}
-      className="absolute top-full left-0 mt-2 z-50 border border-border p-3 text-[10px] text-muted-foreground max-w-xs leading-relaxed"
-      style={{ backgroundColor: "#FAF8F4" }}>
+      className="absolute top-full left-0 mt-2 z-50 border border-border p-3 text-[10px] text-muted-foreground max-w-xs leading-relaxed bg-background"
+      >
       
       {text}
     </motion.div>);

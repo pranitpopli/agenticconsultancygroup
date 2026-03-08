@@ -82,8 +82,8 @@ const FixedInputBar = ({ onSend, onExportPDF, onExportPPT, onExportDocx, oqrOpen
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 4 }}
                 transition={{ duration: 0.15 }}
-                className="absolute bottom-full mb-2 right-0 w-56 border border-border shadow-sm"
-                style={{ backgroundColor: "#FAF8F4" }}
+                className="absolute bottom-full mb-2 right-0 w-56 border border-border shadow-sm bg-background"
+              >
               >
                 <button
                   onClick={() => { onExportPDF(); setExportOpen(false); }}

@@ -92,8 +92,8 @@ const ExportBanner = ({ doc }: ExportBannerProps) => {
               </div>
 
               {/* Main slide view */}
-              <div className="flex-1 p-8" style={{ backgroundColor: "#FAF8F4" }}>
-                <div className="aspect-[16/9] border border-border p-10 flex flex-col justify-between" style={{ backgroundColor: "#FAF8F4" }}>
+              <div className="flex-1 p-8 bg-background">
+                <div className="aspect-[16/9] border border-border p-10 flex flex-col justify-between bg-background">
                   <SlideContent slide={SLIDES[activeSlide]} doc={doc} />
                   <div className="flex items-center justify-between pt-4 border-t border-border mt-auto">
                     <span className="text-[8px] text-muted-foreground">Acme Corporation</span>

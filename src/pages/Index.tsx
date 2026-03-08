@@ -183,7 +183,7 @@ const Index = () => {
   const activeDoc = activeBriefId ? allDocs[activeBriefId] : null;
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: "#FAF8F4" }}>
+    <div className="min-h-screen bg-background">
       <BriefingNav
         activeTab={activeTab}
         onTabChange={handleTabChange}
