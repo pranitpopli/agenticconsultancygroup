@@ -38,7 +38,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return deriveUser(email);
       }
     } catch {}
-    return null;
+    return deriveUser("guest.user@acg.com");
   });
 
   const login = useCallback((email: string) => {
